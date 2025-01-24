@@ -10,7 +10,6 @@ Shader "Custom/Unlit"
     _FresnelColor ("Fresnel Color", Color) = (1,1,1,1)
     _FresnelPower ("Fresnel Power", float) = 0
     _FresnelOpacity ("Fresnel Opacity", float) = 0
-    _FogAmount ("Fog Amount", float) = 0
 
     _GlobalDitherTex("Dither Texture", 2D) = "white" {}
     _DitherClipDistance ("Dither Clip Distance", float) = 1
@@ -49,7 +48,6 @@ Shader "Custom/Unlit"
       #pragma multi_compile _ _ENABLE_SOFT_PARTICLE
 
       #include "UnityCG.cginc"
-      #include "CellShading.cginc"
       #include "Dithering.cginc"
 
       struct appdata
@@ -80,7 +78,6 @@ Shader "Custom/Unlit"
       float4 _FresnelColor;
       float _FresnelPower;
       float _FresnelOpacity;
-      float _FogAmount;
       float _DitherClipDistance;
 
       v2f vert(appdata v)
@@ -108,9 +105,6 @@ Shader "Custom/Unlit"
 
         diffuse.rgb += diffuse.rgb * _GlowRadius * texGlow.rgb;
         diffuse.rgb += _FresnelColor * fresnel * _FresnelOpacity;
-
-        float3 diffuseAmbience = FadeToHorizon(diffuse.rgb, i.worldPos);
-        diffuse.rgb = lerp(diffuse.rgb, diffuseAmbience, _FogAmount);
 
         #if _ENABLE_SOFT_PARTICLE
         float2 screenUV = i.screenPos.xy / i.screenPos.w;

@@ -1,17 +1,33 @@
-Shader "Custom/CellShaded"
+Shader "Custom/CellShadedOutline"
 {
   Properties
   {
     _Color ("Color", Color) = (1,1,1,1)
+    _OutlineColor ("Outline Color", Color) = (1,1,1,1)
+    _OutlineThickness ("Outline Thickness", float) = 0.1
+    _OutlineMaxThickness ("Outline Max Thickness", float) = 0.1
     _MainTex ("Texture", 2D) = "white" {}
-    _MainTexAlpha ("Texture Alpha", float) = 1
     _LightRamp ("Light Ramp", 2D) = "white" {}
+    _VertexColorWeight ("Vertex Color Weight", float) = 1
+
+    [Enum(Off,0,On,1)] 
+    _ZWrite ("ZWrite", Float) = 1
+    
+    [Enum(Always, 0, Less, 2, Equal, 3, LEqual, 4, GEqual, 5)] 
+    _ZTest ("ZTest", Float) = 4
+
+    [Enum(Off,0,On,1)] 
+    _OutlineZWrite ("ZWrite", Float) = 1
+    
+    [Enum(Always, 0, Less, 2, Equal, 3, LEqual, 4, GEqual, 5)] 
+    _OutlineZTest ("ZTest", Float) = 4
   }
   SubShader
   {
     CGINCLUDE 
       #include "UnityCG.cginc"
       #include "CellShading.cginc"
+      #include "Outline.cginc"
 
       struct appdata
       {
@@ -28,26 +44,23 @@ Shader "Custom/CellShaded"
         float2 uv : TEXCOORD0;
         SHADOW_COORDS(1)
         fixed3 worldNormal : TEXCOORD2;
-        fixed3 worldPos : TEXCOORD3;
-        UNITY_FOG_COORDS(4)
+        float4 worldPos : TEXCOORD3;
       };
 
       sampler2D _MainTex;
-      float _MainTexAlpha;
-      float4 _MainTex_ST;
       float4 _Color;
-      
+      float _VertexColorWeight;
+
       v2f vert (appdata v)
       {
         v2f o;
-        o.pos = UnityObjectToClipPos(v.vertex);
-        o.worldPos = mul(unity_ObjectToWorld, v.vertex);
-        o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+				o.pos = UnityWorldToClipPos(o.worldPos);
+        o.uv = v.uv;
         o.worldNormal = mul(unity_ObjectToWorld, fixed4(v.normal.xyz, 0));
         o.color = v.color;
 
         TRANSFER_SHADOW(o)
-        UNITY_TRANSFER_FOG(o, o.pos);
 
         return o;
       }
@@ -55,8 +68,7 @@ Shader "Custom/CellShaded"
       fixed4 frag (v2f i) : SV_Target
       {
         // Get base diffuse color
-        fixed3 texColor = tex2D(_MainTex, i.uv).rgb;
-        fixed3 diffuse = _Color.rgb * i.color * lerp(fixed3(1,1,1), texColor, _MainTexAlpha);
+        fixed3 diffuse = _Color.rgb * tex2D(_MainTex, i.uv).rgb * lerp(fixed3(1, 1, 1), i.color.rgb, _VertexColorWeight);
 
         fixed lightAtten = 1;
         #ifdef POINT
@@ -65,9 +77,7 @@ Shader "Custom/CellShaded"
         lightAtten = tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).r * shadow;
         #endif
 
-        // UNITY_LIGHT_ATTENUATION(lightAtten, i, i.worldPos);
         diffuse *= CalculateLighting(normalize(i.worldNormal), lightAtten, SHADOW_ATTENUATION(i)).rgb;
-
         UNITY_APPLY_FOG(i.fogCoord, diffuse);
 
         return fixed4(diffuse, 1);
@@ -76,29 +86,41 @@ Shader "Custom/CellShaded"
 
     Pass
     {
-      Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase" }
+      Tags { "RenderType"="Opaque" }
 
-      ZWrite On 
+      ZWrite [_ZWrite]
+      ZTest [_ZTest]
+
+      Stencil 
+      {
+        Ref 2
+        Comp always
+        Pass replace
+      }
 
       CGPROGRAM
       #pragma vertex vert
       #pragma fragment frag
-      #pragma multi_compile_fog			
-      #pragma multi_compile_fwdbase
       ENDCG
     }
 
     Pass
     {
-      Tags { "RenderType"="Opaque" "LightMode" = "ForwardAdd" }
-			Blend One One
-			ZWrite Off
+      Tags { "RenderType"="Opaque" }
+
+      ZWrite [_OutlineZWrite]
+      ZTest [_OutlineZTest]
+
+      Stencil 
+      {
+        Ref 2
+        Comp notequal
+        Pass keep
+      }
 
       CGPROGRAM
-      #pragma vertex vert
-      #pragma fragment frag
-      #pragma multi_compile_fog			
-      #pragma multi_compile_fwdadd
+      #pragma vertex OutlineVert
+      #pragma fragment OutlineFrag
       ENDCG
     }
   }
