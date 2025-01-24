@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerActorController : MonoBehaviour
 {
   [SerializeField] private ActorController _actor = null;
+  [SerializeField] private PlayerAnimation _playerAnimation = null;
 
   private Rewired.Player _playerInput;
 

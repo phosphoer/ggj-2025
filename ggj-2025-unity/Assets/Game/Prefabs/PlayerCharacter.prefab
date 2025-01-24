@@ -96,7 +96,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b1555809565c448f878ff4a9ba8919d, type: 2}
+  - {fileID: 2100000, guid: 531b8b4fe3e6e49a6b0653d9b25ac8ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -182,7 +182,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b1555809565c448f878ff4a9ba8919d, type: 2}
+  - {fileID: 2100000, guid: 747902a7a9cfc4b478ef1444187b6550, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 8824695059088403173}
   - component: {fileID: 5571818849142797486}
   - component: {fileID: 3726428146020218614}
+  - component: {fileID: 833507523520657284}
   - component: {fileID: 5562044396887392705}
   m_Layer: 0
   m_Name: PlayerCharacter
@@ -255,6 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actor: {fileID: 8824695059088403173}
+  _playerAnimation: {fileID: 0}
 --- !u!114 &8824695059088403173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,6 +301,7 @@ MonoBehaviour:
   BiteAnimAngle: 15
   _jawUpper: {fileID: 749309001775414427}
   _jawLower: {fileID: 7948633377374464007}
+  _mouthItemRoot: {fileID: 4831797765366004933}
 --- !u!114 &3726428146020218614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +344,18 @@ MonoBehaviour:
   CheckMovementInitialOverlaps: 1
   KillVelocityWhenExceedMaxMovementIterations: 1
   KillRemainingMovementWhenExceedMaxMovementIterations: 1
+--- !u!114 &833507523520657284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3414597046036002244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57049c729d074d39b34e3aeb818f1697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &5562044396887392705
 CapsuleCollider:
   m_ObjectHideFlags: 8
@@ -460,7 +475,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b1555809565c448f878ff4a9ba8919d, type: 2}
+  - {fileID: 2100000, guid: 747902a7a9cfc4b478ef1444187b6550, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -513,5 +528,37 @@ Transform:
   m_Children:
   - {fileID: 749309001775414427}
   - {fileID: 7948633377374464007}
+  - {fileID: 4831797765366004933}
   m_Father: {fileID: 1808852209039827940}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7763625856951770730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4831797765366004933}
+  m_Layer: 0
+  m_Name: MouthItemRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4831797765366004933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763625856951770730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8186879240131248941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

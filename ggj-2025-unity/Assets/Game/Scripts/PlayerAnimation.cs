@@ -7,6 +7,7 @@ public class PlayerAnimation : MonoBehaviour
 
   [SerializeField] private Transform _jawUpper = null;
   [SerializeField] private Transform _jawLower = null;
+  [SerializeField] private Transform _mouthItemRoot = null;
 
   private float _biteAnimTimer;
 
