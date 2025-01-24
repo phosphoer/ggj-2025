@@ -5,7 +5,7 @@ AssetOrigin:
   productId: 278928
   packageName: Low Poly Atmospheric Locations Pack
   packageVersion: 1.0.0
-  assetPath: Assets/Palmov Island/Low Poly Atmospheric Locations Pack/Models/Stones/Desert
+  assetPath: Assets/External/Palmov Island/Low Poly Atmospheric Locations Pack/Models/Stones/Desert
     stones/desert stone small 7.fbx
   uploadId: 663950
 ModelImporter:

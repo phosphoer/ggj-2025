@@ -5,7 +5,7 @@ AssetOrigin:
   productId: 278928
   packageName: Low Poly Atmospheric Locations Pack
   packageVersion: 1.0.0
-  assetPath: Assets/Palmov Island/Low Poly Atmospheric Locations Pack/Models/Plants/Grass/grass.fbx
+  assetPath: Assets/External/Palmov Island/Low Poly Atmospheric Locations Pack/Models/Plants/Grass/grass.fbx
   uploadId: 663950
 ModelImporter:
   serializedVersion: 22200
