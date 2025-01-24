@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelGenerator : MonoBehaviour
 {
     [SerializeField]
     private LevelSectionDatabase _levelSectionDatabase;
@@ -14,7 +14,6 @@ public class LevelManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        GenerateLevel();
     }
 
     // Update is called once per frame
@@ -23,7 +22,7 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    private void GenerateLevel()
+    public void GenerateLevel()
     {
         _nextSectionOrigin= Vector3.zero;
         _levelSections = new LevelSection[_numLevels];
