@@ -258,10 +258,22 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 0
-    - _id: 2
-      _name: PickUp
+    - _id: 3
+      _name: Chew
       _type: 1
-      _descriptiveName: Pick Up
+      _descriptiveName: Chew
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _key: 
+      _positiveKey: 
+      _negativeKey: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
+    - _id: 2
+      _name: Interact
+      _type: 1
+      _descriptiveName: Interact
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -280,7 +292,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 000000000100000002000000
+        actionIds: 00000000010000000200000003000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -400,7 +412,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 2
-    actionIdCounter: 3
+    actionIdCounter: 4
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 1
     mapCategoryIdCounter: 1

@@ -15,7 +15,7 @@ public class PlayerActorController : MonoBehaviour
   {
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
-    bool inputPickUpButton = _playerInput.GetButtonDown(RewiredConsts.Action.PickUp);
+    bool inputInteractButton = _playerInput.GetButtonDown(RewiredConsts.Action.Interact);
 
     _actor.MoveAxis = Vector2.right * inputMoveAxis;
 
