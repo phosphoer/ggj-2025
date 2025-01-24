@@ -27,25 +27,27 @@ public class LevelGenerator : MonoBehaviour
         _nextSectionOrigin= Vector3.zero;
         _levelSections = new LevelSection[_numLevels];
 
-        for (int levelIndex= 0; levelIndex < _numLevels; ++levelIndex)
-        {
-            var newLevelSection = SpawnNextSection();
+        // Spawn the starting section first
+        _levelSections[0] = SpawnNextSection(_levelSectionDatabase.StartLevelSections);
 
-            _levelSections[levelIndex]= newLevelSection;
+        // Then spawn the rest of the sections
+        for (int levelIndex= 1; levelIndex < _numLevels; ++levelIndex)
+        {
+            _levelSections[levelIndex] = SpawnNextSection(_levelSectionDatabase.LevelSections);
 		}
 	}
 
-    private GameObject SelectNextSectionTemplate()
+    private GameObject SelectNextSectionTemplate(LevelSection[] potentialLevelSections)
     {
-		int availableSectionCount = _levelSectionDatabase.LevelSections.Length;
+		int availableSectionCount = potentialLevelSections.Length;
 		int randomSectionDBIndex= Random.Range(0, availableSectionCount);
 
         return _levelSectionDatabase.LevelSections[randomSectionDBIndex].gameObject;
     }
 
-    private LevelSection SpawnNextSection()
+    private LevelSection SpawnNextSection(LevelSection[] potentialLevelSections)
     {
-		var sectionTemplate = SelectNextSectionTemplate();
+		var sectionTemplate = SelectNextSectionTemplate(potentialLevelSections);
 		var newSectionGO = GameObject.Instantiate(sectionTemplate);
 		var newLevelSection = newSectionGO.GetComponent<LevelSection>();
 
