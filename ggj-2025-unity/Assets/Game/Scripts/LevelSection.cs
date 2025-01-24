@@ -5,7 +5,7 @@ public class LevelSection : MonoBehaviour
     [SerializeField]
     private BoxCollider _sectionBounds;
     public BoxCollider SectionBounds => _sectionBounds;
-    public float SectionHeight => _sectionBounds.size.y;
+    public float SectionHeight => _sectionBounds.size.y * _sectionBounds.transform.localScale.y;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
