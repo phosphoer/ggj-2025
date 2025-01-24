@@ -14,6 +14,8 @@ public class GameController : Singleton<GameController>
         MainCamera.Instance.CameraStack.PushController(_cameraController);
 
         _levelManager.GenerateLevel();
+
+        _cameraController.StartRising();
     }
 
     // Update is called once per frame

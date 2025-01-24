@@ -125,6 +125,8 @@ MonoBehaviour:
   AxisSensitivty: 1
   MaxAngle: 5
   HandheldScale: 1
+  _levelManager: {fileID: 0}
+  _riseRate: 0.5
 --- !u!1 &4101283422249188472
 GameObject:
   m_ObjectHideFlags: 0
