@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Priority: 0
   Bloom:
-    Enabled: 0
+    Enabled: 1
     BloomFilterSize: 1
     BloomThreshold: 1
-    BloomThresholdSoft: 0
-    BloomIntensity: 0
+    BloomThresholdSoft: 1
+    BloomIntensity: 1
   SaturationContrast:
     Enabled: 0
     ColorSaturation: 1
