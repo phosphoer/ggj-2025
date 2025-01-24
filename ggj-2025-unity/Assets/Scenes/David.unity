@@ -359,7 +359,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253971218}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.70710784}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -371,7 +371,7 @@ Transform:
   - {fileID: 1034676554}
   - {fileID: 39601034}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &359503213
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,31 +677,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 2.88
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.2
+      value: -8.24
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071079
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071057
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -709,7 +709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -946,7 +946,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1808852209039827940, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.57
       objectReference: {fileID: 0}
     - target: {fileID: 1808852209039827940, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -954,7 +954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1808852209039827940, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.81
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1808852209039827940, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1003,6 +1003,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1389582893}
   - component: {fileID: 1389582894}
+  - component: {fileID: 1389582895}
   m_Layer: 0
   m_Name: Gumball
   m_TagString: Untagged
@@ -1019,7 +1020,7 @@ Transform:
   m_GameObject: {fileID: 1389582892}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.61, z: 3.72}
+  m_LocalPosition: {x: 4.32, y: 0.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1041,6 +1042,18 @@ MonoBehaviour:
   InteractDistance: 3
   _promptUIPrefab: {fileID: 3923568559253191482, guid: ee0658aa7e1c64d6281b760046c18d37, type: 3}
   _interactPromptText: Pickup
+--- !u!114 &1389582895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389582892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1879fdecf15e4257973a91cf3bc793b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1424252513
 PrefabInstance:
   m_ObjectHideFlags: 0

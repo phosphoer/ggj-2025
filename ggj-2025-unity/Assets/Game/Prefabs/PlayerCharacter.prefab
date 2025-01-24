@@ -256,7 +256,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actor: {fileID: 8824695059088403173}
-  _playerAnimation: {fileID: 0}
+  _playerAnimation: {fileID: 5571818849142797486}
+  _interaction: {fileID: 833507523520657284}
 --- !u!114 &8824695059088403173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,7 +338,7 @@ MonoBehaviour:
   RigidbodyInteractionType: 0
   SimulatedCharacterMass: 1
   PreserveAttachedRigidbodyMomentum: 1
-  HasPlanarConstraint: 0
+  HasPlanarConstraint: 1
   PlanarConstraintAxis: {x: 0, y: 0, z: 1}
   MaxMovementIterations: 5
   MaxDecollisionIterations: 1
