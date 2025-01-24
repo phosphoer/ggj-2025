@@ -72,7 +72,7 @@ Transform:
   m_GameObject: {fileID: 2007426240689467974}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelSectionDatabase: {fileID: 11400000, guid: 7e43086fc2acbee4d83ec07e1b491520, type: 2}
-  _numLevels: 5
+  _numLevels: 10
 --- !u!114 &8737514908485825336
 MonoBehaviour:
   m_ObjectHideFlags: 0
