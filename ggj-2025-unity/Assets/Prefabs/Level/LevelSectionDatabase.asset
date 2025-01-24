@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564f3fa8e14831e439477aa18e351baa, type: 3}
   m_Name: LevelSectionDatabase
   m_EditorClassIdentifier: 
+  _startLevelSections: []
   _levelSections:
   - {fileID: 4881010177024064298, guid: b63b9632d6c18874190b4489b6793ce0, type: 3}
-  - {fileID: 723885048373714061, guid: a790f2667d417064fa72cd716796ba0f, type: 3}
