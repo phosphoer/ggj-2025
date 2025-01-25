@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1982529191342704361}
+  - component: {fileID: 1729617323249604882}
   m_Layer: 0
   m_Name: MinePlat_01
   m_TagString: Untagged
@@ -45,6 +46,22 @@ Transform:
   - {fileID: 8020667708250035744}
   m_Father: {fileID: 3075783142085293083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1729617323249604882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209369775325797459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15568a07cb6dbb645b9403a5c5883cc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointA: {fileID: 0}
+  pointB: {fileID: 0}
+  speed: 2
+  Mover: {fileID: 0}
 --- !u!1 &1391331434431326786
 GameObject:
   m_ObjectHideFlags: 0

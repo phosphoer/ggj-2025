@@ -17,7 +17,7 @@ public class MainMenuUI : UIPageBase
     base.Awake();
     _buttonNewSinglePlayerGame.Activated+= OnNewGameSinglePlayerGameClicked;
     _buttonNewMultiPlayerGame.Activated+= OnNewGameMultiPlayerGameClicked;
-    _buttonNewMultiPlayerGame.Activated+= OnQuitGameClicked;
+    _buttonQuit.Activated+= OnQuitGameClicked;
   }
 
 #if UNITY_EDITOR

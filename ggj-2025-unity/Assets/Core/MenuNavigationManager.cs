@@ -13,9 +13,6 @@ public class MenuNavigationManager : Singleton<MenuNavigationManager>
   private List<SelectionState> _selectionStack = new();
   private MenuItemUI _holdToActivateItem;
   private float _holdToActivateTimer;
-  private bool _isFakeDragActive;
-  private bool _justFinishedDrag;
-  private PointerEventData _fakeDragEventData;
 
   [System.Serializable]
   public struct SelectionState
@@ -150,12 +147,6 @@ public class MenuNavigationManager : Singleton<MenuNavigationManager>
     }
   }
 
-  private void OnAnyDragEnd(PointerEventData eventData)
-  {
-    // We store this so we can ignore the next mouse up for selection, we know it's due to dropping a drag item
-    _justFinishedDrag = true;
-  }
-
   private void OnMenuItemPointerEnter(MenuItemUI menuItem)
   {
     SetSelectedItem(menuItem);
@@ -179,13 +170,15 @@ public class MenuNavigationManager : Singleton<MenuNavigationManager>
   {
     if (SelectedItem != null && !SelectedItem.IsDisabled)
     {
-      // Handle selecting an item
-      _justFinishedDrag = false;
-
       if (SelectedItem.HoldToActivate)
       {
         _holdToActivateItem = SelectedItem;
         _holdToActivateTimer = 0;
+      }
+      else
+      {
+        SelectedItem.Activate();
+        ItemActivated?.Invoke(SelectedItem);
       }
     }
   }
