@@ -48,9 +48,6 @@ public class GameController : Singleton<GameController>
 
     // Spawn the desired number of players
     SpawnPlayers();
-
-    // Start animating the camera
-    _cameraController.StartRising();
   }
 
   void SpawnPlayers()
@@ -106,6 +103,7 @@ public class GameController : Singleton<GameController>
     if (newSectionIndex >= 1) 
     {
       _lavaController.StartRising();
+      _cameraController.StartRising();
     }
   }
 
