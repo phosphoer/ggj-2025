@@ -40,6 +40,7 @@ public class GameController : Singleton<GameController>
   void Start()
   {
     GameController.Instance= this;
+    _lavaController.gameObject.SetActive(false);
 
     SetGameState(_initialGameState);
   }
@@ -123,7 +124,7 @@ public class GameController : Singleton<GameController>
     }
   }
 
-  void SpawnLevel(int desiredPlayerCount)
+  void SpawnLevel(int playerCount)
   {
     // Use the rising game camera
     if (MainCamera.Instance != null)
@@ -131,16 +132,19 @@ public class GameController : Singleton<GameController>
       MainCamera.Instance.CameraStack.PushController(_cameraController);
     }
 
+    // Enable the lava plane
+    _lavaController.gameObject.SetActive(true);
+
     // Spawn the level sections
     _levelManager.GenerateLevel(false);
 
     // Spawn the desired number of players
-    SpawnPlayers();
+    SpawnPlayers(playerCount);
   }
 
-  void SpawnPlayers()
+  void SpawnPlayers(int playerCount)
   {
-    for (int playerIndex = 0; playerIndex < _desiredPlayerCount; playerIndex++)
+    for (int playerIndex = 0; playerIndex < playerCount; playerIndex++)
     {
       SpawnPlayer(playerIndex);
     }
@@ -203,6 +207,7 @@ public class GameController : Singleton<GameController>
   void ClearLevel()
   {
     _lavaController.Reset();
+    _lavaController.gameObject.SetActive(false);
     _cameraController.Reset();
     _levelManager.DestroyLevel(false);
     MainCamera.Instance.CameraStack.PopController(_cameraController);
