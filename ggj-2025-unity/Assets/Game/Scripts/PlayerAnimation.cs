@@ -58,6 +58,11 @@ public class PlayerAnimation : MonoBehaviour
     _chewAmount = 1;
   }
 
+  public void Slap()
+  {
+    _headRoot.position = _mouthAnchor.position + _mouthAnchor.forward * 0.5f;
+  }
+
   public void Jump()
   {
     _footLeft.localRotation = Quaternion.Euler(60, 0, 0);
@@ -137,8 +142,8 @@ public class PlayerAnimation : MonoBehaviour
       _visualRoot.localPosition = Mathfx.Damp(_visualRoot.localPosition, Vector3.zero, 0.25f, dt * 3);
       _walkAnimTimer = 0;
 
-      _headRoot.position = Mathfx.Damp(_headRoot.position, _mouthAnchor.position, 0.25f, dt);
-      _gumMassRoot.localPosition = Mathfx.Damp(_gumMassRoot.localPosition, _gumMassLocalPos, 0.25f, dt);
+      _headRoot.position = Mathfx.Damp(_headRoot.position, _mouthAnchor.position, 0.25f, dt * 5);
+      _gumMassRoot.localPosition = Mathfx.Damp(_gumMassRoot.localPosition, _gumMassLocalPos, 0.25f, dt * 5);
     }
 
     // Hold the mouth item and animation chewing

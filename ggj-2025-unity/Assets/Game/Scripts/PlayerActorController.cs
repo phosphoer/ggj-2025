@@ -8,6 +8,9 @@ public class PlayerActorController : MonoBehaviour
   [SerializeField] private ActorController _actor = null;
   [SerializeField] private PlayerAnimation _playerAnimation = null;
   [SerializeField] private InteractionController _interaction = null;
+  [SerializeField] private Transform _slapAnchor = null;
+  [SerializeField] private float _slapRadius = 0.5f;
+  [SerializeField] private LayerMask _slapMask = default;
 
   public event System.Action<PlayerActorController> OnPlayerKilled;
 
@@ -15,6 +18,7 @@ public class PlayerActorController : MonoBehaviour
   private Item _heldItem;
   private float _bubbleGumMass;
   private float _bubbleStoredMass;
+  private Collider[] _slapColliders = new Collider[4];
 
   public void SetGumMass(float gumAmount)
   {
@@ -117,7 +121,14 @@ public class PlayerActorController : MonoBehaviour
     // Interaction
     if (inputInteractButton)
     {
-      _interaction.TriggerInteract();
+      if (_interaction.CurrentInteractable)
+      {
+        _interaction.TriggerInteract();
+      }
+      else
+      {
+        Slap();
+      }
     }
 
     // Chewing
@@ -132,6 +143,22 @@ public class PlayerActorController : MonoBehaviour
           SetGumMass(_bubbleGumMass + _heldItem.GumMassValue);
           Destroy(_heldItem.gameObject);
         }
+      }
+    }
+  }
+
+  private void Slap()
+  {
+    _playerAnimation.Slap();
+
+    int overlapCount = Physics.OverlapSphereNonAlloc(_slapAnchor.position, _slapRadius, _slapColliders, _slapMask);
+    for (int i = 0; i < overlapCount; ++i)
+    {
+      var c = _slapColliders[i];
+      ISlappable slappable = c.GetComponent<ISlappable>();
+      if (slappable != null)
+      {
+        slappable.ReceiveSlap(transform.position);
       }
     }
   }
