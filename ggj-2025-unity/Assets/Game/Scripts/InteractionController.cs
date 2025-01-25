@@ -4,6 +4,8 @@ public class InteractionController : MonoBehaviour
 {
   public event System.Action<InteractableObject> Interacted;
 
+  public InteractableObject CurrentInteractable => _currentInteractable;
+
   private int _updateIndex;
   private InteractableObject _currentInteractable;
   private InteractableObject _closestInteractable;

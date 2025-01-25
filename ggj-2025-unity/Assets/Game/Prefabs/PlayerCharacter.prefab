@@ -638,6 +638,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2943510552831279731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6012102601092108646}
+  m_Layer: 0
+  m_Name: SlapAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6012102601092108646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2943510552831279731}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.04, z: 1.448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8354823498142353166}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3279844432112985475
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,6 +875,11 @@ MonoBehaviour:
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}
   _interaction: {fileID: 833507523520657284}
+  _slapAnchor: {fileID: 6012102601092108646}
+  _slapRadius: 0.5
+  _slapMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &8824695059088403173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1587,5 +1623,6 @@ Transform:
   m_Children:
   - {fileID: 289112539559043439}
   - {fileID: 1506809907268008858}
+  - {fileID: 6012102601092108646}
   m_Father: {fileID: 1808852209039827940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

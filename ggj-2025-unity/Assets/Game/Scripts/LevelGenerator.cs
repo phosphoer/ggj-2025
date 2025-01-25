@@ -11,6 +11,8 @@ public class LevelGenerator : MonoBehaviour
   private int _numLevels;
 
   private LevelSection[] _levelSections;
+  public LevelSection[] LevelSections => _levelSections;
+
   private List<PlayerSpawnPoint> _unusedSpawnPoints;
   private Vector3 _nextSectionOrigin;
 
