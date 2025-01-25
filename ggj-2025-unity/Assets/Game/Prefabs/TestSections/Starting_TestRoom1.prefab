@@ -543,7 +543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3719650517452408721, guid: 5dd73deae26283646b6f03e64dde0b31, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.78
+      value: -5.7
       objectReference: {fileID: 0}
     - target: {fileID: 3719650517452408721, guid: 5dd73deae26283646b6f03e64dde0b31, type: 3}
       propertyPath: m_LocalPosition.z
@@ -734,6 +734,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4472760698029084482}
     m_Modifications:
+    - target: {fileID: 46972129930789170, guid: cf5151ddb058e14488736420564e6d02, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 598164157583634598, guid: cf5151ddb058e14488736420564e6d02, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -774,6 +778,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1606372263796329657, guid: cf5151ddb058e14488736420564e6d02, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3158527001982998316, guid: cf5151ddb058e14488736420564e6d02, type: 3}
       propertyPath: m_Size.y
       value: 12.7536125
@@ -782,9 +790,17 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 6.376692
       objectReference: {fileID: 0}
+    - target: {fileID: 4125453789098912795, guid: cf5151ddb058e14488736420564e6d02, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4658444592130812870, guid: cf5151ddb058e14488736420564e6d02, type: 3}
       propertyPath: m_Name
       value: LevelBottom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5458550086225937355, guid: cf5151ddb058e14488736420564e6d02, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5564750609159543068, guid: cf5151ddb058e14488736420564e6d02, type: 3}
       propertyPath: m_Size.y
