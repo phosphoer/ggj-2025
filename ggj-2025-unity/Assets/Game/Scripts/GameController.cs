@@ -83,6 +83,7 @@ public class GameController : Singleton<GameController>
         playerController.SetPlayerInput(playerIndex);
 
         playerController.OnPlayerKilled+= OnPlayerKilled;
+        playerController.OnPlayerSectionChanged+= OnPlayerSectionChanged;
         _spawnedPlayers.Add(playerController);
       }
     }
@@ -91,11 +92,20 @@ public class GameController : Singleton<GameController>
   private void OnPlayerKilled(PlayerActorController playerController)
   {
     playerController.OnPlayerKilled-= OnPlayerKilled;
+    playerController.OnPlayerSectionChanged-= OnPlayerSectionChanged;
     _spawnedPlayers.Remove(playerController);
 
     if (_spawnedPlayers.Count == 0)
     {
       OnAllPlayersKilled();
+    }
+  }
+
+  private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
+  {
+    if (newSectionIndex >= 1) 
+    {
+      _lavaController.StartRising();
     }
   }
 

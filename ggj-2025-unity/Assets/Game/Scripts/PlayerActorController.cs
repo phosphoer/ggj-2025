@@ -1,4 +1,5 @@
 using UnityEngine;
+using static System.Collections.Specialized.BitVector32;
 
 public class PlayerActorController : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class PlayerActorController : MonoBehaviour
   [SerializeField] private InteractionController _interaction = null;
 
   public event System.Action<PlayerActorController> OnPlayerKilled;
+  public event System.Action<int, int> OnPlayerSectionChanged;
 
   private Rewired.Player _playerInput;
   private Item _heldItem;
   private float _bubbleGumMass;
   private float _bubbleStoredMass;
+  private int _levelSectionIndex = 0;
 
   public void SetGumMass(float gumAmount)
   {
@@ -134,6 +137,87 @@ public class PlayerActorController : MonoBehaviour
         }
       }
     }
+
+    // Teleporting
+    UpdateCurrentLevelSection();
+    CheckSideTeleport();
+  }
+
+  private void UpdateCurrentLevelSection()
+  {
+    int newSectionIndex= -1;
+
+    if (GameController.Instance != null)
+    {
+      LevelSection[] sections= GameController.Instance.LevelManager.LevelSections;
+
+      for (int sectionIndex = 0; sectionIndex < sections.Length; ++sectionIndex)
+      {
+        LevelSection section = sections[sectionIndex];
+        var playerYPos = gameObject.transform.position.y;
+        var sectionYPos = section.SectionWorldCenter.y;
+        var sectionHalfHeight = section.SectionHeight/2.0f;
+        var sectionBottom = sectionYPos - sectionHalfHeight;
+        var sectionTop = sectionYPos + sectionHalfHeight;
+
+        if (section != null && playerYPos >= sectionBottom && playerYPos <= sectionTop)
+        {
+          newSectionIndex= sectionIndex;
+          break;
+        }
+      }
+
+      if (newSectionIndex != _levelSectionIndex)
+      {
+        OnPlayerSectionChanged?.Invoke(newSectionIndex, _levelSectionIndex);
+        _levelSectionIndex = newSectionIndex;
+      }
+    }
+  }
+
+  private void CheckSideTeleport()
+  {
+    if (GameController.Instance != null)
+    {
+      LevelSection[] sections = GameController.Instance.LevelManager.LevelSections;
+
+      if (_levelSectionIndex >= 0 && _levelSectionIndex < sections.Length)
+      {
+        LevelSection section = sections[_levelSectionIndex];
+        var playerXPos = gameObject.transform.position.x;
+        var playerYPos = gameObject.transform.position.y;
+        var playerZPos = gameObject.transform.position.z;
+        var sectionXPos = section.SectionWorldCenter.x;
+        var sectionHalfWidth = section.SectionWidth/2.0f;
+        var sectionLeft = sectionXPos - sectionHalfWidth;
+        var sectionRight = sectionXPos + sectionHalfWidth;
+        bool wantsTeleport= false;
+
+        var newPlayerXPos= playerXPos;
+        if (playerXPos < sectionLeft)
+        {
+          newPlayerXPos= sectionRight - 0.1f;
+          wantsTeleport= true;
+        }
+        else if (playerXPos > sectionRight)
+        {
+          newPlayerXPos = sectionLeft + 0.1f;
+          wantsTeleport = true;
+        }
+
+        if (wantsTeleport)
+        {
+          Vector3 newLocation = new Vector3(newPlayerXPos, playerYPos, playerZPos);
+
+          TeleportPlayer(newLocation);
+        }
+      }
+    }
+  }
+
+  private void TeleportPlayer(Vector3 NewLocation)
+  {
+    _actor.Motor.SetPosition(NewLocation);
   }
 
   private void OnInteracted(InteractableObject interactable)
