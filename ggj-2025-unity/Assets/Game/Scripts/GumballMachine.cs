@@ -7,9 +7,12 @@ public class GumballMachine : MonoBehaviour, ISlappable
   public RangedInt SpawnCountRange = new(2, 5);
   public RangedFloat SpawnForceRange = new(1, 2);
   public float GumballSpawnRadius = 0.5f;
+  public int GumballTotalCount = 10;
 
   [SerializeField] private WobbleAnimation _wobble = null;
   [SerializeField] private Transform _spawnRoot = null;
+
+  private int _remainingGumballs;
 
   void ISlappable.ReceiveSlap(Vector3 fromPos)
   {
@@ -21,7 +24,7 @@ public class GumballMachine : MonoBehaviour, ISlappable
 
   public void SpawnGumballs()
   {
-    int spawnCount = SpawnCountRange.RandomValue;
+    int spawnCount = Mathf.Min(_remainingGumballs, SpawnCountRange.RandomValue);
     for (int i = 0; i < spawnCount; ++i)
     {
       Item gumballPrefab = GumballPrefabs[Random.Range(0, GumballPrefabs.Length)];
@@ -30,5 +33,12 @@ public class GumballMachine : MonoBehaviour, ISlappable
       gumball.transform.position = _spawnRoot.position + spawnOffset;
       gumball.Rigidbody.AddForce(spawnOffset.normalized * SpawnForceRange.RandomValue, ForceMode.VelocityChange);
     }
+
+    _remainingGumballs -= spawnCount;
+  }
+
+  private void Awake()
+  {
+    _remainingGumballs = GumballTotalCount;
   }
 }
