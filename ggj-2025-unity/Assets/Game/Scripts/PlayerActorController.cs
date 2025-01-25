@@ -28,7 +28,11 @@ public class PlayerActorController : MonoBehaviour
   private bool _didBubbleThisJump;
   private bool _isThrowing;
   private Vector3 _currentThrowAxis;
+  private Vector3 _lastThrowAxis;
+  private Vector3 _lastNonNegativeThrowAxis;
   private float _currentThrowT;
+  private float _lastNonNegativeThrowT;
+  private bool _isMidFlick;
   private RectTransform _throwUIRoot;
   private ThrowUI _throwUI;
   private Collider[] _slapColliders = new Collider[4];
@@ -163,31 +167,88 @@ public class PlayerActorController : MonoBehaviour
     if (_heldItem)
     {
       // Mouse controls
-      bool isThrowHeld = Input.GetMouseButton(0);
-      if (isThrowHeld)
+      if (_playerInput.controllers.hasMouse)
       {
-        if (!_isThrowing)
+        bool isThrowHeld = Input.GetMouseButton(0);
+        if (isThrowHeld)
         {
-          _isThrowing = true;
-          _throwUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 0.5f);
-          _throwUI = Instantiate(_throwUIPrefab, _throwUIRoot);
-        }
+          if (!_isThrowing)
+          {
+            _isThrowing = true;
+            _throwUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 0.5f);
+            _throwUI = Instantiate(_throwUIPrefab, _throwUIRoot);
+          }
 
-        Vector3 playerScreenPos = Mathfx.GetNormalizedScreenPos(MainCamera.Instance.Camera.WorldToScreenPoint(transform.position));
-        Vector3 mousePos = Mathfx.GetNormalizedScreenPos(Input.mousePosition);
-        _currentThrowAxis = (mousePos - playerScreenPos).WithZ(0);
-        _currentThrowT = Mathf.Clamp01(_currentThrowAxis.magnitude / 0.25f);
-        _throwUI.SetThrowVector(_currentThrowAxis, _currentThrowT);
-      }
-      else if (_isThrowing)
-      {
-        _isThrowing = false;
-        WorldUIManager.Instance.HideItem(_throwUIRoot);
-        if (_currentThrowAxis.magnitude > 0.1f)
+          Vector3 playerScreenPos = Mathfx.GetNormalizedScreenPos(MainCamera.Instance.Camera.WorldToScreenPoint(transform.position));
+          Vector3 mousePos = Mathfx.GetNormalizedScreenPos(Input.mousePosition);
+          _currentThrowAxis = (mousePos - playerScreenPos).WithZ(0);
+          _currentThrowT = Mathf.Clamp01(_currentThrowAxis.magnitude / 0.25f);
+          _throwUI.SetThrowVector(_currentThrowAxis, _currentThrowT);
+        }
+        else if (_isThrowing)
         {
-          ThrowItem(MainCamera.Instance.transform.rotation * _currentThrowAxis.normalized * _currentThrowT * -ThrowStrength);
-          _currentThrowAxis = Vector3.zero;
-          _currentThrowT = 0;
+          _isThrowing = false;
+          WorldUIManager.Instance.HideItem(_throwUIRoot);
+          if (_currentThrowAxis.magnitude > 0.1f)
+          {
+            ThrowItem(MainCamera.Instance.transform.rotation * _currentThrowAxis.normalized * _currentThrowT * -ThrowStrength);
+            _currentThrowAxis = Vector3.zero;
+            _currentThrowT = 0;
+          }
+        }
+      }
+      // Gamepad controls
+      else
+      {
+        bool isThrowHeld = inputThrowAxis.magnitude > 0.1f;
+        if (isThrowHeld || _isThrowing)
+        {
+          if (!_isThrowing)
+          {
+            _isThrowing = true;
+            _throwUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 0.5f);
+            _throwUI = Instantiate(_throwUIPrefab, _throwUIRoot);
+          }
+
+          _currentThrowAxis = inputThrowAxis;
+          _currentThrowT = Mathf.Clamp01(_currentThrowAxis.magnitude);
+          _throwUI.SetThrowVector(_currentThrowAxis, _currentThrowT);
+
+          float lastThrowT = Mathf.Clamp01(_lastThrowAxis.magnitude);
+          float throwDelta = _currentThrowT - lastThrowT;
+          _lastThrowAxis = _currentThrowAxis;
+
+          // While the throw axis delta is negative (heading towards zero)
+          // and below some threshold, we'll consider ourselves to be in a flick state
+          // Outside of the flick state, we'll track the last valid axis value to use as the
+          // flick direction/magnitude
+          if (throwDelta < -0.1f)
+          {
+            _isMidFlick = true;
+          }
+          else
+          {
+            if (_isMidFlick || _currentThrowT < 0.1f)
+            {
+              if (_isMidFlick && _lastNonNegativeThrowT > 0.1f)
+              {
+                ThrowItem(MainCamera.Instance.transform.rotation * _lastNonNegativeThrowAxis.normalized * _lastNonNegativeThrowT * -ThrowStrength);
+              }
+
+              WorldUIManager.Instance.HideItem(_throwUIRoot);
+              _isThrowing = false;
+              _isMidFlick = false;
+              _lastNonNegativeThrowAxis = Vector3.zero;
+              _currentThrowAxis = Vector3.zero;
+              _lastNonNegativeThrowT = 0;
+              _currentThrowT = 0;
+              _lastThrowAxis = Vector3.zero;
+            }
+
+            _isMidFlick = false;
+            _lastNonNegativeThrowAxis = _currentThrowAxis;
+            _lastNonNegativeThrowT = _currentThrowT;
+          }
         }
       }
     }
