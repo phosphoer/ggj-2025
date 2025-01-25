@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8196038021878220346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4451345451021126728}
+  - component: {fileID: 8970600465562481787}
+  - component: {fileID: 6079765574516831324}
+  m_Layer: 0
+  m_Name: CactusBall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4451345451021126728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8196038021878220346}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.32, y: 0.83, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5203414751878166112}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8970600465562481787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8196038021878220346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13fd88bf798a4a5b92dd646fccd07a9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractDistance: 3
+  _promptUIPrefab: {fileID: 3923568559253191482, guid: ee0658aa7e1c64d6281b760046c18d37, type: 3}
+  _interactPromptText: Pickup
+--- !u!114 &6079765574516831324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8196038021878220346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1879fdecf15e4257973a91cf3bc793b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GumMassValue: -0.4
+--- !u!1001 &5745616039295897995
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4451345451021126728}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.000039129256
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.067648895
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f58e27797e9b3e14f87edd2568b493e2, type: 2}
+    - target: {fileID: 919132149155446097, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_Name
+      value: CactusRound1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+--- !u!4 &5203414751878166112 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+  m_PrefabInstance: {fileID: 5745616039295897995}
+  m_PrefabAsset: {fileID: 0}
