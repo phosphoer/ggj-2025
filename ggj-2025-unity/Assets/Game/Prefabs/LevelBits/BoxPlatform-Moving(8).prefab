@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1773389635692026624}
   - component: {fileID: -3647871699310695717}
   - component: {fileID: -7708903413250935826}
+  - component: {fileID: -3706963158259619985}
   m_Layer: 0
   m_Name: BoxPlatform-Moving(8)
   m_TagString: Untagged
@@ -83,7 +84,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
@@ -105,6 +106,21 @@ MonoBehaviour:
   pointA: {fileID: 0}
   pointB: {fileID: 0}
   speed: 2
+  Mover: {fileID: -3706963158259619985}
+--- !u!114 &-3706963158259619985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7758761801897461336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075ccbe9837b0744985e09ba3f015b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rigidbody: {fileID: -3647871699310695717}
+  MoveWithPhysics: 0
 --- !u!1001 &1646420680816847471
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,48 +1,38 @@
 using System.Collections;
+using KinematicCharacterController;
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviour, IMoverController
 {
-    [Header("Movement Settings")]
-    public Transform pointA; // First point
-    public Transform pointB; // Second point
-    public float speed = 2f; // Movement speed
+  [Header("Movement Settings")] public Transform pointA; // First point
+  public Transform pointB; // Second point
+  public float speed = 2f; // Movement speed
 
-    private Vector3 targetPosition; // Current target position
+  public PhysicsMover Mover;
 
-    void Start()
+  private Vector3 targetPosition; // Current target position
+
+  private void Awake()
+  {
+    Mover.MoverController = this;
+  }
+
+  void Start()
+  {
+    // Start moving towards point A
+    targetPosition = pointA.position;
+  }
+
+  public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime)
+  {
+    // Move platform towards the target position
+    goalPosition = Vector3.MoveTowards(transform.position, targetPosition, speed * deltaTime);
+    goalRotation = transform.rotation;
+
+    // Switch target when platform reaches a point
+    if (Vector3.Distance(transform.position, targetPosition) < 0.1f && pointA && pointB)
     {
-        // Start moving towards point A
-        targetPosition = pointA.position;
+      targetPosition = targetPosition == pointA.position ? pointB.position : pointA.position;
     }
-
-    void Update()
-    {
-        // Move platform towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-
-        // Switch target when platform reaches a point
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-        {
-            targetPosition = targetPosition == pointA.position ? pointB.position : pointA.position;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Make the player a child of the platform when they land on it
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.transform.SetParent(transform);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        // Detach the player when they leave the platform
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.transform.SetParent(null);
-        }
-    }
+  }
 }
