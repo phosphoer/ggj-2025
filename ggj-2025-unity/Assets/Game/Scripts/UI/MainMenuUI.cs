@@ -3,31 +3,19 @@ using UnityEngine.UI;
 
 public class MainMenuUI : UIPageBase
 {
-  [SerializeField]
-  private MenuItemUI _buttonNewSinglePlayerGame = null;
-
-  [SerializeField]
-  private MenuItemUI _buttonNewMultiPlayerGame = null;
-
-  [SerializeField]
-  private MenuItemUI _buttonQuit = null;
+  [SerializeField] private MenuItemUI _buttonNewSinglePlayerGame = null;
+  [SerializeField] private MenuItemUI _buttonQuit = null;
 
   protected override void Awake()
   {
     base.Awake();
-    _buttonNewSinglePlayerGame.Activated+= OnNewGameSinglePlayerGameClicked;
-    _buttonNewMultiPlayerGame.Activated+= OnNewGameMultiPlayerGameClicked;
-    _buttonQuit.Activated+= OnQuitGameClicked;
+    _buttonNewSinglePlayerGame.Activated += OnPlayClicked;
+    _buttonQuit.Activated += OnQuitGameClicked;
   }
 
-  public void OnNewGameSinglePlayerGameClicked()
+  public void OnPlayClicked()
   {
     GameController.Instance.SetGameState(GameController.eGameState.SingleplayerGame);
-  }
-
-  public void OnNewGameMultiPlayerGameClicked()
-  {
-    GameController.Instance.SetGameState(GameController.eGameState.MultiplayerGame);
   }
 
   public void OnQuitGameClicked()
