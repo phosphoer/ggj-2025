@@ -143,6 +143,7 @@ public class PlayerActorController : MonoBehaviour
     {
       interactable.enabled = false;
       _playerAnimation.HoldItem(item);
+      item.Pickup();
       _heldItem = item;
     }
   }
