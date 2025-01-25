@@ -170,9 +170,6 @@ public class MenuNavigationManager : Singleton<MenuNavigationManager>
   {
     if (SelectedItem != null && !SelectedItem.IsDisabled)
     {
-      // Handle selecting an item
-      _justFinishedDrag = false;
-
       if (SelectedItem.HoldToActivate)
       {
         _holdToActivateItem = SelectedItem;
