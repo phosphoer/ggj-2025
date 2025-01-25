@@ -29,6 +29,7 @@ public class PlayerAnimation : MonoBehaviour
   [SerializeField] private Transform _gumMassRoot = null;
   [SerializeField] private Transform _gumBubbleRoot = null;
   [SerializeField] private AnimationCurve _slapAnimCurve = null;
+  [SerializeField] private ParticleSystem _fxBubblePop = null;
 
   private float _biteAnimTimer;
   private float _chewAmount;
@@ -65,6 +66,11 @@ public class PlayerAnimation : MonoBehaviour
   public void SetBubbleSize(float bubbleSize)
   {
     _currentGumBubbleSize = bubbleSize;
+  }
+
+  public void PopBubble()
+  {
+    Instantiate(_fxBubblePop, _gumBubbleRoot.position, Quaternion.identity);
   }
 
   public void Chew()

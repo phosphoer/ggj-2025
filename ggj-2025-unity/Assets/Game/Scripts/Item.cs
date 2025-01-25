@@ -8,6 +8,7 @@ public class Item : MonoBehaviour
   public Rigidbody Rigidbody => _rb;
 
   [SerializeField] private Rigidbody _rb = null;
+  [SerializeField] private InteractableObject _interactable = null;
 
   private float _chewedAmount;
   private float _enableColliderTimer;
@@ -18,6 +19,7 @@ public class Item : MonoBehaviour
   public void Pickup()
   {
     _rb.isKinematic = true;
+    _interactable.enabled = false;
 
     foreach (var c in _colliders)
       c.enabled = false;
@@ -26,6 +28,7 @@ public class Item : MonoBehaviour
   public void Drop()
   {
     _rb.isKinematic = false;
+    _interactable.enabled = true;
 
     foreach (var c in _colliders)
       c.enabled = true;

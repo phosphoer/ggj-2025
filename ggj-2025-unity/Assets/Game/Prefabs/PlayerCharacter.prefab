@@ -980,6 +980,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _fxBubblePop: {fileID: 15562417937997071, guid: c7bf9feb4177643569600a8290ecb9ce, type: 3}
 --- !u!114 &3726428146020218614
 MonoBehaviour:
   m_ObjectHideFlags: 0
