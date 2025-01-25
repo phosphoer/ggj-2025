@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class GameController : Singleton<GameController>
 {
-  [SerializeField]
-  private LevelGenerator _levelManager;
+  [SerializeField] private LevelGenerator _levelManager;
   public LevelGenerator LevelManager => _levelManager;
 
-  [SerializeField]
-  private LevelCameraController _cameraController;
+  [SerializeField] private LevelCameraController _cameraController;
 
-  [SerializeField]
-  private PlayerActorController _playerPrefab;
+  [SerializeField] private PlayerActorController _playerPrefab;
 
-  [SerializeField]
-  private LavaController _lavaController;
+  [SerializeField] private LavaController _lavaController;
 
-  [SerializeField]
-  private int _desiredPlayerCount = 1;
+  [SerializeField] private int _desiredPlayerCount = 1;
 
   public int WinningPlayerID { get; set; } = -1;
 
@@ -35,7 +30,8 @@ public class GameController : Singleton<GameController>
     MultiplayerGame,
     PostGame
   }
-  private eGameState _currentGameState= eGameState.None;
+
+  private eGameState _currentGameState = eGameState.None;
   public eGameState GameState => _currentGameState;
 
   [SerializeField] private eGameState _initialGameState = eGameState.MultiplayerGame;
@@ -53,7 +49,7 @@ public class GameController : Singleton<GameController>
 
   void Start()
   {
-    GameController.Instance= this;
+    GameController.Instance = this;
     _lavaController.gameObject.SetActive(false);
 
     SetGameState(_initialGameState);
@@ -88,7 +84,7 @@ public class GameController : Singleton<GameController>
 
   void OnEnterState(eGameState newState)
   {
-    switch(newState) 
+    switch (newState)
     {
       case eGameState.Intro:
         ShowUI<MainMenuUI>();
@@ -105,22 +101,22 @@ public class GameController : Singleton<GameController>
     }
   }
 
-  void OnExitState(eGameState oldState) 
+  void OnExitState(eGameState oldState)
   {
     switch (oldState)
     {
-    case eGameState.Intro:
-      HideUI<MainMenuUI>();
-      break;
-    case eGameState.MultiplayerGame:
-    case eGameState.SingleplayerGame:
-      _lavaController.StopRising();
-      _cameraController.StopRising();
-      break;
-    case eGameState.PostGame:
-      ClearLevel();
-      HideUI<PostGameUI>();
-      break;
+      case eGameState.Intro:
+        HideUI<MainMenuUI>();
+        break;
+      case eGameState.MultiplayerGame:
+      case eGameState.SingleplayerGame:
+        _lavaController.StopRising();
+        _cameraController.StopRising();
+        break;
+      case eGameState.PostGame:
+        ClearLevel();
+        HideUI<PostGameUI>();
+        break;
     }
   }
 
@@ -131,10 +127,10 @@ public class GameController : Singleton<GameController>
 
   public void ShowUI<T>() where T : UIPageBase
   {
-    PlayerUI playerUI= PlayerUI.Instance;
+    PlayerUI playerUI = PlayerUI.Instance;
     if (playerUI != null)
     {
-      var uiPage= playerUI.GetPage<T>();
+      var uiPage = playerUI.GetPage<T>();
       if (uiPage != null)
       {
         uiPage.Show();
@@ -157,6 +153,9 @@ public class GameController : Singleton<GameController>
 
   void SpawnLevel(int playerCount)
   {
+    _isMatchStarted = false;
+    _isSpawningAllowed = true;
+
     // Use the rising game camera
     if (MainCamera.Instance != null)
     {
@@ -168,17 +167,6 @@ public class GameController : Singleton<GameController>
 
     // Spawn the level sections
     _levelManager.GenerateLevel(false);
-
-    // Spawn the desired number of players
-    SpawnPlayers(playerCount);
-  }
-
-  void SpawnPlayers(int playerCount)
-  {
-    for (int playerIndex = 0; playerIndex < playerCount; playerIndex++)
-    {
-      SpawnPlayer(playerIndex);
-    }
   }
 
   void DespawnPlayers()
@@ -187,6 +175,7 @@ public class GameController : Singleton<GameController>
     {
       Destroy(player.gameObject);
     }
+
     _spawnedPlayers.Clear();
   }
 
@@ -202,8 +191,8 @@ public class GameController : Singleton<GameController>
         var playerController = playerGO.GetComponent<PlayerActorController>();
         playerController.SetPlayerIndex(playerIndex);
 
-        playerController.OnPlayerKilled+= OnPlayerKilled;
-        playerController.OnPlayerSectionChanged+= OnPlayerSectionChanged;
+        playerController.OnPlayerKilled += OnPlayerKilled;
+        playerController.OnPlayerSectionChanged += OnPlayerSectionChanged;
         _spawnedPlayers.Add(playerController);
       }
     }
@@ -215,7 +204,7 @@ public class GameController : Singleton<GameController>
     playerController.OnPlayerSectionChanged -= OnPlayerSectionChanged;
     _spawnedPlayers.Remove(playerController);
 
-    if (_currentGameState == eGameState.SingleplayerGame) 
+    if (_currentGameState == eGameState.SingleplayerGame)
     {
       OnLastPlayerKilled();
     }
@@ -223,14 +212,15 @@ public class GameController : Singleton<GameController>
     {
       if (_spawnedPlayers.Count == 1)
       {
-        WinningPlayerID= _spawnedPlayers[0].PlayerIndex;
+        WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
         OnLastPlayerKilled();
       }
+    }
   }
 
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
   {
-    if (newSectionIndex >= 1) 
+    if (newSectionIndex >= 1)
     {
       _isMatchStarted = true;
       _isSpawningAllowed = false;
