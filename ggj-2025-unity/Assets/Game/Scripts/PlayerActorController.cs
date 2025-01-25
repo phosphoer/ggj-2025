@@ -45,9 +45,8 @@ public class PlayerActorController : MonoBehaviour
   private void Update()
   {
     if (_playerInput == null)
-    {
       return;
-    }
+
     float dt = Time.deltaTime;
 
     // Gather input state
@@ -60,6 +59,10 @@ public class PlayerActorController : MonoBehaviour
     _actor.MoveAxis = Vector2.right * inputMoveAxis;
     _playerAnimation.MoveAnimSpeed = Mathfx.Damp(_playerAnimation.MoveAnimSpeed, Mathf.Abs(inputMoveAxis), 0.25f, dt * 5);
     _playerAnimation.IsGrounded = _actor.Motor.GroundingStatus.IsStableOnGround;
+
+    _actor.Motor.Capsule.radius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
+    _actor.Motor.Capsule.height = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
+    _actor.Motor.Capsule.center = Vector3.up * _actor.Motor.Capsule.height * 0.5f;
 
     // Apply bubble floating state
     if (_bubbleStoredMass > 0)
