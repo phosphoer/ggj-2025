@@ -86,9 +86,10 @@ public class PlayerActorController : MonoBehaviour
     if (_actor.Motor.GroundingStatus.IsStableOnGround)
       _didBubbleThisJump = false;
 
-    _actor.Motor.Capsule.radius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
-    _actor.Motor.Capsule.height = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
-    _actor.Motor.Capsule.center = Vector3.up * _actor.Motor.Capsule.height * 0.5f;
+    float capsuleRadius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
+    float capsuleHeight = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
+    float capsuleOffset = _actor.Motor.Capsule.height * 0.5f;
+    _actor.Motor.SetCapsuleDimensions(capsuleRadius, capsuleHeight, capsuleOffset);
 
     // Apply bubble floating state
     if (_bubbleStoredMass > 0)
@@ -256,7 +257,7 @@ public class PlayerActorController : MonoBehaviour
   private void OnInteracted(InteractableObject interactable)
   {
     Item item = interactable.GetComponent<Item>();
-    if (item)
+    if (item && !_heldItem)
     {
       interactable.enabled = false;
       _playerAnimation.HoldItem(item);

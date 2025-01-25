@@ -8,6 +8,7 @@ public class ActorController : MonoBehaviour, ICharacterController
 
   public Vector2 MoveAxis;
   public bool IsSprinting;
+  public bool IsGrounded;
 
   public float Drag = 1;
   public float GravityScalar = 1;
@@ -53,6 +54,8 @@ public class ActorController : MonoBehaviour, ICharacterController
     var walkDirection = MainCamera.Instance.transform.forward.WithY(0).normalized;
     var strafeDirection = MainCamera.Instance.transform.right.WithY(0).normalized;
     var moveVec = Vector3.ClampMagnitude(walkDirection * MoveAxis.y + strafeDirection * MoveAxis.x, 1);
+
+    IsGrounded = Motor.GroundingStatus.IsStableOnGround;
 
     // Ground movement
     if (Motor.GroundingStatus.IsStableOnGround && AntiGravityScalar < GravityScalar)
@@ -156,7 +159,7 @@ public class ActorController : MonoBehaviour, ICharacterController
   public void PostGroundingUpdate(float deltaTime)
   {
     // Handle landing and leaving ground
-    if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround && AntiGravityScalar < GravityScalar)
+    if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround)
       OnLanded();
     else if (!Motor.GroundingStatus.IsStableOnGround && Motor.LastGroundingStatus.IsStableOnGround) OnLeaveStableGround();
   }
