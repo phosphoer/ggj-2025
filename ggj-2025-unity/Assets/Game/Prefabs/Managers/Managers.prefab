@@ -108,7 +108,7 @@ MonoBehaviour:
   _levelManager: {fileID: 9052310861224840221}
   _cameraController: {fileID: 7567264333900629455}
   _playerPrefab: {fileID: 3137277098965579114, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
-  _desiredPlayerCount: 1
+  _desiredPlayerCount: 4
 --- !u!114 &7567264333900629455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   MaxAngle: 5
   HandheldScale: 1
   _levelManager: {fileID: 0}
-  _riseRate: 0.5
+  _riseRate: 0.25
 --- !u!1 &4101283422249188472
 GameObject:
   m_ObjectHideFlags: 0

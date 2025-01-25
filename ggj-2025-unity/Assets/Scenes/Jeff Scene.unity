@@ -171,14 +171,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
-    - target: {fileID: 7567264333900629455, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
-      propertyPath: _riseRate
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8737514908485825336, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
-      propertyPath: _desiredPlayerCount
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -332,6 +324,10 @@ PrefabInstance:
     - target: {fileID: 4225946231944906258, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491243860993547522, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
+      propertyPath: field of view
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
