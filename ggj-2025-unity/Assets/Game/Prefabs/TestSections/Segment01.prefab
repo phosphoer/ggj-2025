@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4472760698029084482}
   - component: {fileID: 4881010177024064298}
   m_Layer: 0
-  m_Name: TestRoom2
+  m_Name: Segment01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
