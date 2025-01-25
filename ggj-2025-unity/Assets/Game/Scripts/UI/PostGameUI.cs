@@ -1,16 +1,16 @@
-using UnityEngine;
 
 public class PostGameUI : UIPageBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+  public TMPro.TMP_Text WinLabel;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  protected override void Awake()
+  {
+    base.Awake();
+    Shown += OnShown;
+  }
+
+  private void OnShown()
+  {
+    //WinLabel.text = string.Format("Player {0} had the chonkiest pirate!", GameController.InstanceWinningPlayerID);
+  }
 }
