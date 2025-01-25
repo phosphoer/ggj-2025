@@ -16,13 +16,13 @@ public class LevelCameraController : CameraControllerDynamic
 
   public void Awake()
   {
-    _initialPosition = gameObject.transform.position;
+    _initialPosition = MountPoint.position;
   }
 
   public void Reset()
   {
     StopRising();
-    gameObject.transform.position = _initialPosition;
+    MountPoint.position = _initialPosition;
   }
 
   public void StartRising()

@@ -85,8 +85,9 @@ public class GameController : Singleton<GameController>
       HideUI<MainMenuUI>();
       break;
     case eGameState.MultiplayerGame:
-      break;
     case eGameState.SingleplayerGame:
+      _lavaController.StopRising();
+      _cameraController.StopRising();
       break;
     case eGameState.PostGame:
       ClearLevel();
@@ -220,6 +221,7 @@ public class GameController : Singleton<GameController>
 
   void ClearLevel()
   {
+    DespawnPlayers();
     _lavaController.Reset();
     _lavaController.gameObject.SetActive(false);
     _cameraController.Reset();

@@ -24,7 +24,7 @@ public class PostGameUI : UIPageBase
   {
     int playerIndex= GameController.Instance.WinningPlayerID;
 
-    if (playerIndex > 0)
+    if (playerIndex >= 0)
     {
       WinLabel.text = string.Format("Player {0} was the last player standing!", playerIndex+1);
     }
