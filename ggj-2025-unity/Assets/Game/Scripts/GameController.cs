@@ -14,13 +14,24 @@ public class GameController : Singleton<GameController>
   private PlayerActorController _playerPrefab;
 
   [SerializeField]
+  private LavaController _lavaController;
+
+  [SerializeField]
   private int _desiredPlayerCount = 1;
 
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
+  public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
 
   void Start()
   {
+    GameController.Instance= this;
+
     SpawnLevel();
+  }
+
+  private void OnDestroy()
+  {
+    GameController.Instance = null;
   }
 
   void SpawnLevel()
@@ -39,6 +50,9 @@ public class GameController : Singleton<GameController>
 
     // Start animating the camera
     _cameraController.StartRising();
+
+    // Start raising the Lava
+    _lavaController.StartRising();
   }
 
   void SpawnPlayers()
@@ -70,9 +84,27 @@ public class GameController : Singleton<GameController>
         var playerController = playerGO.GetComponent<PlayerActorController>();
         playerController.SetPlayerInput(playerIndex);
 
+        playerController.OnPlayerKilled+= OnPlayerKilled;
         _spawnedPlayers.Add(playerController);
       }
     }
+  }
+
+  private void OnPlayerKilled(PlayerActorController playerController)
+  {
+    playerController.OnPlayerKilled-= OnPlayerKilled;
+    _spawnedPlayers.Remove(playerController);
+
+    if (_spawnedPlayers.Count == 0)
+    {
+      OnAllPlayersKilled();
+    }
+  }
+
+  private void OnAllPlayersKilled()
+  {
+    _lavaController.StopRising();
+    _cameraController.StopRising();
   }
 
   void ClearLevel()

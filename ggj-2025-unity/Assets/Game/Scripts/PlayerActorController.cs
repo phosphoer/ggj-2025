@@ -9,6 +9,8 @@ public class PlayerActorController : MonoBehaviour
   [SerializeField] private PlayerAnimation _playerAnimation = null;
   [SerializeField] private InteractionController _interaction = null;
 
+  public event System.Action<PlayerActorController> OnPlayerKilled;
+
   private Rewired.Player _playerInput;
   private Item _heldItem;
   private float _bubbleGumMass;
@@ -30,6 +32,18 @@ public class PlayerActorController : MonoBehaviour
   public void SetPlayerInput(int playerIndex)
   {
     _playerInput = Rewired.ReInput.players.GetPlayer(playerIndex);
+  }
+
+  public void Kill()
+  {
+    // Tell the game manager that the player was killed
+    OnPlayerKilled?.Invoke(this);
+
+    //TODO: Play death FX
+    //TODO: Play death audio
+
+    // Clean up the player game object
+    Destroy(gameObject);
   }
 
   private void OnEnable()
