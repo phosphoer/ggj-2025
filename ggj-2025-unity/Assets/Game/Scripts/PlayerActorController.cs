@@ -27,12 +27,14 @@ public class PlayerActorController : MonoBehaviour
 
   private void Update()
   {
+    float dt = Time.deltaTime;
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
     bool inputInteractButton = _playerInput.GetButtonDown(RewiredConsts.Action.Interact);
     bool inputInteractChew = _playerInput.GetButtonDown(RewiredConsts.Action.Chew);
 
     _actor.MoveAxis = Vector2.right * inputMoveAxis;
+    _playerAnimation.MoveAnimSpeed = Mathfx.Damp(_playerAnimation.MoveAnimSpeed, Mathf.Abs(inputMoveAxis), 0.25f, dt * 5);
 
     if (inputJumpButton)
     {
@@ -41,6 +43,7 @@ public class PlayerActorController : MonoBehaviour
       if (_actor.Motor.GroundingStatus.IsStableOnGround)
       {
         _actor.Jump();
+        _playerAnimation.Jump();
       }
       else if (_bubbleGumMass >= 1)
       {
