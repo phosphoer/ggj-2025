@@ -110,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pagePrefabs:
   - {fileID: 1351525573080044443, guid: ec7be75ac72555c49a330f9f2840e97a, type: 3}
+  - {fileID: 8983619393600950093, guid: f0026d94a1ebbc147b59bda3eb9c7de4, type: 3}
   _pageRoot: {fileID: 690181991929829367}
   _uiCamera: {fileID: 5780855925614026939}
 --- !u!114 &4129168483954183535

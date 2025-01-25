@@ -20,23 +20,6 @@ public class MainMenuUI : UIPageBase
     _buttonQuit.Activated+= OnQuitGameClicked;
   }
 
-#if UNITY_EDITOR
-  void Update()
-  {
-    // Detect if the spacebar is pressed down
-    if (Input.GetKeyDown(KeyCode.S))
-    {
-      OnNewGameSinglePlayerGameClicked();
-    }
-
-    // Detect if the W key is being held down
-    if (Input.GetKey(KeyCode.M))
-    {
-      OnNewGameMultiPlayerGameClicked();
-    }
-  }
-#endif 
-
   public void OnNewGameSinglePlayerGameClicked()
   {
     GameController.Instance.SetGameState(GameController.eGameState.SingleplayerGame);

@@ -212,10 +212,7 @@ MonoBehaviour:
       _descriptiveName: Player0
       _key: 
       _startPlaying: 1
-      _defaultJoystickMaps:
-      - _enabled: 1
-        _categoryId: 0
-        _layoutId: 0
+      _defaultJoystickMaps: []
       _defaultMouseMaps:
       - _enabled: 1
         _categoryId: 0
@@ -228,7 +225,7 @@ MonoBehaviour:
       _startingCustomControllers: []
       _assignMouseOnStart: 1
       _assignKeyboardOnStart: 1
-      _excludeFromControllerAutoAssignment: 0
+      _excludeFromControllerAutoAssignment: 1
       _controllerMapLayoutManagerSettings:
         _enabled: 1
         _loadFromUserDataStore: 1
@@ -285,6 +282,29 @@ MonoBehaviour:
     - _id: 4
       _name: Player3
       _descriptiveName: Player3
+      _key: 
+      _startPlaying: 1
+      _defaultJoystickMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _defaultMouseMaps: []
+      _defaultKeyboardMaps: []
+      _defaultCustomControllerMaps: []
+      _startingCustomControllers: []
+      _assignMouseOnStart: 0
+      _assignKeyboardOnStart: 0
+      _excludeFromControllerAutoAssignment: 0
+      _controllerMapLayoutManagerSettings:
+        _enabled: 1
+        _loadFromUserDataStore: 1
+        _ruleSets: []
+      _controllerMapEnablerSettings:
+        _enabled: 1
+        _ruleSets: []
+    - _id: 5
+      _name: Player4
+      _descriptiveName: Player4
       _key: 
       _startPlaying: 1
       _defaultJoystickMaps:
@@ -824,7 +844,7 @@ MonoBehaviour:
     customControllers: []
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
-    playerIdCounter: 5
+    playerIdCounter: 6
     actionIdCounter: 11
     actionCategoryIdCounter: 2
     inputBehaviorIdCounter: 1
