@@ -7,6 +7,9 @@ public class LevelSection : MonoBehaviour
     public BoxCollider SectionBounds => _sectionBounds;
     public float SectionHeight => _sectionBounds.size.y * _sectionBounds.transform.localScale.y;
 
+    [SerializeField]
+    private PlayerSpawnPoint[] _playerSpawns;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
