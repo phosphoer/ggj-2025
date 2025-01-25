@@ -20,6 +20,8 @@ public class GameController : Singleton<GameController>
   [SerializeField]
   private int _desiredPlayerCount = 1;
 
+  public int WinningPlayerID { get; set; } = -1;
+
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
   public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
 
@@ -31,7 +33,7 @@ public class GameController : Singleton<GameController>
     MultiplayerGame,
     PostGame
   }
-  private eGameState _currentGameState= eGameState.None;
+  private eGameState _currentGameState = eGameState.None;
   public eGameState GameState => _currentGameState;
 
   [SerializeField]
@@ -39,7 +41,7 @@ public class GameController : Singleton<GameController>
 
   void Start()
   {
-    GameController.Instance= this;
+    GameController.Instance = this;
     _lavaController.gameObject.SetActive(false);
 
     SetGameState(_initialGameState);
@@ -58,24 +60,24 @@ public class GameController : Singleton<GameController>
 
   void OnEnterState(eGameState newState)
   {
-    switch(newState) 
+    switch (newState)
     {
-      case eGameState.Intro:
-        ShowUI<MainMenuUI>();
-        break;
-      case eGameState.MultiplayerGame:
-        SpawnLevel(_desiredPlayerCount);
-        break;
-      case eGameState.SingleplayerGame:
-        SpawnLevel(1);
-        break;
-      case eGameState.PostGame:
-        ShowUI<PostGameUI>();
-        break;
+    case eGameState.Intro:
+      ShowUI<MainMenuUI>();
+      break;
+    case eGameState.MultiplayerGame:
+      SpawnLevel(_desiredPlayerCount);
+      break;
+    case eGameState.SingleplayerGame:
+      SpawnLevel(1);
+      break;
+    case eGameState.PostGame:
+      ShowUI<PostGameUI>();
+      break;
     }
   }
 
-  void OnExitState(eGameState oldState) 
+  void OnExitState(eGameState oldState)
   {
     switch (oldState)
     {
@@ -100,10 +102,10 @@ public class GameController : Singleton<GameController>
 
   public void ShowUI<T>() where T : UIPageBase
   {
-    PlayerUI playerUI= PlayerUI.Instance;
+    PlayerUI playerUI = PlayerUI.Instance;
     if (playerUI != null)
     {
-      var uiPage= playerUI.GetPage<T>();
+      var uiPage = playerUI.GetPage<T>();
       if (uiPage != null)
       {
         uiPage.Show();
@@ -131,6 +133,10 @@ public class GameController : Singleton<GameController>
     {
       MainCamera.Instance.CameraStack.PushController(_cameraController);
     }
+
+    // No winning player ID
+    WinningPlayerID = -1;
+
 
     // Enable the lava plane
     _lavaController.gameObject.SetActive(true);
@@ -169,10 +175,10 @@ public class GameController : Singleton<GameController>
       {
         var playerGO = Instantiate(_playerPrefab.gameObject, spawnTransform.position, spawnTransform.rotation);
         var playerController = playerGO.GetComponent<PlayerActorController>();
-        playerController.SetPlayerInput(playerIndex);
+        playerController.SetPlayerIndex(playerIndex);
 
-        playerController.OnPlayerKilled+= OnPlayerKilled;
-        playerController.OnPlayerSectionChanged+= OnPlayerSectionChanged;
+        playerController.OnPlayerKilled += OnPlayerKilled;
+        playerController.OnPlayerSectionChanged += OnPlayerSectionChanged;
         _spawnedPlayers.Add(playerController);
       }
     }
@@ -180,26 +186,34 @@ public class GameController : Singleton<GameController>
 
   private void OnPlayerKilled(PlayerActorController playerController)
   {
-    playerController.OnPlayerKilled-= OnPlayerKilled;
-    playerController.OnPlayerSectionChanged-= OnPlayerSectionChanged;
+    playerController.OnPlayerKilled -= OnPlayerKilled;
+    playerController.OnPlayerSectionChanged -= OnPlayerSectionChanged;
     _spawnedPlayers.Remove(playerController);
 
-    if (_spawnedPlayers.Count == 0)
+    if (_currentGameState == eGameState.SingleplayerGame) 
     {
-      OnAllPlayersKilled();
+      OnLastPlayerKilled();
+    }
+    else if (_currentGameState == eGameState.MultiplayerGame)
+    {
+      if (_spawnedPlayers.Count == 1)
+      {
+        WinningPlayerID= _spawnedPlayers[0].PlayerIndex;
+        OnLastPlayerKilled();
+      }
     }
   }
 
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
   {
-    if (newSectionIndex >= 1) 
+    if (newSectionIndex >= 1)
     {
       _lavaController.StartRising();
       _cameraController.StartRising();
     }
   }
 
-  private void OnAllPlayersKilled()
+  private void OnLastPlayerKilled()
   {
     SetGameState(eGameState.PostGame);
   }

@@ -39,13 +39,17 @@ public class PlayerActorController : MonoBehaviour
 
   private void Awake()
   {
-    SetPlayerInput(0);
+    SetPlayerIndex(0);
     SetGumMass(0);
     _playerAnimation.SetBubbleSize(0);
   }
 
-  public void SetPlayerInput(int playerIndex)
+  private int _playerIndex = -1;
+  public int PlayerIndex => _playerIndex;
+
+  public void SetPlayerIndex(int playerIndex)
   {
+    _playerIndex = playerIndex;
     _playerInput = Rewired.ReInput.players.GetPlayer(playerIndex);
   }
 
