@@ -36,6 +36,15 @@ public class Item : MonoBehaviour
 
   private void Awake()
   {
+    if (!_rb)
+      _rb = GetComponent<Rigidbody>();
+
     GetComponentsInChildren(_colliders);
+  }
+
+  private void OnValidate()
+  {
+    if (!_rb)
+      _rb = GetComponent<Rigidbody>();
   }
 }
