@@ -44,9 +44,9 @@ Animation:
   m_GameObject: {fileID: 5974378298051655035}
   m_Enabled: 1
   serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 2d13fa22d576ecb40b2427ba8a88b01e, type: 2}
+  m_Animation: {fileID: 0}
   m_Animations:
-  - {fileID: 7400000, guid: 2d13fa22d576ecb40b2427ba8a88b01e, type: 2}
+  - {fileID: 0}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractDistance: 3
   _promptUIPrefab: {fileID: 3923568559253191482, guid: ee0658aa7e1c64d6281b760046c18d37, type: 3}
-  _interactPromptText: Pickup
+  _interactPromptText: Gimme
 --- !u!1001 &8660488880126339772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -315,7 +315,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bde8bc71e03f9464ca90f435df12a924, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5470542899817184307}
   m_SourcePrefab: {fileID: 100100000, guid: bde8bc71e03f9464ca90f435df12a924, type: 3}
 --- !u!1 &2136582434996993805 stripped
 GameObject:
@@ -332,6 +335,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1775546424396546053, guid: bde8bc71e03f9464ca90f435df12a924, type: 3}
   m_PrefabInstance: {fileID: 8660488880126339772}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8426609912329246701 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bde8bc71e03f9464ca90f435df12a924, type: 3}
+  m_PrefabInstance: {fileID: 8660488880126339772}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &5470542899817184307
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426609912329246701}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &9133353517390435818 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8723458861069385898, guid: bde8bc71e03f9464ca90f435df12a924, type: 3}
