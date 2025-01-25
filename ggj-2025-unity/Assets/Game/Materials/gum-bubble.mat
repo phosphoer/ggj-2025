@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: gum-body
-  m_Shader: {fileID: 4800000, guid: f5e9ab1541fb439b8ad738e2781ebb65, type: 3}
+  m_Name: gum-bubble
+  m_Shader: {fileID: 4800000, guid: f1c01762d7549ae409caa14a8b9a8b59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -75,7 +75,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DitherClipDistance: 1
     - _DstBlend: 0
-    - _FresnelOpacity: 1
+    - _FresnelOpacity: 2
     - _FresnelPower: 3.1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -84,6 +84,9 @@ Material:
     - _MainTexAlpha: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NoiseFrequency: 2
+    - _NoiseScale: 0.05
+    - _NoiseSpeed: 0.2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
@@ -95,7 +98,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.9717956, g: 0.6179245, b: 1, a: 1}
+    - _Color: {r: 0.9690235, g: 0.5707547, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _UIMaskSoftness: {r: 0, g: 0, b: 0, a: 0}
