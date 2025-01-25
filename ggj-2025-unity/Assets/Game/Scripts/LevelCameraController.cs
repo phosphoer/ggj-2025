@@ -5,6 +5,8 @@ public class LevelCameraController : CameraControllerDynamic
   [SerializeField]
   private float _riseRate = 0.01f;
 
+  private Vector3 _initialPosition = Vector3.zero;
+
   public enum CameraState
   {
     Idle,
@@ -12,9 +14,15 @@ public class LevelCameraController : CameraControllerDynamic
   }
   private CameraState _cameraState = CameraState.Idle;
 
-  void Start()
+  public void Awake()
   {
+    _initialPosition = gameObject.transform.position;
+  }
 
+  public void Reset()
+  {
+    StopRising();
+    gameObject.transform.position = _initialPosition;
   }
 
   public void StartRising()

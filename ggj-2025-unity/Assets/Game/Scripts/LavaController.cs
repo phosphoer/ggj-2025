@@ -5,12 +5,20 @@ public class LavaController : MonoBehaviour
   [SerializeField]
   private float _riseRate = 0.01f;
 
+
+  private Vector3 _initialPosition = Vector3.zero;
+
   public enum LavaState
   {
     Idle,
     Rising
   }
   private LavaState _lavaState = LavaState.Idle;
+
+  public void Awake()
+  {
+    _initialPosition= gameObject.transform.position;
+  }
 
   public void StartRising()
   {
@@ -20,6 +28,12 @@ public class LavaController : MonoBehaviour
   public void StopRising()
   {
     _lavaState = LavaState.Idle;
+  }
+
+  public void Reset()
+  {
+    StopRising();
+    gameObject.transform.position = _initialPosition;
   }
 
   void Update()

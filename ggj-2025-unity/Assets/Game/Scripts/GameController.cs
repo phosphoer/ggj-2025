@@ -23,11 +23,73 @@ public class GameController : Singleton<GameController>
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
   public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
 
+  public enum eGameState
+  {
+    None,
+    Intro,
+    SingleplayerGame,
+    MultiplayerGame,
+    PostGame
+  }
+  private eGameState _currentGameState= eGameState.None;
+  public eGameState GameState => _currentGameState;
+
+  [SerializeField]
+  private eGameState _initialGameState = eGameState.MultiplayerGame;
+
   void Start()
   {
     GameController.Instance= this;
 
-    SpawnLevel();
+    SetGameState(_initialGameState);
+  }
+
+  void SetGameState(eGameState newState)
+  {
+    if (newState != _currentGameState)
+    {
+      OnExitState(_currentGameState);
+      OnEnterState(newState);
+
+      _currentGameState = newState;
+    }
+  }
+
+  void OnEnterState(eGameState newState)
+  {
+    switch(newState) 
+    {
+      case eGameState.Intro:
+        ShowUI<MainMenuUI>();
+        break;
+      case eGameState.MultiplayerGame:
+        SpawnLevel(_desiredPlayerCount);
+        break;
+      case eGameState.SingleplayerGame:
+        SpawnLevel(1);
+        break;
+      case eGameState.PostGame:
+        ShowUI<PostGameUI>();
+        break;
+    }
+  }
+
+  void OnExitState(eGameState oldState) 
+  {
+    switch (oldState)
+    {
+    case eGameState.Intro:
+      HideUI<MainMenuUI>();
+      break;
+    case eGameState.MultiplayerGame:
+      break;
+    case eGameState.SingleplayerGame:
+      break;
+    case eGameState.PostGame:
+      ClearLevel();
+      HideUI<PostGameUI>();
+      break;
+    }
   }
 
   private void OnDestroy()
@@ -35,7 +97,33 @@ public class GameController : Singleton<GameController>
     GameController.Instance = null;
   }
 
-  void SpawnLevel()
+  public void ShowUI<T>() where T : UIPageBase
+  {
+    PlayerUI playerUI= PlayerUI.Instance;
+    if (playerUI != null)
+    {
+      var uiPage= playerUI.GetPage<T>();
+      if (uiPage != null)
+      {
+        uiPage.Show();
+      }
+    }
+  }
+
+  public void HideUI<T>() where T : UIPageBase
+  {
+    PlayerUI playerUI = PlayerUI.Instance;
+    if (playerUI != null)
+    {
+      var uiPage = playerUI.GetPage<T>();
+      if (uiPage != null)
+      {
+        uiPage.Hide();
+      }
+    }
+  }
+
+  void SpawnLevel(int desiredPlayerCount)
   {
     // Use the rising game camera
     if (MainCamera.Instance != null)
@@ -109,13 +197,13 @@ public class GameController : Singleton<GameController>
 
   private void OnAllPlayersKilled()
   {
-    _lavaController.StopRising();
-    _cameraController.StopRising();
+    SetGameState(eGameState.PostGame);
   }
 
   void ClearLevel()
   {
-    _cameraController.StopRising();
+    _lavaController.Reset();
+    _cameraController.Reset();
     _levelManager.DestroyLevel(false);
     MainCamera.Instance.CameraStack.PopController(_cameraController);
   }
