@@ -39,6 +39,11 @@ public class PlayerActorController : MonoBehaviour
 
   private void Update()
   {
+    if (_playerInput == null)
+    {
+      return;
+    }
+
     float dt = Time.deltaTime;
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
