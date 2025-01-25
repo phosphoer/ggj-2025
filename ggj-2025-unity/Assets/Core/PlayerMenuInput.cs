@@ -24,7 +24,6 @@ public class PlayerMenuInput : Singleton<PlayerMenuInput>
   public static bool MenuAcceptDown => _acceptDown;
   public static bool MenuAccept => _acceptState;
 
-  private static Rewired.Player _rewiredPlayer;
   private static float _scrollAxis;
 
   private static Vector2 _menuAxis;
@@ -93,13 +92,10 @@ public class PlayerMenuInput : Singleton<PlayerMenuInput>
     if (!Rewired.ReInput.isReady || !MenuFocus.AnyFocusTaken)
       return;
 
-    if (_rewiredPlayer != null)
+    for (int i = 0; i < Rewired.ReInput.players.playerCount; ++i)
     {
-      EvaluateInputForPlayer(_rewiredPlayer);
-    }
-    else
-    {
-      _rewiredPlayer = Rewired.ReInput.players.Players[0];
+      Rewired.Player player = Rewired.ReInput.players.GetPlayer(i);
+      EvaluateInputForPlayer(player);
     }
   }
 

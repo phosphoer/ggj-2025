@@ -22,6 +22,8 @@ public class GameController : Singleton<GameController>
 
   public int WinningPlayerID { get; set; } = -1;
 
+  private bool _isMatchStarted;
+  private bool _isSpawningAllowed;
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
   public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
 
@@ -33,18 +35,44 @@ public class GameController : Singleton<GameController>
     MultiplayerGame,
     PostGame
   }
-  private eGameState _currentGameState = eGameState.None;
+  private eGameState _currentGameState= eGameState.None;
   public eGameState GameState => _currentGameState;
 
-  [SerializeField]
-  private eGameState _initialGameState = eGameState.MultiplayerGame;
+  [SerializeField] private eGameState _initialGameState = eGameState.MultiplayerGame;
+
+  public bool IsPlayerJoined(int playerId)
+  {
+    for (int i = 0; i < _spawnedPlayers.Count; ++i)
+    {
+      if (_spawnedPlayers[i].PlayerInput.id == playerId)
+        return true;
+    }
+
+    return false;
+  }
 
   void Start()
   {
-    GameController.Instance = this;
+    GameController.Instance= this;
     _lavaController.gameObject.SetActive(false);
 
     SetGameState(_initialGameState);
+  }
+
+  private void Update()
+  {
+    // Iterate over existing rewired players and spawn their character if they press a button
+    if (_isSpawningAllowed && !MenuFocus.AnyFocusTaken)
+    {
+      for (int i = 0; i < Rewired.ReInput.players.playerCount; ++i)
+      {
+        Rewired.Player player = Rewired.ReInput.players.GetPlayer(i);
+        if (!IsPlayerJoined(i) && player.GetAnyButtonDown())
+        {
+          SpawnPlayer(player.id);
+        }
+      }
+    }
   }
 
   public void SetGameState(eGameState newState)
@@ -60,24 +88,24 @@ public class GameController : Singleton<GameController>
 
   void OnEnterState(eGameState newState)
   {
-    switch (newState)
+    switch(newState) 
     {
-    case eGameState.Intro:
-      ShowUI<MainMenuUI>();
-      break;
-    case eGameState.MultiplayerGame:
-      SpawnLevel(_desiredPlayerCount);
-      break;
-    case eGameState.SingleplayerGame:
-      SpawnLevel(1);
-      break;
-    case eGameState.PostGame:
-      ShowUI<PostGameUI>();
-      break;
+      case eGameState.Intro:
+        ShowUI<MainMenuUI>();
+        break;
+      case eGameState.MultiplayerGame:
+        SpawnLevel(_desiredPlayerCount);
+        break;
+      case eGameState.SingleplayerGame:
+        SpawnLevel(1);
+        break;
+      case eGameState.PostGame:
+        ShowUI<PostGameUI>();
+        break;
     }
   }
 
-  void OnExitState(eGameState oldState)
+  void OnExitState(eGameState oldState) 
   {
     switch (oldState)
     {
@@ -103,10 +131,10 @@ public class GameController : Singleton<GameController>
 
   public void ShowUI<T>() where T : UIPageBase
   {
-    PlayerUI playerUI = PlayerUI.Instance;
+    PlayerUI playerUI= PlayerUI.Instance;
     if (playerUI != null)
     {
-      var uiPage = playerUI.GetPage<T>();
+      var uiPage= playerUI.GetPage<T>();
       if (uiPage != null)
       {
         uiPage.Show();
@@ -134,10 +162,6 @@ public class GameController : Singleton<GameController>
     {
       MainCamera.Instance.CameraStack.PushController(_cameraController);
     }
-
-    // No winning player ID
-    WinningPlayerID = -1;
-
 
     // Enable the lava plane
     _lavaController.gameObject.SetActive(true);
@@ -178,8 +202,8 @@ public class GameController : Singleton<GameController>
         var playerController = playerGO.GetComponent<PlayerActorController>();
         playerController.SetPlayerIndex(playerIndex);
 
-        playerController.OnPlayerKilled += OnPlayerKilled;
-        playerController.OnPlayerSectionChanged += OnPlayerSectionChanged;
+        playerController.OnPlayerKilled+= OnPlayerKilled;
+        playerController.OnPlayerSectionChanged+= OnPlayerSectionChanged;
         _spawnedPlayers.Add(playerController);
       }
     }
@@ -202,13 +226,14 @@ public class GameController : Singleton<GameController>
         WinningPlayerID= _spawnedPlayers[0].PlayerIndex;
         OnLastPlayerKilled();
       }
-    }
   }
 
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
   {
-    if (newSectionIndex >= 1)
+    if (newSectionIndex >= 1) 
     {
+      _isMatchStarted = true;
+      _isSpawningAllowed = false;
       _lavaController.StartRising();
       _cameraController.StartRising();
     }

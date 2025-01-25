@@ -3,6 +3,11 @@ using static System.Collections.Specialized.BitVector32;
 
 public class PlayerActorController : MonoBehaviour
 {
+  public event System.Action<PlayerActorController> OnPlayerKilled;
+  public event System.Action<int, int> OnPlayerSectionChanged;
+
+  public Rewired.Player PlayerInput => _playerInput;
+
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
@@ -14,9 +19,6 @@ public class PlayerActorController : MonoBehaviour
   [SerializeField] private float _slapRadius = 0.5f;
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
-
-  public event System.Action<PlayerActorController> OnPlayerKilled;
-  public event System.Action<int, int> OnPlayerSectionChanged;
 
   private Rewired.Player _playerInput;
   private Item _heldItem;
