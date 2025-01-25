@@ -22,8 +22,33 @@ public class LevelGenerator : MonoBehaviour
         
     }
 
-    public void GenerateLevel()
+    public void DestroyLevel(bool inEditor)
     {
+        if (_levelSections != null)
+        {
+			foreach (var level in _levelSections)
+			{
+				if (level != null)
+				{
+					if (inEditor)
+					{
+						Object.DestroyImmediate(level.gameObject);
+					}
+					else
+					{
+						Object.Destroy(level.gameObject);
+					}
+				}
+			}
+		}
+
+		_levelSections = new LevelSection[0];
+    }
+
+    public void GenerateLevel(bool inEditor)
+    {
+        DestroyLevel(inEditor);
+
         _nextSectionOrigin= Vector3.zero;
         _levelSections = new LevelSection[_numLevels];
 
@@ -57,5 +82,11 @@ public class LevelGenerator : MonoBehaviour
         _nextSectionOrigin.y+= newLevelSection.SectionHeight;
 
 		return newLevelSection;
+	}
+
+    [ContextMenu("Regenerate Layout")]
+	private void EditorGenerateLayout()
+	{
+        GenerateLevel(true);
 	}
 }
