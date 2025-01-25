@@ -13,6 +13,7 @@ public class PlayerActorController : MonoBehaviour
   [SerializeField] private Transform _slapAnchor = null;
   [SerializeField] private float _slapRadius = 0.5f;
   [SerializeField] private LayerMask _slapMask = default;
+  [SerializeField] private ThrowUI _throwUIPrefab = null;
 
   public event System.Action<PlayerActorController> OnPlayerKilled;
   public event System.Action<int, int> OnPlayerSectionChanged;
@@ -23,7 +24,11 @@ public class PlayerActorController : MonoBehaviour
   private float _bubbleStoredMass;
   private int _levelSectionIndex = 0;
   private bool _didBubbleThisJump;
+  private bool _isThrowing;
   private Vector3 _currentThrowAxis;
+  private float _currentThrowT;
+  private RectTransform _throwUIRoot;
+  private ThrowUI _throwUI;
   private Collider[] _slapColliders = new Collider[4];
 
   public void SetGumMass(float gumAmount)
@@ -155,15 +160,29 @@ public class PlayerActorController : MonoBehaviour
       bool isThrowHeld = Input.GetMouseButton(0);
       if (isThrowHeld)
       {
+        if (!_isThrowing)
+        {
+          _isThrowing = true;
+          _throwUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 0.5f);
+          _throwUI = Instantiate(_throwUIPrefab, _throwUIRoot);
+        }
+
         Vector3 playerScreenPos = Mathfx.GetNormalizedScreenPos(MainCamera.Instance.Camera.WorldToScreenPoint(transform.position));
         Vector3 mousePos = Mathfx.GetNormalizedScreenPos(Input.mousePosition);
         _currentThrowAxis = (mousePos - playerScreenPos).WithZ(0);
+        _currentThrowT = Mathf.Clamp01(_currentThrowAxis.magnitude / 0.25f);
+        _throwUI.SetThrowVector(_currentThrowAxis, _currentThrowT);
       }
-      else if (_currentThrowAxis.magnitude > 0.1f)
+      else if (_isThrowing)
       {
-        float throwT = Mathf.Clamp01(_currentThrowAxis.magnitude / 0.25f);
-        ThrowItem(-_currentThrowAxis.normalized * throwT * ThrowStrength);
-        _currentThrowAxis = Vector3.zero;
+        _isThrowing = false;
+        WorldUIManager.Instance.HideItem(_throwUIRoot);
+        if (_currentThrowAxis.magnitude > 0.1f)
+        {
+          ThrowItem(-_currentThrowAxis.normalized * _currentThrowT * ThrowStrength);
+          _currentThrowAxis = Vector3.zero;
+          _currentThrowT = 0;
+        }
       }
     }
 
