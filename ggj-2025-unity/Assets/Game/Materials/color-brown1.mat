@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: color-desert
+  m_Name: color-brown1
   m_Shader: {fileID: 4800000, guid: f1c01762d7549ae409caa14a8b9a8b59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
