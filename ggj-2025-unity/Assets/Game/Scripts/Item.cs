@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+  public float GumMassValue = 0.25f;
+
   private float _chewedAmount;
 
   public bool Chew(float amount)
