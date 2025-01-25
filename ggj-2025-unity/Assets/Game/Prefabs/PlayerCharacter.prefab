@@ -839,8 +839,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0791d50959c94bd6b990fc09f8319609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BubbleShrinkSpeed: 0.25
-  BubbleFloatPower: 0.25
+  BubbleShrinkSpeed: 0.2
+  BubbleFloatPower: 0.35
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}
   _interaction: {fileID: 833507523520657284}

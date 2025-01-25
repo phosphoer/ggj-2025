@@ -14,6 +14,12 @@ public class MovingPlatform : MonoBehaviour, IMoverController
 
   private void Awake()
   {
+    if (!Mover)
+    {
+      Mover = gameObject.GetOrAddComponent<PhysicsMover>();
+      Mover.MoveWithPhysics = false;
+    }
+
     Mover.MoverController = this;
   }
 
