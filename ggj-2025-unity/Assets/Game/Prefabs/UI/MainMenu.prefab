@@ -258,6 +258,7 @@ GameObject:
   - component: {fileID: 4064213431983744878}
   - component: {fileID: 7555606172265866734}
   - component: {fileID: 1351525573080044443}
+  - component: {fileID: 7623398504442893374}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -315,6 +316,18 @@ MonoBehaviour:
   _buttonNewSinglePlayerGame: {fileID: 1173500469519092376}
   _buttonNewMultiPlayerGame: {fileID: 8407655123845814514}
   _buttonQuit: {fileID: 7926099176679934971}
+--- !u!114 &7623398504442893374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6453978217848083221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c19220b7f0c84952adebdc94a3676453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &413992306894525522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -409,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3677095062167566323, guid: b8970fc4126fb9449830a0e477b064f4, type: 3}
       propertyPath: m_text
-      value: Multiplayer
+      value: Single Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
