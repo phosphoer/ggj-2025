@@ -5,6 +5,7 @@ public class PlayerActorController : MonoBehaviour
 {
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
+  public float ThrowStrength = 15;
 
   [SerializeField] private ActorController _actor = null;
   [SerializeField] private PlayerAnimation _playerAnimation = null;
@@ -22,6 +23,7 @@ public class PlayerActorController : MonoBehaviour
   private float _bubbleStoredMass;
   private int _levelSectionIndex = 0;
   private bool _didBubbleThisJump;
+  private Vector3 _currentThrowAxis;
   private Collider[] _slapColliders = new Collider[4];
 
   public void SetGumMass(float gumAmount)
@@ -75,7 +77,10 @@ public class PlayerActorController : MonoBehaviour
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
     bool inputInteractButton = _playerInput.GetButtonDown(RewiredConsts.Action.Interact);
-    bool inputInteractChew = _playerInput.GetButtonDown(RewiredConsts.Action.Chew);
+    bool inputChewButton = _playerInput.GetButtonDown(RewiredConsts.Action.Chew);
+    Vector2 inputThrowAxis = new Vector2(
+      _playerInput.GetAxis(RewiredConsts.Action.ThrowHorizontal),
+      _playerInput.GetAxis(RewiredConsts.Action.ThrowVertical));
 
     // Apply movement state to actor
     _actor.MoveAxis = Vector2.right * inputMoveAxis;
@@ -142,8 +147,28 @@ public class PlayerActorController : MonoBehaviour
       }
     }
 
+    // Throwing
+    //
+    if (_heldItem)
+    {
+      // Mouse controls
+      bool isThrowHeld = Input.GetMouseButton(0);
+      if (isThrowHeld)
+      {
+        Vector3 playerScreenPos = Mathfx.GetNormalizedScreenPos(MainCamera.Instance.Camera.WorldToScreenPoint(transform.position));
+        Vector3 mousePos = Mathfx.GetNormalizedScreenPos(Input.mousePosition);
+        _currentThrowAxis = (mousePos - playerScreenPos).WithZ(0);
+      }
+      else if (_currentThrowAxis.magnitude > 0.1f)
+      {
+        float throwT = Mathf.Clamp01(_currentThrowAxis.magnitude / 0.25f);
+        ThrowItem(-_currentThrowAxis.normalized * throwT * ThrowStrength);
+        _currentThrowAxis = Vector3.zero;
+      }
+    }
+
     // Chewing
-    if (inputInteractChew)
+    if (inputChewButton)
     {
       // Try to chew a held item
       if (_heldItem)
@@ -227,7 +252,6 @@ public class PlayerActorController : MonoBehaviour
         if (wantsTeleport)
         {
           Vector3 newLocation = new Vector3(newPlayerXPos, playerYPos, playerZPos);
-
           TeleportPlayer(newLocation);
         }
       }
@@ -237,6 +261,20 @@ public class PlayerActorController : MonoBehaviour
   private void TeleportPlayer(Vector3 NewLocation)
   {
     _actor.Motor.SetPosition(NewLocation);
+  }
+
+  private void DropItem()
+  {
+    _heldItem.Drop();
+    _playerAnimation.DropItem();
+    _heldItem = null;
+  }
+
+  private void ThrowItem(Vector3 throwVec)
+  {
+    _playerAnimation.DropItem();
+    _heldItem.Throw(throwVec);
+    _heldItem = null;
   }
 
   private void Slap()

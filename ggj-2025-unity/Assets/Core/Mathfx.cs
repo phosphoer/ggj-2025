@@ -8,6 +8,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public static class Mathfx
 {
@@ -283,6 +284,13 @@ public static class Mathfx
   // 
   // Canvas / Rect Transform helpers
   //
+  public static Vector3 GetNormalizedScreenPos(Vector3 screenPos)
+  {
+    screenPos.x /= Screen.width;
+    screenPos.y /= Screen.height;
+    return screenPos;
+  }
+
   public static Vector3 ViewportToCanvasPosition(RectTransform canvas, Vector3 viewportPos)
   {
     viewportPos.x *= canvas.rect.size.x;

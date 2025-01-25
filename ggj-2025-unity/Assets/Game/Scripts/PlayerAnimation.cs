@@ -48,6 +48,15 @@ public class PlayerAnimation : MonoBehaviour
     item.transform.parent = _mouthItemRoot;
   }
 
+  public void DropItem()
+  {
+    if (_mouthItem)
+    {
+      _mouthItem.transform.parent = null;
+      _mouthItem = null;
+    }
+  }
+
   public void SetGumMass(float gumMass)
   {
     _currentGumMass = Mathf.Max(0, gumMass);
