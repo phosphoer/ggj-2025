@@ -86,6 +86,7 @@ public class PlayerActorController : MonoBehaviour
     if (_actor.Motor.GroundingStatus.IsStableOnGround)
       _didBubbleThisJump = false;
 
+    // Apply capsule size to actor based on current gum mass
     float capsuleRadius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
     float capsuleHeight = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
     float capsuleOffset = _actor.Motor.Capsule.height * 0.5f;
