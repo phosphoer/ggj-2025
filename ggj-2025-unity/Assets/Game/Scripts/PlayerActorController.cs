@@ -390,6 +390,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     // Pop bubble
     if (_bubbleStoredMass > 0)
     {
+      _playerAnimation.PopBubble();
       _bubbleStoredMass = 0.01f;
     }
 
