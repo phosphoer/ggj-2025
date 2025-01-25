@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: color-brown2
+  m_Name: color-stones
   m_Shader: {fileID: 4800000, guid: f1c01762d7549ae409caa14a8b9a8b59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -95,7 +95,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.3735848, g: 0.20958073, b: 0.05286572, a: 1}
+    - _Color: {r: 0.61960787, g: 0.26666668, b: 0.07450981, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _UIMaskSoftness: {r: 0, g: 0, b: 0, a: 0}
