@@ -12,6 +12,8 @@ public class PlayerAnimation : MonoBehaviour
   public float FootStepSpeed = 10;
   public float HeadBobScale = 0.2f;
   public float BodyBobScale = 0.2f;
+  public float SlapAnimDuration = 0.2f;
+  public float SlapAnimScale = 0.2f;
 
   [SerializeField] private Transform _visualRoot = null;
   [SerializeField] private Transform _headRoot = null;
@@ -26,6 +28,7 @@ public class PlayerAnimation : MonoBehaviour
   [SerializeField] private Transform _mouthItemRoot = null;
   [SerializeField] private Transform _gumMassRoot = null;
   [SerializeField] private Transform _gumBubbleRoot = null;
+  [SerializeField] private AnimationCurve _slapAnimCurve = null;
 
   private float _biteAnimTimer;
   private float _chewAmount;
@@ -33,7 +36,9 @@ public class PlayerAnimation : MonoBehaviour
   private float _currentGumBubbleSize;
   private float _walkAnimTimer;
   private float _bubbleSwingTimer;
+  private float _slapTimer;
   private float _jumpTimer;
+  private bool _isSlapping;
   private Vector3 _gumMassLocalPos;
   private Item _mouthItem;
 
@@ -60,7 +65,8 @@ public class PlayerAnimation : MonoBehaviour
 
   public void Slap()
   {
-    _headRoot.position = _mouthAnchor.position + _mouthAnchor.forward * 0.5f;
+    _isSlapping = true;
+    _slapTimer = 0;
   }
 
   public void Jump()
@@ -88,6 +94,7 @@ public class PlayerAnimation : MonoBehaviour
 
     _keyRoot.Rotate(KeyRotateSpeed * MoveAnimSpeed * dt, 0, 0, Space.Self);
 
+    // Scale gum pieces
     Vector3 gumMassScale = Vector3.one * _currentGumMass;
     _gumMassRoot.localScale = Mathfx.Damp(_gumMassRoot.localScale, gumMassScale, 0.25f, dt * 5);
 
@@ -167,6 +174,14 @@ public class PlayerAnimation : MonoBehaviour
 
       _jawUpper.localRotation = Quaternion.Euler(-jawAngle, 0, 0);
       _jawLower.localRotation = Quaternion.Euler(jawAngle, 0, 0);
+    }
+
+    // Slap Anim
+    if (_isSlapping)
+    {
+      _slapTimer += dt;
+      float slapT = Mathf.Clamp01(_slapTimer / SlapAnimDuration);
+      _headRoot.position = _mouthAnchor.position + _mouthAnchor.forward * _slapAnimCurve.Evaluate(slapT) * SlapAnimScale;
     }
   }
 }
