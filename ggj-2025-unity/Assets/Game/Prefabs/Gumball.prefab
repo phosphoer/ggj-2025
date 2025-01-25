@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GumMassValue: 0.4
   _rb: {fileID: 3050257344871245221}
+  _interactable: {fileID: 8970600465562481787}
 --- !u!54 &3050257344871245221
 Rigidbody:
   m_ObjectHideFlags: 0
