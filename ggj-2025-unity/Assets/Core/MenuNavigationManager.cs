@@ -175,6 +175,11 @@ public class MenuNavigationManager : Singleton<MenuNavigationManager>
         _holdToActivateItem = SelectedItem;
         _holdToActivateTimer = 0;
       }
+      else
+      {
+        SelectedItem.Activate();
+        ItemActivated?.Invoke(SelectedItem);
+      }
     }
   }
 
