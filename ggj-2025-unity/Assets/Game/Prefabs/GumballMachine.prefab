@@ -144,6 +144,7 @@ MonoBehaviour:
     MinValue: 1
     MaxValue: 2
   GumballSpawnRadius: 0.5
+  GumballTotalCount: 10
   _wobble: {fileID: 3708247841435559330}
   _spawnRoot: {fileID: 4528093041446861090}
 --- !u!114 &3708247841435559330
@@ -213,7 +214,7 @@ Transform:
   m_GameObject: {fileID: 7677067927004832086}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.91, z: 0}
+  m_LocalPosition: {x: 0, y: 1.91, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
