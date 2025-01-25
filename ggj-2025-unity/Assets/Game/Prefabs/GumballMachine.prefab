@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9203815836079082839}
+  - {fileID: 4528093041446861090}
   m_Father: {fileID: 3719650517452408721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5974378298051655035
@@ -80,7 +81,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlapWobbleScale: 300
+  GumballPrefabs:
+  - {fileID: 6079765574516831324, guid: 022b68aa4706f4e57bf6156b2f057daa, type: 3}
+  SpawnCountRange:
+    MinValue: 2
+    MaxValue: 5
+  SpawnForceRange:
+    MinValue: 1
+    MaxValue: 2
+  GumballSpawnRadius: 0.5
   _wobble: {fileID: 3708247841435559330}
+  _spawnRoot: {fileID: 4528093041446861090}
 --- !u!114 &3708247841435559330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +128,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2.3548832, z: 1}
   m_Center: {x: 0, y: -1.6380365, z: 0}
+--- !u!1 &7677067927004832086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4528093041446861090}
+  m_Layer: 0
+  m_Name: GumballSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4528093041446861090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7677067927004832086}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.91, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6238706804715922573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8660488880126339772
 PrefabInstance:
   m_ObjectHideFlags: 0
