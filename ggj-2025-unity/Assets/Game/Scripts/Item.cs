@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Item : MonoBehaviour
 {
   public float GumMassValue = 0.25f;
+  public Rigidbody Rigidbody => _rb;
 
   [SerializeField] private Rigidbody _rb = null;
 
@@ -35,6 +36,15 @@ public class Item : MonoBehaviour
 
   private void Awake()
   {
+    if (!_rb)
+      _rb = GetComponent<Rigidbody>();
+
     GetComponentsInChildren(_colliders);
+  }
+
+  private void OnValidate()
+  {
+    if (!_rb)
+      _rb = GetComponent<Rigidbody>();
   }
 }
