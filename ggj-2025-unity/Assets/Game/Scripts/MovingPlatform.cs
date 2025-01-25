@@ -23,10 +23,15 @@ public class MovingPlatform : MonoBehaviour, IMoverController
     Mover.MoverController = this;
   }
 
-  void Start()
+  private void Start()
   {
-    // Start moving towards point A
     targetPosition = pointA.position;
+
+    PhysicsMoverState state = default;
+    state.Position = targetPosition;
+    state.Rotation = transform.rotation;
+
+    Mover.ApplyState(state);
   }
 
   public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime)
