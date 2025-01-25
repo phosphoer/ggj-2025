@@ -47,13 +47,13 @@ public class LevelGenerator : MonoBehaviour
     _levelSections = new LevelSection[_numLevels];
 
     // Spawn the starting section first
-    _levelSections[0] = SpawnNextSection(_levelSectionDatabase.StartLevelSections);
+    _levelSections[0] = SpawnNextSection(_levelSectionDatabase.StartLevelSections, 0);
     _unusedSpawnPoints = _levelSections[0].GatherAvailablePlayerSpawners();
 
     // Then spawn the rest of the sections
     for (int levelIndex = 1; levelIndex < _numLevels; ++levelIndex)
     {
-      _levelSections[levelIndex] = SpawnNextSection(_levelSectionDatabase.LevelSections);
+      _levelSections[levelIndex] = SpawnNextSection(_levelSectionDatabase.LevelSections, levelIndex);
     }
   }
 
@@ -71,19 +71,33 @@ public class LevelGenerator : MonoBehaviour
     return null;
   }
 
-  private GameObject SelectNextSectionTemplate(LevelSection[] potentialLevelSections)
+  private GameObject SelectNextSectionTemplate(LevelSection[] potentialLevelSections, int currentLevelIndex)
   {
     int availableSectionCount = potentialLevelSections.Length;
-    int randomSectionDBIndex = UnityEngine.Random.Range(0, availableSectionCount);
+    LevelSection previousSection= (currentLevelIndex > 0) ? _levelSections[currentLevelIndex - 1] : null;
+    GameObject previousSectionTemplate = (previousSection != null) ? previousSection.SectionTemplate : null;
 
-    return potentialLevelSections[randomSectionDBIndex].gameObject;
+    GameObject nextSectionTemplate= null;
+    for (int i = 0; i < 100 && nextSectionTemplate == null; i++)
+    {
+      int randomSectionDBIndex = UnityEngine.Random.Range(0, availableSectionCount);
+      GameObject potentialSectionTemplate= potentialLevelSections[randomSectionDBIndex].gameObject;
+
+      if (potentialSectionTemplate != previousSectionTemplate)
+      {
+        nextSectionTemplate= potentialSectionTemplate;
+      }
+    }
+
+    return nextSectionTemplate;
   }
 
-  private LevelSection SpawnNextSection(LevelSection[] potentialLevelSections)
+  private LevelSection SpawnNextSection(LevelSection[] potentialLevelSections, int currentLevelIndex)
   {
-    var sectionTemplate = SelectNextSectionTemplate(potentialLevelSections);
+    var sectionTemplate = SelectNextSectionTemplate(potentialLevelSections, currentLevelIndex);
     var newSectionGO = GameObject.Instantiate(sectionTemplate);
     var newLevelSection = newSectionGO.GetComponent<LevelSection>();
+    newLevelSection.SectionTemplate = sectionTemplate;
 
     newSectionGO.transform.parent = this.transform;
     newSectionGO.transform.localPosition = _nextSectionOrigin;

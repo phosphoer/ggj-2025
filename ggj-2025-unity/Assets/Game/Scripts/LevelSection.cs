@@ -9,6 +9,7 @@ public class LevelSection : MonoBehaviour
   public Vector3 SectionWorldCenter => transform.TransformPoint(_sectionBounds.center);
   public float SectionWidth => _sectionBounds.size.x * _sectionBounds.transform.localScale.x;
   public float SectionHeight => _sectionBounds.size.y * _sectionBounds.transform.localScale.y;
+  public GameObject SectionTemplate { get; set; }
 
   [SerializeField]
   private PlayerSpawnPoint[] _playerSpawns;

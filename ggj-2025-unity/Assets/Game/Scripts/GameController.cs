@@ -44,7 +44,7 @@ public class GameController : Singleton<GameController>
     SetGameState(_initialGameState);
   }
 
-  void SetGameState(eGameState newState)
+  public void SetGameState(eGameState newState)
   {
     if (newState != _currentGameState)
     {
