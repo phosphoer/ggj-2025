@@ -51,9 +51,6 @@ public class GameController : Singleton<GameController>
 
     // Start animating the camera
     _cameraController.StartRising();
-
-    // Start raising the Lava
-    //_lavaController.StartRising();
   }
 
   void SpawnPlayers()
