@@ -1,7 +1,6 @@
 using UnityEngine;
-using static System.Collections.Specialized.BitVector32;
 
-public class PlayerActorController : MonoBehaviour
+public class PlayerActorController : MonoBehaviour, ISlappable
 {
   public event System.Action<PlayerActorController> OnPlayerKilled;
   public event System.Action<int, int> OnPlayerSectionChanged;
@@ -39,6 +38,7 @@ public class PlayerActorController : MonoBehaviour
 
   public void SetGumMass(float gumAmount)
   {
+    gumAmount = Mathf.Max(0, gumAmount);
     _bubbleGumMass = gumAmount;
     _playerAnimation.SetGumMass(gumAmount);
   }
@@ -372,10 +372,30 @@ public class PlayerActorController : MonoBehaviour
     {
       var c = _slapColliders[i];
       ISlappable slappable = c.GetComponentInParent<ISlappable>();
-      if (slappable != null)
+      if (slappable != null && slappable != this)
       {
         slappable.ReceiveSlap(transform.position);
       }
+    }
+  }
+
+  void ISlappable.ReceiveSlap(Vector3 fromPos)
+  {
+    // Drop any held item
+    if (_heldItem)
+    {
+      DropItem();
+    }
+
+    // Pop bubble
+    if (_bubbleStoredMass > 0)
+    {
+      _bubbleStoredMass = 0.01f;
+    }
+
+    if (_bubbleGumMass > 0)
+    {
+      SetGumMass(_bubbleGumMass - 0.1f);
     }
   }
 
