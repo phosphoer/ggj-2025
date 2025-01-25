@@ -8,11 +8,8 @@ public class GameController : Singleton<GameController>
   public LevelGenerator LevelManager => _levelManager;
 
   [SerializeField] private LevelCameraController _cameraController;
-
   [SerializeField] private PlayerActorController _playerPrefab;
-
   [SerializeField] private LavaController _lavaController;
-
   [SerializeField] private int _desiredPlayerCount = 1;
 
   public int WinningPlayerID { get; set; } = -1;

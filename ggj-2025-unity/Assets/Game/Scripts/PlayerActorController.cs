@@ -185,7 +185,7 @@ public class PlayerActorController : MonoBehaviour
         WorldUIManager.Instance.HideItem(_throwUIRoot);
         if (_currentThrowAxis.magnitude > 0.1f)
         {
-          ThrowItem(-_currentThrowAxis.normalized * _currentThrowT * ThrowStrength);
+          ThrowItem(MainCamera.Instance.transform.rotation * _currentThrowAxis.normalized * _currentThrowT * -ThrowStrength);
           _currentThrowAxis = Vector3.zero;
           _currentThrowT = 0;
         }

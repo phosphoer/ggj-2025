@@ -35,7 +35,7 @@ public class Item : MonoBehaviour
   {
     _wasThrown = true;
     _rb.isKinematic = false;
-    _enableColliderTimer = 0.1f;
+    _enableColliderTimer = 0.2f;
     _rb.AddForce(throwVec, ForceMode.VelocityChange);
   }
 
