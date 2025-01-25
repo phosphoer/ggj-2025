@@ -25,11 +25,14 @@ public class PlayerAnimation : MonoBehaviour
   [SerializeField] private Transform _footTipRight = null;
   [SerializeField] private Transform _mouthItemRoot = null;
   [SerializeField] private Transform _gumMassRoot = null;
+  [SerializeField] private Transform _gumBubbleRoot = null;
 
   private float _biteAnimTimer;
   private float _chewAmount;
   private float _currentGumMass;
+  private float _currentGumBubbleSize;
   private float _walkAnimTimer;
+  private float _bubbleSwingTimer;
   private float _jumpTimer;
   private Vector3 _gumMassLocalPos;
   private Item _mouthItem;
@@ -42,7 +45,12 @@ public class PlayerAnimation : MonoBehaviour
 
   public void SetGumMass(float gumMass)
   {
-    _currentGumMass = gumMass;
+    _currentGumMass = Mathf.Max(0, gumMass);
+  }
+
+  public void SetBubbleSize(float bubbleSize)
+  {
+    _currentGumBubbleSize = bubbleSize;
   }
 
   public void Chew()
@@ -73,19 +81,41 @@ public class PlayerAnimation : MonoBehaviour
 
     _jumpTimer -= dt;
 
-    _keyRoot.Rotate(KeyRotateSpeed * dt, 0, 0, Space.Self);
+    _keyRoot.Rotate(KeyRotateSpeed * MoveAnimSpeed * dt, 0, 0, Space.Self);
 
     Vector3 gumMassScale = Vector3.one * _currentGumMass;
-    _gumMassRoot.localScale = Mathfx.Damp(_gumMassRoot.localScale, gumMassScale, 0.25f, dt);
+    _gumMassRoot.localScale = Mathfx.Damp(_gumMassRoot.localScale, gumMassScale, 0.25f, dt * 5);
 
+    Vector3 gumBubbleScale = Vector3.one * _currentGumBubbleSize;
+    _gumBubbleRoot.localScale = Mathfx.Damp(_gumBubbleRoot.localScale, gumBubbleScale, 0.25f, dt * 5);
+
+    // Swing back and forth when floating with a bubble
+    if (_currentGumBubbleSize > 0)
+    {
+      _bubbleSwingTimer += dt * 5;
+      Quaternion swingRot = Quaternion.Euler(Mathf.Sin(_bubbleSwingTimer) * 20 - 25, 0, 0);
+      _visualRoot.localRotation = Mathfx.Damp(_visualRoot.localRotation, swingRot, 0.25f, dt * 5);
+
+      Quaternion bubbleRot = Quaternion.LookRotation(Vector3.up, -transform.forward);
+      _gumBubbleRoot.rotation = Mathfx.Damp(_gumBubbleRoot.rotation, bubbleRot, 0.25f, dt * 5);
+    }
+    else
+    {
+      _visualRoot.localRotation = Mathfx.Damp(_visualRoot.localRotation, Quaternion.identity, 0.25f, dt * 3);
+    }
+
+    // Walking animation
     if (MoveAnimSpeed > 0 && IsGrounded && _jumpTimer <= 0)
     {
       _walkAnimTimer += dt * MoveAnimSpeed * FootStepSpeed;
+
+      // Rotate feet
       float footAngleLeft = Mathf.Sin(_walkAnimTimer) * FootStepAngle;
       float footAngleRight = Mathf.Sin(_walkAnimTimer) * -FootStepAngle;
       _footLeft.localRotation = Quaternion.Euler(footAngleLeft, 0, 0);
       _footRight.localRotation = Quaternion.Euler(footAngleRight, 0, 0);
 
+      // Offset height by toe pos (keep toes on floor)
       float footTipLeftPos = _footTipLeft.position.y - _visualRoot.position.y;
       float footTipRightPos = _footTipRight.position.y - _visualRoot.position.y;
       float footTipMax = Mathf.Min(footTipLeftPos, footTipRightPos);
@@ -93,12 +123,13 @@ public class PlayerAnimation : MonoBehaviour
       Vector3 footOffsetPos = Vector3.up * footOffsetHeight;
       _visualRoot.localPosition = Mathfx.Damp(_visualRoot.localPosition, footOffsetPos, 0.25f, dt * 10);
 
+      // Bob head and body up and down
       float bobHeightHead = Mathf.Abs(Mathf.Sin(_walkAnimTimer)) * HeadBobScale;
       float bobHeightBody = Mathf.Sin(_walkAnimTimer * 2 + 0.2f) * BodyBobScale * Mathf.Clamp01(_currentGumMass);
-
       _gumMassRoot.localPosition = _gumMassLocalPos + Vector3.up * bobHeightBody;
       _headRoot.position = _mouthAnchor.position + Vector3.up * bobHeightHead;
     }
+    // Standing still animation
     else
     {
       _footLeft.localRotation = Mathfx.Damp(_footLeft.localRotation, Quaternion.identity, 0.25f, dt * 3);
@@ -110,6 +141,7 @@ public class PlayerAnimation : MonoBehaviour
       _gumMassRoot.localPosition = Mathfx.Damp(_gumMassRoot.localPosition, _gumMassLocalPos, 0.25f, dt);
     }
 
+    // Hold the mouth item and animation chewing
     if (_mouthItem)
     {
       _mouthItem.transform.localPosition = Mathfx.Damp(_mouthItem.transform.localPosition, Vector3.zero, 0.25f, dt * 5);
@@ -117,16 +149,19 @@ public class PlayerAnimation : MonoBehaviour
       float jawAngle = (1 - _chewAmount) * 30;
       _jawUpper.localRotation = Mathfx.Damp(_jawUpper.localRotation, Quaternion.Euler(-jawAngle, 0, 0), 0.2f, dt * 30);
       _jawLower.localRotation = Mathfx.Damp(_jawLower.localRotation, Quaternion.Euler(jawAngle, 0, 0), 0.2f, dt * 30);
+      _chewAmount = Mathfx.Damp(_chewAmount, 0, 0.5f, dt * 10);
     }
+    // Chatter teeth while moving
     else
     {
       _biteAnimTimer += dt * BiteAnimSpeed;
 
       float jawAngle = Mathf.Abs(Mathf.Sin(_biteAnimTimer)) * BiteAnimAngle;
+      if (_currentGumBubbleSize > 0)
+        jawAngle = 0;
+
       _jawUpper.localRotation = Quaternion.Euler(-jawAngle, 0, 0);
       _jawLower.localRotation = Quaternion.Euler(jawAngle, 0, 0);
     }
-
-    _chewAmount = Mathfx.Damp(_chewAmount, 0, 0.5f, dt * 10);
   }
 }

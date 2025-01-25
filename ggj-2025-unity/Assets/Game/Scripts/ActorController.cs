@@ -11,6 +11,7 @@ public class ActorController : MonoBehaviour, ICharacterController
 
   public float Drag = 1;
   public float GravityScalar = 1;
+  public float AntiGravityScalar = 0;
   public float MoveAirAccel = 5;
   public float MoveAccel = 5;
   public float AirSpeed = 3;
@@ -54,7 +55,7 @@ public class ActorController : MonoBehaviour, ICharacterController
     var moveVec = Vector3.ClampMagnitude(walkDirection * MoveAxis.y + strafeDirection * MoveAxis.x, 1);
 
     // Ground movement
-    if (Motor.GroundingStatus.IsStableOnGround)
+    if (Motor.GroundingStatus.IsStableOnGround && AntiGravityScalar < GravityScalar)
     {
       // Apply movement modifiers
       float currentSpeed = 1;
@@ -102,7 +103,7 @@ public class ActorController : MonoBehaviour, ICharacterController
         }
 
         // Prevent air-climbing sloped walls
-        if (Motor.GroundingStatus.FoundAnyGround)
+        if (Motor.GroundingStatus.FoundAnyGround && AntiGravityScalar < GravityScalar)
         {
           if (Vector3.Dot(currentVelocity + addedVelocity, addedVelocity) > 0f)
           {
@@ -117,6 +118,7 @@ public class ActorController : MonoBehaviour, ICharacterController
 
       // Gravity and drag
       currentVelocity += Physics.gravity * (deltaTime * GravityScalar);
+      currentVelocity -= Physics.gravity * (deltaTime * AntiGravityScalar);
       currentVelocity *= 1f / (1f + Drag * deltaTime);
 
       LastAirVelocity = currentVelocity;
@@ -131,7 +133,8 @@ public class ActorController : MonoBehaviour, ICharacterController
       {
         // Calculate jump direction before ungrounding
         var jumpDirection = Motor.CharacterUp;
-        if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround) jumpDirection = Motor.GroundingStatus.GroundNormal;
+        if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
+          jumpDirection = Motor.GroundingStatus.GroundNormal;
 
         // Makes the character skip ground probing/snapping on its next update. 
         // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
@@ -153,7 +156,7 @@ public class ActorController : MonoBehaviour, ICharacterController
   public void PostGroundingUpdate(float deltaTime)
   {
     // Handle landing and leaving ground
-    if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround)
+    if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround && AntiGravityScalar < GravityScalar)
       OnLanded();
     else if (!Motor.GroundingStatus.IsStableOnGround && Motor.LastGroundingStatus.IsStableOnGround) OnLeaveStableGround();
   }
@@ -163,12 +166,14 @@ public class ActorController : MonoBehaviour, ICharacterController
     // Handle jump-related values
     {
       // Handle jumping pre-ground grace period
-      if (_isJumpQueued && _timeSinceJumpRequested > JumpPreGroundingGraceTime) _isJumpQueued = false;
+      if (_isJumpQueued && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
+        _isJumpQueued = false;
 
       if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
       {
         // If we're on a ground surface, reset jumping values
-        if (!_jumpedThisFrame) _jumpConsumed = false;
+        if (!_jumpedThisFrame)
+          _jumpConsumed = false;
 
         _timeSinceLastAbleToJump = 0f;
       }
