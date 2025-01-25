@@ -268,6 +268,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8257841784728694255, guid: fa088a2f377bb49808191ab18c2e101c, type: 3}
+      propertyPath: _uiCamera
+      value: 
+      objectReference: {fileID: 723074037}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -330,6 +334,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47e721ad0fd4345029a70452622a5a9c, type: 3}
+--- !u!20 &723074037 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5780855925614026939, guid: 47e721ad0fd4345029a70452622a5a9c, type: 3}
+  m_PrefabInstance: {fileID: 602499602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1422896239
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -381,6 +390,10 @@ PrefabInstance:
     - target: {fileID: 4101283422249188472, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
       propertyPath: m_Name
       value: Managers
+      objectReference: {fileID: 0}
+    - target: {fileID: 8737514908485825336, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
+      propertyPath: _initialGameState
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

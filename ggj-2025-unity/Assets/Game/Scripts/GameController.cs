@@ -40,6 +40,7 @@ public class GameController : Singleton<GameController>
   void Start()
   {
     GameController.Instance= this;
+    _lavaController.gameObject.SetActive(false);
 
     SetGameState(_initialGameState);
   }
@@ -131,6 +132,9 @@ public class GameController : Singleton<GameController>
       MainCamera.Instance.CameraStack.PushController(_cameraController);
     }
 
+    // Enable the lava plane
+    _lavaController.gameObject.SetActive(true);
+
     // Spawn the level sections
     _levelManager.GenerateLevel(false);
 
@@ -203,6 +207,7 @@ public class GameController : Singleton<GameController>
   void ClearLevel()
   {
     _lavaController.Reset();
+    _lavaController.gameObject.SetActive(false);
     _cameraController.Reset();
     _levelManager.DestroyLevel(false);
     MainCamera.Instance.CameraStack.PopController(_cameraController);
