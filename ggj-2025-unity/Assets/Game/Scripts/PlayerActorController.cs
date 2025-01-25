@@ -21,6 +21,7 @@ public class PlayerActorController : MonoBehaviour
   private float _bubbleGumMass;
   private float _bubbleStoredMass;
   private int _levelSectionIndex = 0;
+  private bool _didBubbleThisJump;
   private Collider[] _slapColliders = new Collider[4];
 
   public void SetGumMass(float gumAmount)
@@ -81,6 +82,10 @@ public class PlayerActorController : MonoBehaviour
     _playerAnimation.MoveAnimSpeed = Mathfx.Damp(_playerAnimation.MoveAnimSpeed, Mathf.Abs(inputMoveAxis), 0.25f, dt * 5);
     _playerAnimation.IsGrounded = _actor.Motor.GroundingStatus.IsStableOnGround;
 
+    // Reset bubble jump once we hit ground
+    if (_actor.Motor.GroundingStatus.IsStableOnGround)
+      _didBubbleThisJump = false;
+
     _actor.Motor.Capsule.radius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
     _actor.Motor.Capsule.height = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
     _actor.Motor.Capsule.center = Vector3.up * _actor.Motor.Capsule.height * 0.5f;
@@ -114,9 +119,10 @@ public class PlayerActorController : MonoBehaviour
         _actor.Jump();
         _playerAnimation.Jump();
       }
-      else if (_bubbleGumMass >= 0)
+      else if (_bubbleStoredMass == 0 && !_didBubbleThisJump)
       {
         _bubbleStoredMass = _bubbleGumMass;
+        _didBubbleThisJump = true;
         SetGumMass(0);
       }
     }
@@ -156,24 +162,24 @@ public class PlayerActorController : MonoBehaviour
 
   private void UpdateCurrentLevelSection()
   {
-    int newSectionIndex= -1;
+    int newSectionIndex = -1;
 
     if (GameController.Instance != null)
     {
-      LevelSection[] sections= GameController.Instance.LevelManager.LevelSections;
+      LevelSection[] sections = GameController.Instance.LevelManager.LevelSections;
 
       for (int sectionIndex = 0; sectionIndex < sections.Length; ++sectionIndex)
       {
         LevelSection section = sections[sectionIndex];
         var playerYPos = gameObject.transform.position.y;
         var sectionYPos = section.SectionWorldCenter.y;
-        var sectionHalfHeight = section.SectionHeight/2.0f;
+        var sectionHalfHeight = section.SectionHeight / 2.0f;
         var sectionBottom = sectionYPos - sectionHalfHeight;
         var sectionTop = sectionYPos + sectionHalfHeight;
 
         if (section != null && playerYPos >= sectionBottom && playerYPos <= sectionTop)
         {
-          newSectionIndex= sectionIndex;
+          newSectionIndex = sectionIndex;
           break;
         }
       }
@@ -199,16 +205,16 @@ public class PlayerActorController : MonoBehaviour
         var playerYPos = gameObject.transform.position.y;
         var playerZPos = gameObject.transform.position.z;
         var sectionXPos = section.SectionWorldCenter.x;
-        var sectionHalfWidth = section.SectionWidth/2.0f;
+        var sectionHalfWidth = section.SectionWidth / 2.0f;
         var sectionLeft = sectionXPos - sectionHalfWidth;
         var sectionRight = sectionXPos + sectionHalfWidth;
-        bool wantsTeleport= false;
+        bool wantsTeleport = false;
 
-        var newPlayerXPos= playerXPos;
+        var newPlayerXPos = playerXPos;
         if (playerXPos < sectionLeft)
         {
-          newPlayerXPos= sectionRight - 0.1f;
-          wantsTeleport= true;
+          newPlayerXPos = sectionRight - 0.1f;
+          wantsTeleport = true;
         }
         else if (playerXPos > sectionRight)
         {
@@ -239,7 +245,7 @@ public class PlayerActorController : MonoBehaviour
     for (int i = 0; i < overlapCount; ++i)
     {
       var c = _slapColliders[i];
-      ISlappable slappable = c.GetComponent<ISlappable>();
+      ISlappable slappable = c.GetComponentInParent<ISlappable>();
       if (slappable != null)
       {
         slappable.ReceiveSlap(transform.position);

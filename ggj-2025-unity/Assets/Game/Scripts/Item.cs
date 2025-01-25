@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Item : MonoBehaviour
 {
   public float GumMassValue = 0.25f;
+  public Rigidbody Rigidbody => _rb;
 
   [SerializeField] private Rigidbody _rb = null;
 
