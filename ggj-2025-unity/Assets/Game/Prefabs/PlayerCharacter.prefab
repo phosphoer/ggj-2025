@@ -872,6 +872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BubbleShrinkSpeed: 0.2
   BubbleFloatPower: 0.35
+  ThrowStrength: 15
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}
   _interaction: {fileID: 833507523520657284}
@@ -880,6 +881,7 @@ MonoBehaviour:
   _slapMask:
     serializedVersion: 2
     m_Bits: 65
+  _throwUIPrefab: {fileID: 7875016763089322057, guid: ff13ca27cf63f4441affe70bc50c0662, type: 3}
 --- !u!114 &8824695059088403173
 MonoBehaviour:
   m_ObjectHideFlags: 0

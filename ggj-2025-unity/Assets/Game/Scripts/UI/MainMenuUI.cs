@@ -4,21 +4,38 @@ using UnityEngine.UI;
 public class MainMenuUI : UIPageBase
 {
   [SerializeField]
-  private Button _buttonNewSinglePlayerGame = null;
+  private MenuItemUI _buttonNewSinglePlayerGame = null;
 
   [SerializeField]
-  private Button _buttonNewMultiPlayerGame = null;
+  private MenuItemUI _buttonNewMultiPlayerGame = null;
 
   [SerializeField]
-  private Button _buttonQuit = null;
+  private MenuItemUI _buttonQuit = null;
 
   protected override void Awake()
   {
     base.Awake();
-    _buttonNewSinglePlayerGame.onClick.AddListener(OnNewGameSinglePlayerGameClicked);
-    _buttonNewMultiPlayerGame.onClick.AddListener(OnNewGameMultiPlayerGameClicked);
-    _buttonNewMultiPlayerGame.onClick.AddListener(OnQuitGameClicked);
+    _buttonNewSinglePlayerGame.Activated+= OnNewGameSinglePlayerGameClicked;
+    _buttonNewMultiPlayerGame.Activated+= OnNewGameMultiPlayerGameClicked;
+    _buttonQuit.Activated+= OnQuitGameClicked;
   }
+
+#if UNITY_EDITOR
+  void Update()
+  {
+    // Detect if the spacebar is pressed down
+    if (Input.GetKeyDown(KeyCode.S))
+    {
+      OnNewGameSinglePlayerGameClicked();
+    }
+
+    // Detect if the W key is being held down
+    if (Input.GetKey(KeyCode.M))
+    {
+      OnNewGameMultiPlayerGameClicked();
+    }
+  }
+#endif 
 
   public void OnNewGameSinglePlayerGameClicked()
   {

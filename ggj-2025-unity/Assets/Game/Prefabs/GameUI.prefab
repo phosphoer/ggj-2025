@@ -70,6 +70,8 @@ GameObject:
   - component: {fileID: 5690659047286678396}
   - component: {fileID: 1237906645589319142}
   - component: {fileID: 4129168483954183535}
+  - component: {fileID: 5808839563032880124}
+  - component: {fileID: 407208710691188858}
   m_Layer: 0
   m_Name: GameUI
   m_TagString: Untagged
@@ -106,7 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5145f2e9622724dd2b5491782bbc690e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pagePrefabs: []
+  _pagePrefabs:
+  - {fileID: 1351525573080044443, guid: ec7be75ac72555c49a330f9f2840e97a, type: 3}
   _pageRoot: {fileID: 690181991929829367}
   _uiCamera: {fileID: 5780855925614026939}
 --- !u!114 &4129168483954183535
@@ -123,6 +126,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemTemplate: {fileID: 9060337262401857787}
   _rootCanvas: {fileID: 891666803584322154}
+--- !u!114 &5808839563032880124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319990140881609378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!114 &407208710691188858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319990140881609378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1 &4992953778720195388
 GameObject:
   m_ObjectHideFlags: 0
