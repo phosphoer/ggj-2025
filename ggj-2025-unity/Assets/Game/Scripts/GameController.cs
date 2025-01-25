@@ -6,6 +6,7 @@ public class GameController : Singleton<GameController>
 {
   [SerializeField]
   private LevelGenerator _levelManager;
+  public LevelGenerator LevelManager => _levelManager;
 
   [SerializeField]
   private LevelCameraController _cameraController;
@@ -52,7 +53,7 @@ public class GameController : Singleton<GameController>
     _cameraController.StartRising();
 
     // Start raising the Lava
-    _lavaController.StartRising();
+    //_lavaController.StartRising();
   }
 
   void SpawnPlayers()
