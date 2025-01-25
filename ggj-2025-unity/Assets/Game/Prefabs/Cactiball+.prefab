@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4451345451021126728}
   - component: {fileID: 8970600465562481787}
   - component: {fileID: 6079765574516831324}
-  - component: {fileID: 3050257344871245221}
   m_Layer: 0
   m_Name: Cactiball+
   m_TagString: Untagged
@@ -63,34 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GumMassValue: -0.4
-  _rb: {fileID: 3050257344871245221}
---- !u!54 &3050257344871245221
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8196038021878220346}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0.1
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _rb: {fileID: 7991037513284375558}
 --- !u!1001 &1072489621347027847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +111,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6079765574516831324, guid: 4c18434ef4b3d174e8d5403f6890d278, type: 3}
+      propertyPath: _rb
+      value: 
+      objectReference: {fileID: 7991037513284375558}
     - target: {fileID: 8196038021878220346, guid: 4c18434ef4b3d174e8d5403f6890d278, type: 3}
       propertyPath: m_Name
       value: CactusBall
@@ -147,6 +123,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8196038021878220346, guid: 4c18434ef4b3d174e8d5403f6890d278, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7991037513284375558}
     - targetCorrespondingSourceObject: {fileID: 4863305446855404762, guid: 4c18434ef4b3d174e8d5403f6890d278, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5385975279747343532}
@@ -182,3 +161,35 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.303648
   m_Center: {x: -0.0042266846, y: 0.26126283, z: 0}
+--- !u!1 &9177230519523036605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8196038021878220346, guid: 4c18434ef4b3d174e8d5403f6890d278, type: 3}
+  m_PrefabInstance: {fileID: 1072489621347027847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &7991037513284375558
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9177230519523036605}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0.1
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
