@@ -245,7 +245,7 @@ public class PlayerActorController : MonoBehaviour
     for (int i = 0; i < overlapCount; ++i)
     {
       var c = _slapColliders[i];
-      ISlappable slappable = c.GetComponent<ISlappable>();
+      ISlappable slappable = c.GetComponentInParent<ISlappable>();
       if (slappable != null)
       {
         slappable.ReceiveSlap(transform.position);
