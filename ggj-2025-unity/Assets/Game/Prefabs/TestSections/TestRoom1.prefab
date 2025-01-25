@@ -511,11 +511,11 @@ PrefabInstance:
     - target: {fileID: 7543485776639415950, guid: 4c3dcd5837e6a7646ade22607d8c58e3, type: 3}
       propertyPath: pointA
       value: 
-      objectReference: {fileID: 209665622060498463}
+      objectReference: {fileID: 5677489531841448230}
     - target: {fileID: 7543485776639415950, guid: 4c3dcd5837e6a7646ade22607d8c58e3, type: 3}
       propertyPath: pointB
       value: 
-      objectReference: {fileID: 6822278776992358826}
+      objectReference: {fileID: 7147899245639549624}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -581,11 +581,11 @@ PrefabInstance:
     - target: {fileID: 7543485776639415950, guid: 4c3dcd5837e6a7646ade22607d8c58e3, type: 3}
       propertyPath: pointA
       value: 
-      objectReference: {fileID: 209665622060498463}
+      objectReference: {fileID: 4865751224161006900}
     - target: {fileID: 7543485776639415950, guid: 4c3dcd5837e6a7646ade22607d8c58e3, type: 3}
       propertyPath: pointB
       value: 
-      objectReference: {fileID: 6822278776992358826}
+      objectReference: {fileID: 3776947161261148802}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1295,11 +1295,11 @@ PrefabInstance:
     - target: {fileID: 7543485776639415950, guid: 4c3dcd5837e6a7646ade22607d8c58e3, type: 3}
       propertyPath: pointA
       value: 
-      objectReference: {fileID: 5677489531841448230}
+      objectReference: {fileID: 209665622060498463}
     - target: {fileID: 7543485776639415950, guid: 4c3dcd5837e6a7646ade22607d8c58e3, type: 3}
       propertyPath: pointB
       value: 
-      objectReference: {fileID: 7147899245639549624}
+      objectReference: {fileID: 6822278776992358826}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
