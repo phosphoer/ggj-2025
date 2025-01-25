@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelSection : MonoBehaviour
@@ -10,15 +11,15 @@ public class LevelSection : MonoBehaviour
     [SerializeField]
     private PlayerSpawnPoint[] _playerSpawns;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public List<PlayerSpawnPoint> GatherAvailablePlayerSpawners()
     {
-        
-    }
+        int numSpawnPoints = _playerSpawns.Length;
+        var result = new List<PlayerSpawnPoint>();
+        for (int spawnIndex= 0; spawnIndex < numSpawnPoints; ++spawnIndex)
+        {
+            result.Add(_playerSpawns[spawnIndex]);
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return result;
     }
 }

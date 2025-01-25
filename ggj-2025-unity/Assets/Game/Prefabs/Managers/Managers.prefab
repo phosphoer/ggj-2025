@@ -107,6 +107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 9052310861224840221}
   _cameraController: {fileID: 7567264333900629455}
+  _playerPrefab: {fileID: 3137277098965579114, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
+  _desiredPlayerCount: 1
 --- !u!114 &7567264333900629455
 MonoBehaviour:
   m_ObjectHideFlags: 0

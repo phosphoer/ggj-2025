@@ -12,7 +12,12 @@ public class PlayerActorController : MonoBehaviour
 
   private void Awake()
   {
-    _playerInput = Rewired.ReInput.players.GetPlayer(0);
+    SetPlayerInput(0);
+  }
+
+  public void SetPlayerInput(int playerIndex)
+  {
+    _playerInput = Rewired.ReInput.players.GetPlayer(playerIndex);
   }
 
   private void OnEnable()
