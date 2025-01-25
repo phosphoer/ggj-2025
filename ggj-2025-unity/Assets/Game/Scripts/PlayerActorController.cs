@@ -10,9 +10,16 @@ public class PlayerActorController : MonoBehaviour
   private Item _heldItem;
   private float _bubbleGumMass;
 
+  public void SetGumMass(float gumAmount)
+  {
+    _bubbleGumMass = gumAmount;
+    _playerAnimation.SetGumMass(gumAmount);
+  }
+
   private void Awake()
   {
     _playerInput = Rewired.ReInput.players.GetPlayer(0);
+    SetGumMass(0);
   }
 
   private void OnEnable()
@@ -35,6 +42,7 @@ public class PlayerActorController : MonoBehaviour
 
     _actor.MoveAxis = Vector2.right * inputMoveAxis;
     _playerAnimation.MoveAnimSpeed = Mathfx.Damp(_playerAnimation.MoveAnimSpeed, Mathf.Abs(inputMoveAxis), 0.25f, dt * 5);
+    _playerAnimation.IsGrounded = _actor.Motor.GroundingStatus.IsStableOnGround;
 
     if (inputJumpButton)
     {
@@ -63,6 +71,7 @@ public class PlayerActorController : MonoBehaviour
         _playerAnimation.Chew();
         if (_heldItem.Chew(0.1f))
         {
+          SetGumMass(_bubbleGumMass + 1);
           Destroy(_heldItem.gameObject);
         }
       }

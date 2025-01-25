@@ -2,13 +2,20 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+  public bool IsGrounded { get; set; }
+
   public float BiteAnimSpeed = 1;
   public float BiteAnimAngle = 15;
   public float MoveAnimSpeed = 0;
   public float KeyRotateSpeed = 90;
+  public float FootStepAngle = 60;
+  public float FootStepSpeed = 10;
+  public float HeadBobScale = 0.2f;
+  public float BodyBobScale = 0.2f;
 
   [SerializeField] private Transform _visualRoot = null;
   [SerializeField] private Transform _headRoot = null;
+  [SerializeField] private Transform _mouthAnchor = null;
   [SerializeField] private Transform _jawUpper = null;
   [SerializeField] private Transform _jawLower = null;
   [SerializeField] private Transform _keyRoot = null;
@@ -17,16 +24,25 @@ public class PlayerAnimation : MonoBehaviour
   [SerializeField] private Transform _footTipLeft = null;
   [SerializeField] private Transform _footTipRight = null;
   [SerializeField] private Transform _mouthItemRoot = null;
+  [SerializeField] private Transform _gumMassRoot = null;
 
   private float _biteAnimTimer;
   private float _chewAmount;
+  private float _currentGumMass;
   private float _walkAnimTimer;
+  private float _jumpTimer;
+  private Vector3 _gumMassLocalPos;
   private Item _mouthItem;
 
   public void HoldItem(Item item)
   {
     _mouthItem = item;
     item.transform.parent = _mouthItemRoot;
+  }
+
+  public void SetGumMass(float gumMass)
+  {
+    _currentGumMass = gumMass;
   }
 
   public void Chew()
@@ -38,23 +54,37 @@ public class PlayerAnimation : MonoBehaviour
   {
     _footLeft.localRotation = Quaternion.Euler(60, 0, 0);
     _footRight.localRotation = Quaternion.Euler(60, 0, 0);
+    _jumpTimer = 0.5f;
+  }
+
+  private void Awake()
+  {
+    _gumMassLocalPos = _gumMassRoot.localPosition;
+  }
+
+  private void Start()
+  {
+    _gumMassRoot.localScale = Vector3.one * _currentGumMass;
   }
 
   private void Update()
   {
     float dt = Time.deltaTime;
 
+    _jumpTimer -= dt;
+
     _keyRoot.Rotate(KeyRotateSpeed * dt, 0, 0, Space.Self);
 
-    if (MoveAnimSpeed > 0)
+    Vector3 gumMassScale = Vector3.one * _currentGumMass;
+    _gumMassRoot.localScale = Mathfx.Damp(_gumMassRoot.localScale, gumMassScale, 0.25f, dt);
+
+    if (MoveAnimSpeed > 0 && IsGrounded && _jumpTimer <= 0)
     {
-      _walkAnimTimer += dt * MoveAnimSpeed * 10;
-      float footAngleLeft = Mathf.Sin(_walkAnimTimer) * 40;
-      float footAngleRight = Mathf.Sin(_walkAnimTimer) * -40;
-      Quaternion footRotLeft = Quaternion.Euler(footAngleLeft, 0, 0);
-      Quaternion footRotRight = Quaternion.Euler(footAngleRight, 0, 0);
-      _footLeft.localRotation = Mathfx.Damp(_footLeft.localRotation, footRotLeft, 0.25f, dt * 10);
-      _footRight.localRotation = Mathfx.Damp(_footRight.localRotation, footRotRight, 0.25f, dt * 10);
+      _walkAnimTimer += dt * MoveAnimSpeed * FootStepSpeed;
+      float footAngleLeft = Mathf.Sin(_walkAnimTimer) * FootStepAngle;
+      float footAngleRight = Mathf.Sin(_walkAnimTimer) * -FootStepAngle;
+      _footLeft.localRotation = Quaternion.Euler(footAngleLeft, 0, 0);
+      _footRight.localRotation = Quaternion.Euler(footAngleRight, 0, 0);
 
       float footTipLeftPos = _footTipLeft.position.y - _visualRoot.position.y;
       float footTipRightPos = _footTipRight.position.y - _visualRoot.position.y;
@@ -63,18 +93,21 @@ public class PlayerAnimation : MonoBehaviour
       Vector3 footOffsetPos = Vector3.up * footOffsetHeight;
       _visualRoot.localPosition = Mathfx.Damp(_visualRoot.localPosition, footOffsetPos, 0.25f, dt * 10);
 
-      float bobHeight = Mathf.Abs(Mathf.Sin(_walkAnimTimer)) * 0.75f;
-      Vector3 bobPos = Vector3.up * bobHeight;
-      _headRoot.localPosition = bobPos;
-      // _headRoot.localPosition = Mathfx.Damp(_headRoot.localPosition, bobPos, 0.25f, dt * 10);
+      float bobHeightHead = Mathf.Abs(Mathf.Sin(_walkAnimTimer)) * HeadBobScale;
+      float bobHeightBody = Mathf.Sin(_walkAnimTimer * 2 + 0.2f) * BodyBobScale * Mathf.Clamp01(_currentGumMass);
+
+      _gumMassRoot.localPosition = _gumMassLocalPos + Vector3.up * bobHeightBody;
+      _headRoot.position = _mouthAnchor.position + Vector3.up * bobHeightHead;
     }
     else
     {
       _footLeft.localRotation = Mathfx.Damp(_footLeft.localRotation, Quaternion.identity, 0.25f, dt * 3);
       _footRight.localRotation = Mathfx.Damp(_footRight.localRotation, Quaternion.identity, 0.25f, dt * 3);
       _visualRoot.localPosition = Mathfx.Damp(_visualRoot.localPosition, Vector3.zero, 0.25f, dt * 3);
-      _headRoot.localPosition = Mathfx.Damp(_headRoot.localPosition, Vector3.zero, 0.25f, dt * 3);
       _walkAnimTimer = 0;
+
+      _headRoot.position = Mathfx.Damp(_headRoot.position, _mouthAnchor.position, 0.25f, dt);
+      _gumMassRoot.localPosition = Mathfx.Damp(_gumMassRoot.localPosition, _gumMassLocalPos, 0.25f, dt);
     }
 
     if (_mouthItem)
