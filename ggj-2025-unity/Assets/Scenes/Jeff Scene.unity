@@ -173,11 +173,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7567264333900629455, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
       propertyPath: _riseRate
-      value: 0.35
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493794703140864182, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
+      propertyPath: _riseRate
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8737514908485825336, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
       propertyPath: _desiredPlayerCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052310861224840221, guid: 53c83c47ed9124763a8354bd019386c3, type: 3}
+      propertyPath: _numLevels
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

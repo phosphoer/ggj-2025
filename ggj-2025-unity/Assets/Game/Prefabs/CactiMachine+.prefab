@@ -138,8 +138,8 @@ MonoBehaviour:
   GumballPrefabs:
   - {fileID: 6079765574516831324, guid: 493c771528927994491597159bda94cb, type: 3}
   SpawnCountRange:
-    MinValue: 2
-    MaxValue: 5
+    MinValue: 1
+    MaxValue: 1
   SpawnForceRange:
     MinValue: 1
     MaxValue: 2
