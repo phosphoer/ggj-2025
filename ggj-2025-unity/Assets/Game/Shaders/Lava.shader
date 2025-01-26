@@ -109,11 +109,6 @@ Shader "Custom/Lava"
       float3 bitangent = float3(0, height2 - height, 2);
       float3 worldNormal = normalize(cross(bitangent, tangent));
 
-      // float3 ddxPos = ddx(i.worldPos);
-      // float3 ddyPos = ddy(i.worldPos) * _ProjectionParams.x;
-      // float3 worldNormal = normalize(cross(ddxPos, ddyPos));
-      // float3 worldNormal = i.worldNormal;
-
       float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);
       float viewDot = dot(viewDir, normalize(worldNormal));
       float fresnel = saturate(pow(1 - abs(viewDot), _FresnelPower));
