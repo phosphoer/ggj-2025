@@ -4,12 +4,24 @@ public class WormActorController : MonoBehaviour
 {
   public Rewired.Player PlayerInput => _playerInput;
 
-  [SerializeField] private ActorController _actor = null;
-  //[SerializeField] private WormAnimation _wormAnimation = null;
+  public float MuckMovementSpeed = 5.0f;
+  public float AirMovementSpeed = 5.0f;
+  public float JumpSpeed = 5.0f;
+  public float GravityScalar = 5.0f; 
+  public float Drag = 1.0f;
 
   public event System.Action<WormActorController, PlayerActorController> OnWormTouchedPlayer;
 
   private Rewired.Player _playerInput;
+  private Vector3 _moveAxis = Vector3.zero;
+  private Vector3 _velocity= Vector3.zero;
+
+  public enum eMovementState
+  {
+    muckMovement,
+    airborne
+  }
+  eMovementState _movementMode = eMovementState.muckMovement;
 
   private void Awake()
   {
@@ -34,34 +46,123 @@ public class WormActorController : MonoBehaviour
 
     // Gather input state
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
-    bool inputChewButton = _playerInput.GetButtonDown(RewiredConsts.Action.Chew);
-    Vector2 inputThrowAxis = new Vector2(
-      _playerInput.GetAxis(RewiredConsts.Action.ThrowHorizontal),
+    bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
+    Vector2 inputJumpAxis = new Vector2(
+      -_playerInput.GetAxis(RewiredConsts.Action.ThrowHorizontal),
       _playerInput.GetAxis(RewiredConsts.Action.ThrowVertical));
 
-    // Apply movement state to actor
-    _actor.MoveAxis = Vector2.right * inputMoveAxis;
+    // Update the move axis
+    _moveAxis = Vector2.left * inputMoveAxis;
 
-    // Make the worm face their movement direction
-    var currentRotation= _actor.Motor.Transform.rotation;
-    var moveDirection= Mathf.Abs(inputMoveAxis) > 0.01f ? Vector3.Normalize(_actor.MoveAxis) : Vector3.forward;
-    var targetRotation= Quaternion.LookRotation(moveDirection);
-    _actor.Motor.RotateCharacter(Mathfx.Damp(currentRotation, targetRotation, 0.25f, dt * 5));
+    if (inputJumpButton && _movementMode == eMovementState.muckMovement)
+    {
+      Jump(new Vector3(inputJumpAxis.x, inputJumpAxis.y, 0.0f));
+    }
 
-    // Keep the character clamped above the lava plane
-    var lavaYPosition = GameController.Instance.LavaController.LavaYPosition;
-    var clampedPosition= _actor.Motor.Transform.position;
-    clampedPosition.y= Mathf.Max(clampedPosition.y, lavaYPosition);
-    _actor.Motor.SetPosition(clampedPosition);
+    // Update the velocity and position based on movement mode
+    switch(_movementMode)
+    {
+    case eMovementState.muckMovement:
+      UpdateMuckMovement(dt);
+      break;
+    case eMovementState.airborne:
+      UpdateJumpMovement(dt);
+      break;
+    }
 
-    // Worm always is ungrounded
-    _actor.Motor.ForceUnground();
+    // Keep the worm at or above the muck
+    ClampYPositionAboveMuck();
 
     // Teleporting
-    CheckSideTeleport();
+    ClompToSides();
   }
 
-  private void CheckSideTeleport()
+  private void Jump(Vector3 jumpDirection)
+  {
+    var safeJumpDirection= Mathfx.Approx(jumpDirection, Vector3.zero, 0.01f) ? Vector3.up : Vector3.Normalize(jumpDirection);
+    _velocity = safeJumpDirection * JumpSpeed;
+
+    _movementMode = eMovementState.airborne;
+  }
+
+  private void UpdateMuckMovement(float dt)
+  {
+    // Update the movement velocity
+    _velocity= _moveAxis * MuckMovementSpeed;
+
+    // Update the worm position
+    ApplyVelocityToPosition(dt);
+
+    // Face toward your velocity
+    UpdateFacing(dt);
+  }
+
+  private void ApplyVelocityToPosition(float dt)
+  {
+    // Update the worm position
+    var newPosition = GetWormPosition() + _velocity * dt;
+    SetWormPosition(newPosition);
+  }
+
+  private void UpdateJumpMovement(float dt)
+  {
+    // Update the movement velocity
+    _velocity += _moveAxis*AirMovementSpeed*dt;
+    
+    // Apply gravity
+    _velocity += Physics.gravity * (dt * GravityScalar);
+    _velocity *= 1f / (1f + Drag * dt);
+
+    ApplyVelocityToPosition(dt);
+
+    // Face toward your velocity
+    UpdateFacing(dt);
+
+    bool isFalling = _velocity.y < 0;
+    Vector3 wormPosition = GetWormPosition();
+    float groundedY = GetMuckPlaneY();
+    if (wormPosition.y <= groundedY && isFalling)
+    {
+      _movementMode = eMovementState.muckMovement;
+    }
+  }
+
+  private void UpdateFacing(float dt)
+  {
+    // Make the worm face their movement direction
+    var currentRotation = gameObject.transform.rotation;
+    var currentFacing = currentRotation * Vector3.forward;
+    var targetFacing= Mathfx.Approx(_velocity, Vector3.zero, 0.01f) ? currentFacing : Vector3.Normalize(_velocity);
+    var targetRotation= Quaternion.LookRotation(targetFacing);
+    var blendedRotation= Mathfx.Damp(currentRotation, targetRotation, 0.25f, dt * 5);
+
+    gameObject.transform.rotation = blendedRotation;
+  }
+
+  private float GetMuckPlaneY()
+  {
+    return GameController.Instance.LavaController.LavaYPosition;
+  }
+
+  private Vector3 GetWormPosition()
+  {
+    return gameObject.transform.position;
+  }
+
+  private void SetWormPosition(Vector3 newPosition)
+  {
+    gameObject.transform.position= newPosition;
+  }
+
+  private void ClampYPositionAboveMuck()
+  {
+    var clampedPosition = GetWormPosition();
+
+    clampedPosition.y = Mathf.Max(clampedPosition.y, GetMuckPlaneY());
+    gameObject.transform.position = clampedPosition;
+  }
+
+  private void ClompToSides()
   {
     if (GameController.Instance != null)
     {
@@ -75,30 +176,24 @@ public class WormActorController : MonoBehaviour
       var sectionHalfWidth = section.SectionWidth / 2.0f;
       var sectionLeft = sectionXPos - sectionHalfWidth;
       var sectionRight = sectionXPos + sectionHalfWidth;
-      bool wantsTeleport = false;
+      bool wantsClamp = false;
 
       var newPlayerXPos = playerXPos;
       if (playerXPos < sectionLeft)
       {
-        newPlayerXPos = sectionRight - 0.1f;
-        wantsTeleport = true;
+        newPlayerXPos = sectionLeft;
+        wantsClamp = true;
       }
       else if (playerXPos > sectionRight)
       {
-        newPlayerXPos = sectionLeft + 0.1f;
-        wantsTeleport = true;
+        newPlayerXPos = sectionRight;
+        wantsClamp = true;
       }
 
-      if (wantsTeleport)
+      if (wantsClamp)
       {
-        Vector3 newLocation = new Vector3(newPlayerXPos, playerYPos, playerZPos);
-        TeleportWorm(newLocation);
+        SetWormPosition(new Vector3(newPlayerXPos, playerYPos, playerZPos));
       }
     }
-  }
-
-  private void TeleportWorm(Vector3 NewLocation)
-  {
-    _actor.Motor.SetPosition(NewLocation);
   }
 }

@@ -4,6 +4,10 @@ public class LavaController : MonoBehaviour
 {
   [SerializeField]
   private float _riseRate = 0.01f;
+  public float RiseRate { 
+    get { return _riseRate; }
+    set { _riseRate = value; }
+  }
 
   public float LavaYPosition => gameObject.transform.position.y;
 

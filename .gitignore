@@ -44,6 +44,5 @@ ggj-2025-unity/Assets/Resources/buildhash.txt
 ggj-2025-unity/Assets/Resources/buildhash.txt.meta
 ggj-2025-unity/Assets/Resources/buildtimestamp.txt
 ggj-2025-unity/Assets/Resources/buildtimestamp.txt.meta
-ggj-2025-unity/Assembly-CSharp.csproj
-ggj-2025-unity/Assembly-CSharp-Editor.csproj
+ggj-2025-unity/*.csproj
 ggj-2025-unity/ggj-2025-unity.sln

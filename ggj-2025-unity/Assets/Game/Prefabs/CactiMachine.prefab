@@ -51,8 +51,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.63838744, y: 2.3548832, z: 2.7744665}
-  m_Center: {x: 0.070141435, y: -1.6380365, z: 0.887234}
+  m_Size: {x: 1.0722477, y: 2.3548832, z: 2.7744665}
+  m_Center: {x: -0.050329864, y: -1.6380365, z: 0.887234}
 --- !u!1 &5319993517196299199
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   - {fileID: 6079765574516831324, guid: 493c771528927994491597159bda94cb, type: 3}
   SpawnCountRange:
     MinValue: 1
-    MaxValue: 1
+    MaxValue: 2
   SpawnForceRange:
     MinValue: 1
     MaxValue: 2
@@ -230,6 +230,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6238706804715922573}
     m_Modifications:
+    - target: {fileID: 8049617747119153568, guid: 76633cc4b41235742a3a1736058b4f98, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c96b6ada47b44b468f7017549cc394c, type: 2}
     - target: {fileID: 8409628708315857013, guid: 76633cc4b41235742a3a1736058b4f98, type: 3}
       propertyPath: m_Name
       value: cactus 6

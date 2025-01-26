@@ -54,7 +54,10 @@ public class MenuItemUI : MonoBehaviour,
 
   public object UserData;
   public float HoldToFillTime = 1;
-  [FormerlySerializedAs("HoldToSelect")] public bool HoldToActivate = false;
+  public bool HoldToActivate = false;
+
+  public SoundBank SfxHighlight;
+  public SoundBank SfxActivated;
 
   [SerializeField, Tooltip("Optional")] private Selectable _selectable = null;
   [SerializeField] private bool _isNavigable = true;
@@ -74,6 +77,9 @@ public class MenuItemUI : MonoBehaviour,
   public void Activate()
   {
     Activated?.Invoke();
+
+    if (SfxActivated)
+      AudioManager.Instance.PlaySound(SfxActivated);
   }
 
   public void SetFillAmount(float fillT)
@@ -84,6 +90,9 @@ public class MenuItemUI : MonoBehaviour,
 
   public void SetHighlighted(bool isHighlighted)
   {
+    if (!_isHighlighted && SfxHighlight)
+      AudioManager.Instance.PlaySound(SfxHighlight);
+
     _isHighlighted = isHighlighted;
     if (_highlightVisual != null)
       _highlightVisual.SetActive(_isHighlighted);

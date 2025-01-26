@@ -11,6 +11,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
+  public float AttackCooldown = 0.25f;
 
   public SoundBank SfxFootstep;
   public SoundBank SfxJump;
@@ -22,6 +23,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public SoundBank SfxBubbleDeflate;
   public SoundBank SfxBubblePop;
   public SoundBank SfxSlap;
+  public SoundBank SfxReceiveSlap;
+  public SoundBank SfxThrow;
 
   [SerializeField] private ActorController _actor = null;
   [SerializeField] private PlayerAnimation _playerAnimation = null;
@@ -35,6 +38,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private Item _heldItem;
   private float _bubbleGumMass;
   private float _bubbleStoredMass;
+  private float _attackCooldownTimer;
   private int _levelSectionIndex = 0;
   private bool _didBubbleThisJump;
   private bool _isThrowing;
@@ -112,6 +116,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     float dt = Time.deltaTime;
 
+    _attackCooldownTimer -= dt;
+
     // Gather input state
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
@@ -173,6 +179,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _bubbleStoredMass = _bubbleGumMass;
         _didBubbleThisJump = true;
         _isInBubbleJump = true;
+        DropItem();
         AudioManager.Instance.PlaySound(gameObject, SfxBubbleInflate);
         SetGumMass(0);
       }
@@ -192,7 +199,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       {
         _interaction.TriggerInteract();
       }
-      else
+      else if (_attackCooldownTimer <= 0)
       {
         Slap();
       }
@@ -394,20 +401,29 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   private void DropItem()
   {
-    _heldItem.Drop();
-    _playerAnimation.DropItem();
-    _heldItem = null;
+    if (_heldItem)
+    {
+      _heldItem.Drop();
+      _playerAnimation.DropItem();
+      _heldItem = null;
+    }
   }
 
   private void ThrowItem(Vector3 throwVec)
   {
-    _playerAnimation.DropItem();
-    _heldItem.Throw(throwVec);
-    _heldItem = null;
+    if (_heldItem)
+    {
+      _playerAnimation.DropItem();
+      _heldItem.Throw(throwVec);
+      _heldItem = null;
+
+      AudioManager.Instance.PlaySound(gameObject, SfxThrow);
+    }
   }
 
   private void Slap()
   {
+    _attackCooldownTimer = AttackCooldown;
     _playerAnimation.Slap();
 
     if (SfxSlap)
@@ -431,6 +447,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     {
       DropItem();
     }
+
+    AudioManager.Instance.PlaySound(gameObject, SfxReceiveSlap);
 
     PopBubble();
 
