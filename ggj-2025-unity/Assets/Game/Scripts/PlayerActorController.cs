@@ -15,7 +15,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public float ThrowStrength = 15;
   public float AttackCooldown = 0.25f;
   public float LaunchPower = 10;
-  public float LaunchSpinRate= 90;
+  public float LaunchSpinRate = 90;
 
   public SoundBank SfxFootstep;
   public SoundBank SfxJump;
@@ -37,6 +37,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private float _slapRadius = 0.5f;
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
+  [SerializeField] private ParticleSystem _fxSplashPrefab = null;
 
   private Rewired.Player _playerInput;
   private Item _heldItem;
@@ -57,7 +58,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private ThrowUI _throwUI;
   private Collider[] _slapColliders = new Collider[4];
   private bool _hasStartedLaunch = false;
-  private Vector3 _launchVelocity= Vector3.zero;
+  private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
 
   public void SetGumMass(float gumAmount)
@@ -100,6 +101,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     //TODO: Play death FX
     //TODO: Play death audio
+
+    Instantiate(_fxSplashPrefab, transform.position, _fxSplashPrefab.transform.rotation);
 
     // Clean up the player game object
     Destroy(gameObject);
@@ -461,8 +464,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     DisableMovement();
 
-    _launchVelocity= new Vector3(0, 0, LaunchPower);
-    _hasStartedLaunch= true;
+    _launchVelocity = new Vector3(0, 0, LaunchPower);
+    _hasStartedLaunch = true;
   }
 
   private void ApplyLaunchMovement(float dt)
@@ -477,7 +480,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     // Upate the position
     var newPosition = transform.position + _launchVelocity * dt;
-    transform.position= newPosition;
+    transform.position = newPosition;
   }
 
   public void DisableMovement()
