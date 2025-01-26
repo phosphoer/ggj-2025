@@ -1,18 +1,42 @@
 {
-    "name": "8BitGoose.AsciiFBXExporter.Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:e7803306176545b449f23372db778e78"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "8BitGoose.AsciiFBXExporter.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:e7803306176545b449f23372db778e78"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [
+    "Android",
+    "Editor",
+    "EmbeddedLinux",
+    "iOS",
+    "LinuxStandalone64",
+    "LinuxStandalone64Server",
+    "CloudRendering",
+    "macOSStandalone",
+    "macOSStandaloneServer",
+    "Switch",
+    "PS4",
+    "PS5",
+    "QNX",
+    "ReservedCFE",
+    "tvOS",
+    "WSA",
+    "VisionOS",
+    "WebGL",
+    "WindowsStandalone32",
+    "WindowsStandalone64",
+    "WindowsStandalone32Server",
+    "WindowsStandalone64Server",
+    "GameCoreXboxOne",
+    "XboxOne",
+    "GameCoreScarlett"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

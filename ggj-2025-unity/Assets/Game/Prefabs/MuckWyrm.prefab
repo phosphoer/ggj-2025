@@ -1011,7 +1011,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b781c2d5480ffe49875bbf45cc54edb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actor: {fileID: 0}
+  MuckMovementSpeed: 20
+  AirMovementSpeed: 20
+  JumpSpeed: 55
+  GravityScalar: 5
+  Drag: 1
 --- !u!1 &5225410373419179795
 GameObject:
   m_ObjectHideFlags: 0

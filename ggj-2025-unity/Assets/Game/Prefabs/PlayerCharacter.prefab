@@ -873,6 +873,7 @@ MonoBehaviour:
   BubbleShrinkSpeed: 0.2
   BubbleFloatPower: 0.35
   ThrowStrength: 15
+  AttackCooldown: 0.25
   SfxFootstep: {fileID: 11400000, guid: d6fd6441d745d4ba6979912cd834b526, type: 2}
   SfxJump: {fileID: 11400000, guid: 63fd509e24c1c484cae5245cbd0dd20b, type: 2}
   SfxLand: {fileID: 11400000, guid: 7d1b7f8f9158641d686d611935ffefa0, type: 2}
@@ -884,6 +885,7 @@ MonoBehaviour:
   SfxBubblePop: {fileID: 11400000, guid: d89460040efc6461d902a0991a5ee9e0, type: 2}
   SfxSlap: {fileID: 11400000, guid: d2c81eee1bd0e4b48b6b31c8ebd11bde, type: 2}
   SfxReceiveSlap: {fileID: 11400000, guid: 2b02d0ef3beb8490fadca4a2598c509c, type: 2}
+  SfxThrow: {fileID: 11400000, guid: b3978bf094883408ea3b7ad5c88d1f05, type: 2}
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}
   _interaction: {fileID: 833507523520657284}
