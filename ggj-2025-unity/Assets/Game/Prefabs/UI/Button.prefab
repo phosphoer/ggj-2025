@@ -307,6 +307,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HoldToFillTime: 1
   HoldToActivate: 0
+  SfxHighlight: {fileID: 11400000, guid: 5f7fe166b59f74f45b9602ceebff92ca, type: 2}
+  SfxActivated: {fileID: 0}
   _selectable: {fileID: 0}
   _isNavigable: 1
   _highlightVisual: {fileID: 1109865123297528217}
