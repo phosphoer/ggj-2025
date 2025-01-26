@@ -25,6 +25,7 @@ public class GameController : Singleton<GameController>
   [SerializeField] private PlayerColors[] _playerColors = null;
 
   public int WinningPlayerID { get; set; } = -1;
+  public float WinningPlayerCountdownTimer { get; set; } = 0;
 
   private bool _isMatchStarted;
   private bool _isSpawningAllowed;
