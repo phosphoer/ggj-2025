@@ -870,6 +870,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 296388959959695306}
+  - component: {fileID: 2934860561157125767}
   m_Layer: 0
   m_Name: MuckWyrm
   m_TagString: Untagged
@@ -893,6 +894,110 @@ Transform:
   - {fileID: 8850713969727421705}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2934860561157125767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155448414146183909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14195323ca9746b6a205342084423a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeadOffsetPos: {x: 0, y: 0, z: 0}
+  HeadOffsetRot: {x: 0, y: 0, z: 0, w: 1}
+  _boneForwardAxis: 2
+  _positionInterpolateSpeed: 100
+  _rotationInterpolateSpeed: 15
+  _poseStiffness: 1
+  _bones:
+  - Name: head
+    Transform: {fileID: 2476284562143886855}
+    Influence: 1
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment00
+    Transform: {fileID: 2493235796837973613}
+    Influence: 0.9898926
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment01
+    Transform: {fileID: 6749715007542659743}
+    Influence: 0.96132815
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment02
+    Transform: {fileID: 1309879539732820613}
+    Influence: 0.9169434
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment03
+    Transform: {fileID: 803872957920513712}
+    Influence: 0.859375
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment04
+    Transform: {fileID: 8128524477732989048}
+    Influence: 0.79125977
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment05
+    Transform: {fileID: 3728189454277403813}
+    Influence: 0.7152344
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment06
+    Transform: {fileID: 3957518060741765480}
+    Influence: 0.6339356
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment07
+    Transform: {fileID: 7680284345111865271}
+    Influence: 0.55
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment08
+    Transform: {fileID: 2999977031613253018}
+    Influence: 0.46606445
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment09
+    Transform: {fileID: 3180650762649812834}
+    Influence: 0.38476562
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment10
+    Transform: {fileID: 7246130894877355813}
+    Influence: 0.30874023
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment11
+    Transform: {fileID: 4226614712017207108}
+    Influence: 0.240625
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment12
+    Transform: {fileID: 5913352308347751644}
+    Influence: 0.18305664
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment13
+    Transform: {fileID: 3053700640781946953}
+    Influence: 0.13867188
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: bodySegment14
+    Transform: {fileID: 2046925457810910922}
+    Influence: 0.11010742
+    EnableClampY: 0
+    ClampYHeight: 0
+  - Name: tailFin
+    Transform: {fileID: 5497608171268427618}
+    Influence: 0.1
+    EnableClampY: 0
+    ClampYHeight: 0
 --- !u!1 &5225410373419179795
 GameObject:
   m_ObjectHideFlags: 0
