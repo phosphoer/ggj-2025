@@ -967,7 +967,7 @@ MonoBehaviour:
   MoveSpeed: 7
   SprintSpeed: 10
   RotateSpeed: 5
-  JumpPower: 14
+  JumpPower: 15
   JumpScalableForwardSpeed: 1
   JumpPostGroundingGraceTime: 0.05
   JumpPreGroundingGraceTime: 0
