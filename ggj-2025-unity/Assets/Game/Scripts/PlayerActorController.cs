@@ -22,6 +22,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public SoundBank SfxBubbleDeflate;
   public SoundBank SfxBubblePop;
   public SoundBank SfxSlap;
+  public SoundBank SfxReceiveSlap;
 
   [SerializeField] private ActorController _actor = null;
   [SerializeField] private PlayerAnimation _playerAnimation = null;
@@ -173,6 +174,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _bubbleStoredMass = _bubbleGumMass;
         _didBubbleThisJump = true;
         _isInBubbleJump = true;
+        DropItem();
         AudioManager.Instance.PlaySound(gameObject, SfxBubbleInflate);
         SetGumMass(0);
       }
@@ -394,16 +396,22 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   private void DropItem()
   {
-    _heldItem.Drop();
-    _playerAnimation.DropItem();
-    _heldItem = null;
+    if (_heldItem)
+    {
+      _heldItem.Drop();
+      _playerAnimation.DropItem();
+      _heldItem = null;
+    }
   }
 
   private void ThrowItem(Vector3 throwVec)
   {
-    _playerAnimation.DropItem();
-    _heldItem.Throw(throwVec);
-    _heldItem = null;
+    if (_heldItem)
+    {
+      _playerAnimation.DropItem();
+      _heldItem.Throw(throwVec);
+      _heldItem = null;
+    }
   }
 
   private void Slap()
@@ -431,6 +439,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     {
       DropItem();
     }
+
+    AudioManager.Instance.PlaySound(gameObject, SfxReceiveSlap);
 
     PopBubble();
 

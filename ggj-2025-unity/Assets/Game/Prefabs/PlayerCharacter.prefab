@@ -882,7 +882,8 @@ MonoBehaviour:
   SfxBubbleInflate: {fileID: 11400000, guid: 7ddb9d284615a49b0bb391f0e012ec79, type: 2}
   SfxBubbleDeflate: {fileID: 11400000, guid: 6cd66502c40b44791b0fc27a58d59ca9, type: 2}
   SfxBubblePop: {fileID: 11400000, guid: d89460040efc6461d902a0991a5ee9e0, type: 2}
-  SfxSlap: {fileID: 0}
+  SfxSlap: {fileID: 11400000, guid: d2c81eee1bd0e4b48b6b31c8ebd11bde, type: 2}
+  SfxReceiveSlap: {fileID: 11400000, guid: 2b02d0ef3beb8490fadca4a2598c509c, type: 2}
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}
   _interaction: {fileID: 833507523520657284}
