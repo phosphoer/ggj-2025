@@ -1,58 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5481123601483392541
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2115736250184655946}
-  - component: {fileID: 2598949323680224690}
-  m_Layer: 0
-  m_Name: LowerCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2115736250184655946
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5481123601483392541}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.38, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2868362734430989696}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2598949323680224690
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5481123601483392541}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 20.876543, y: 1.3328648, z: 1.7681499}
-  m_Center: {x: -9.93827, y: -0.16643244, z: 0}
 --- !u!1 &7795049032358388362
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2868362734430989696}
   - component: {fileID: 8484957824175276961}
+  - component: {fileID: 8516549563947381230}
   m_Layer: 0
   m_Name: TrainTrack
   m_TagString: Untagged
@@ -85,7 +33,6 @@ Transform:
   m_Children:
   - {fileID: 20018667894112158}
   - {fileID: 7539527022917511254}
-  - {fileID: 2115736250184655946}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8484957824175276961
@@ -109,6 +56,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 20.929317, y: 0.41727352, z: 1}
   m_Center: {x: -9.964659, y: -1.0294867, z: 0}
+--- !u!114 &8516549563947381230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7795049032358388362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b6e9e2f4924d9e8a2e2397e4635850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &562289843422959733
 PrefabInstance:
   m_ObjectHideFlags: 0
