@@ -5,6 +5,7 @@ public class LavaController : MonoBehaviour
   [SerializeField]
   private float _riseRate = 0.01f;
 
+  public float LavaYPosition => gameObject.transform.position.y;
 
   private Vector3 _initialPosition = Vector3.zero;
 

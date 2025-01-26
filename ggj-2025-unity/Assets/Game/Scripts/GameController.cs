@@ -9,6 +9,7 @@ public class GameController : Singleton<GameController>
 
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
+  [SerializeField] private GameObject _playerWormPrefab;
   [SerializeField] private LavaController _lavaController;
   [SerializeField] private int _desiredPlayerCount = 1;
 
@@ -18,6 +19,8 @@ public class GameController : Singleton<GameController>
   private bool _isSpawningAllowed;
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
   public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
+  private List<WormActorController> _spawnedWorms = new List<WormActorController>();
+  public List<WormActorController> SpawnedWorms => _spawnedWorms;
 
   public enum eGameState
   {
@@ -83,18 +86,18 @@ public class GameController : Singleton<GameController>
   {
     switch (newState)
     {
-      case eGameState.Intro:
-        ShowUI<MainMenuUI>();
-        break;
-      case eGameState.MultiplayerGame:
-        SpawnLevel(_desiredPlayerCount);
-        break;
-      case eGameState.SingleplayerGame:
-        SpawnLevel(1);
-        break;
-      case eGameState.PostGame:
-        ShowUI<PostGameUI>();
-        break;
+    case eGameState.Intro:
+      ShowUI<MainMenuUI>();
+      break;
+    case eGameState.MultiplayerGame:
+      SpawnLevel(_desiredPlayerCount);
+      break;
+    case eGameState.SingleplayerGame:
+      SpawnLevel(1);
+      break;
+    case eGameState.PostGame:
+      ShowUI<PostGameUI>();
+      break;
     }
   }
 
@@ -102,18 +105,18 @@ public class GameController : Singleton<GameController>
   {
     switch (oldState)
     {
-      case eGameState.Intro:
-        HideUI<MainMenuUI>();
-        break;
-      case eGameState.MultiplayerGame:
-      case eGameState.SingleplayerGame:
-        _lavaController.StopRising();
-        _cameraController.StopRising();
-        break;
-      case eGameState.PostGame:
-        ClearLevel();
-        HideUI<PostGameUI>();
-        break;
+    case eGameState.Intro:
+      HideUI<MainMenuUI>();
+      break;
+    case eGameState.MultiplayerGame:
+    case eGameState.SingleplayerGame:
+      _lavaController.StopRising();
+      _cameraController.StopRising();
+      break;
+    case eGameState.PostGame:
+      ClearLevel();
+      HideUI<PostGameUI>();
+      break;
     }
   }
 
@@ -193,6 +196,25 @@ public class GameController : Singleton<GameController>
         _spawnedPlayers.Add(playerController);
       }
     }
+  }
+
+  void SpawnWorm(int playerIndex, Vector3 position, Quaternion rotation)
+  {
+    if (_playerWormPrefab != null)
+    {
+      var initialPosition = new Vector3(position.x, _lavaController.LavaYPosition, position.z);
+      var wormGO = Instantiate(_playerPrefab.gameObject, initialPosition, rotation);
+      var wormController = wormGO.GetComponent<WormActorController>();
+      wormController.SetPlayerIndex(playerIndex);
+
+      wormController.OnWormTouchedPlayer += OnWormTouchedPlayer;
+      _spawnedWorms.Add(wormController);
+    }
+  }
+
+  private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
+  {
+
   }
 
   private void OnPlayerKilled(PlayerActorController playerController)
