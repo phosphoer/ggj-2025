@@ -3,6 +3,7 @@ using UnityEngine;
 public class WormActorController : MonoBehaviour
 {
   public Rewired.Player PlayerInput => _playerInput;
+  public float TransformationGumAmount => _transformationGum;
 
   public float MuckMovementSpeed = 5.0f;
   public float AirMovementSpeed = 5.0f;
@@ -24,6 +25,7 @@ public class WormActorController : MonoBehaviour
   private Vector3 _moveAxis = Vector3.zero;
   private Vector3 _velocity = Vector3.zero;
   private float _transformationTimer = 0;
+  private float _transformationGum;
 
   public enum eMovementState
   {
@@ -184,11 +186,12 @@ public class WormActorController : MonoBehaviour
     }
   }
 
-  public void StartPlayerTransformation()
+  public void StartPlayerTransformation(float gumMass)
   {
     Instantiate(_fxSmokeBurstPrefab, transform.position, _fxSmokeBurstPrefab.transform.rotation);
 
     _transformationTimer = TransformationTime;
+    _transformationGum = gumMass;
     SetMovementState(eMovementState.transforming);
   }
 

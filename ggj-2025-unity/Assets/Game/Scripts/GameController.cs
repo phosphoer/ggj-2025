@@ -331,10 +331,11 @@ public class GameController : Singleton<GameController>
   private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
   {
     // Launch the player off into the background
+    float playerGum = player.GumMassTotal;
     player.ReceiveLaunch();
 
     // Start transforming the worm back into a player
-    worm.StartPlayerTransformation();
+    worm.StartPlayerTransformation(playerGum);
 
     if (_isInCountdown)
     {
@@ -349,10 +350,12 @@ public class GameController : Singleton<GameController>
     Quaternion playerRotation = wormController.transform.rotation;
 
     // Despawn the worm
+    float gumAmount = wormController.TransformationGumAmount;
     DespawnWorm(wormController);
 
     // Spawn the player back at the location
     SpawnPlayerAtLocation(playerIndex, playerPosition, playerRotation);
+    _spawnedPlayers[^1].SetGumMass(gumAmount);
   }
 
   private void OnPlayerTouchedLava(PlayerActorController playerController)

@@ -7,6 +7,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   public Rewired.Player PlayerInput => _playerInput;
   public int PlayerIndex => _playerIndex;
+  public float GumMassTotal => _bubbleGumMass + _bubbleStoredMass;
   public CapsuleCollider PlayerCapsule => _actor.Motor.Capsule;
 
   public float BubbleShrinkSpeed = 0.25f;
