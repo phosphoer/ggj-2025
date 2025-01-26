@@ -15,7 +15,7 @@ public class MainMenuUI : UIPageBase
 
   public void OnPlayClicked()
   {
-    GameController.Instance.SetGameState(GameController.eGameState.MultiplayerGame);
+    GameController.Instance.SetGameState(GameController.eGameState.Game);
   }
 
   public void OnQuitGameClicked()
