@@ -1018,6 +1018,8 @@ MonoBehaviour:
   GravityScalar: 5
   Drag: 1
   TransformationTime: 1.5
+  _fxSmokeBurstPrefab: {fileID: 7160251761879735788, guid: 1c5afc63e667dba4aa6eda1950137a3c, type: 3}
+  _fxMuckSprayPrefab: {fileID: 4403452159097756130, guid: 087656a197a4c224c9476f844bd55df3, type: 3}
 --- !u!135 &8014925201326964454
 SphereCollider:
   m_ObjectHideFlags: 0

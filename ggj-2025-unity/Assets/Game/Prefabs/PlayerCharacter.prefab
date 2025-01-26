@@ -898,6 +898,7 @@ MonoBehaviour:
     m_Bits: 65
   _throwUIPrefab: {fileID: 7875016763089322057, guid: ff13ca27cf63f4441affe70bc50c0662, type: 3}
   _fxSplashPrefab: {fileID: 15562417937997071, guid: be36949ded4124998b6760f3bffe999e, type: 3}
+  fxLaunchPrefab: {fileID: 6435564246925293549, guid: 0b44e2abbf602e941ad34f994a3e04fa, type: 3}
   _mouthGumRenderers:
   - {fileID: 5580493877364411395}
   - {fileID: 5634242868758657125}

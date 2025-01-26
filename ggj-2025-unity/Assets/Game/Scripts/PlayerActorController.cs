@@ -39,6 +39,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
+  [SerializeField] private GameObject _fxLaunchPrefab = null;
   [SerializeField] private Renderer[] _mouthGumRenderers = null;
   [SerializeField] private Renderer[] _gumMassRenderers = null;
   [SerializeField] private Renderer[] _gumBubbleRenderers = null;
@@ -132,9 +133,6 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   {
     // Tell the game manager that the player was killed
     OnPlayerTouchedLava?.Invoke(this);
-
-    //TODO: Play death FX
-    //TODO: Play death audio
 
     Instantiate(_fxSplashPrefab, transform.position, _fxSplashPrefab.transform.rotation);
 
@@ -500,6 +498,9 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     _launchVelocity = new Vector3(0, 0, LaunchPower);
     _hasStartedLaunch = true;
+
+    var emitter= Instantiate(_fxLaunchPrefab, transform.position, _fxSplashPrefab.transform.rotation);
+    emitter.transform.parent = this.transform;
   }
 
   private void ApplyLaunchMovement(float dt)
