@@ -350,6 +350,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4042867699289022477}
     m_Modifications:
+    - target: {fileID: 1582970991888424650, guid: b8970fc4126fb9449830a0e477b064f4, type: 3}
+      propertyPath: SfxActivated
+      value: 
+      objectReference: {fileID: 11400000, guid: 74f99a5e0be2d45daaf4d6058f94c2f1, type: 2}
     - target: {fileID: 2824015921778187596, guid: b8970fc4126fb9449830a0e477b064f4, type: 3}
       propertyPath: m_Name
       value: Play
@@ -478,6 +482,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4042867699289022477}
     m_Modifications:
+    - target: {fileID: 1582970991888424650, guid: b8970fc4126fb9449830a0e477b064f4, type: 3}
+      propertyPath: SfxActivated
+      value: 
+      objectReference: {fileID: 11400000, guid: 061de60e59b6a4f6a9a03cb501587819, type: 2}
     - target: {fileID: 2824015921778187596, guid: b8970fc4126fb9449830a0e477b064f4, type: 3}
       propertyPath: m_Name
       value: Quit
