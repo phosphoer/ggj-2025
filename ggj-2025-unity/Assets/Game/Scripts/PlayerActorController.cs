@@ -39,6 +39,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
+  [SerializeField] private ParticleSystem _fxChew = null;
   [SerializeField] private Renderer[] _mouthGumRenderers = null;
   [SerializeField] private Renderer[] _gumMassRenderers = null;
   [SerializeField] private Renderer[] _gumBubbleRenderers = null;
@@ -352,6 +353,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       // Try to chew a held item
       if (_heldItem)
       {
+        _fxChew.Play();
         _playerAnimation.Chew();
         if (_heldItem.Chew(0.1f))
         {
