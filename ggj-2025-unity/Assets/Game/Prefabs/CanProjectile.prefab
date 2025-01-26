@@ -63,6 +63,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GumMassValue: -0.2
+  SfxPickup: {fileID: 11400000, guid: a7baf7cf41c29453393cc985f31fcd43, type: 2}
+  SfxImpact: {fileID: 11400000, guid: b4c72d8fe1788437bacfc16b3340ec39, type: 2}
+  SfxChew: {fileID: 11400000, guid: 4b9e8bab6c5fe4cfc8a62f448bdd235a, type: 2}
   _rb: {fileID: 78908441243542705}
   _interactable: {fileID: 8970600465562481787}
 --- !u!54 &78908441243542705

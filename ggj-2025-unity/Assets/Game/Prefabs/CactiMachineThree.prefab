@@ -138,13 +138,15 @@ MonoBehaviour:
   GumballPrefabs:
   - {fileID: 6079765574516831324, guid: 493c771528927994491597159bda94cb, type: 3}
   SpawnCountRange:
-    MinValue: 2
-    MaxValue: 5
+    MinValue: 1
+    MaxValue: 2
   SpawnForceRange:
     MinValue: 1
     MaxValue: 2
   GumballSpawnRadius: 0.5
   GumballTotalCount: 10
+  SfxDispense: {fileID: 0}
+  SfxEmpty: {fileID: 0}
   _wobble: {fileID: 3708247841435559330}
   _spawnRoot: {fileID: 4528093041446861090}
 --- !u!114 &3708247841435559330

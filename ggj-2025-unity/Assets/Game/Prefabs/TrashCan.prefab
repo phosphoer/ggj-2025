@@ -140,12 +140,14 @@ MonoBehaviour:
   - {fileID: 6079765574516831324, guid: f9c6426dd8ae70f48a3bd440361ffb32, type: 3}
   SpawnCountRange:
     MinValue: 1
-    MaxValue: 2
+    MaxValue: 1
   SpawnForceRange:
     MinValue: 1
     MaxValue: 2
   GumballSpawnRadius: 0.5
   GumballTotalCount: 10
+  SfxDispense: {fileID: 0}
+  SfxEmpty: {fileID: 0}
   _wobble: {fileID: 3708247841435559330}
   _spawnRoot: {fileID: 4528093041446861090}
 --- !u!114 &3708247841435559330
