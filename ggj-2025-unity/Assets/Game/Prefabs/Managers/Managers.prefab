@@ -166,6 +166,7 @@ MonoBehaviour:
   _levelManager: {fileID: 9052310861224840221}
   _cameraController: {fileID: 7567264333900629455}
   _playerPrefab: {fileID: 3137277098965579114, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
+  _wormPrefab: {fileID: 3286775476846638099, guid: f69ebabb27540bf4fabc4c95c89f6c1d, type: 3}
   _lavaController: {fileID: 8493794703140864182}
   _desiredPlayerCount: 4
   _initialGameState: 3

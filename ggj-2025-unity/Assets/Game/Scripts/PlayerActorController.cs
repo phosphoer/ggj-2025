@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerActorController : MonoBehaviour, ISlappable
 {
-  public event System.Action<PlayerActorController> OnPlayerKilled;
+  public event System.Action<PlayerActorController> OnPlayerTouchedLava;
   public event System.Action<int, int> OnPlayerSectionChanged;
 
   public Rewired.Player PlayerInput => _playerInput;
@@ -63,7 +63,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public void Kill()
   {
     // Tell the game manager that the player was killed
-    OnPlayerKilled?.Invoke(this);
+    OnPlayerTouchedLava?.Invoke(this);
 
     //TODO: Play death FX
     //TODO: Play death audio
