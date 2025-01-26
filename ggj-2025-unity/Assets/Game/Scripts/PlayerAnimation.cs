@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+  public event System.Action Footstep;
+
   public bool IsGrounded { get; set; }
 
   public float BiteAnimSpeed = 1;
@@ -40,6 +42,7 @@ public class PlayerAnimation : MonoBehaviour
   private float _slapTimer;
   private float _jumpTimer;
   private bool _isSlapping;
+  private float _footStepDebounce;
   private Vector3 _gumMassLocalPos;
   private Item _mouthItem;
 
@@ -141,6 +144,18 @@ public class PlayerAnimation : MonoBehaviour
       float footAngleRight = Mathf.Sin(_walkAnimTimer) * -FootStepAngle;
       _footLeft.localRotation = Quaternion.Euler(footAngleLeft, 0, 0);
       _footRight.localRotation = Quaternion.Euler(footAngleRight, 0, 0);
+
+      _footStepDebounce -= dt;
+      if (Mathf.Abs(footAngleLeft) < 5 && _footStepDebounce <= 0)
+      {
+        _footStepDebounce = 0.1f;
+        Footstep?.Invoke();
+      }
+      else if (Mathf.Abs(footAngleRight) < 5 && _footStepDebounce <= 0)
+      {
+        _footStepDebounce = 0.1f;
+        Footstep?.Invoke();
+      }
 
       // Offset height by toe pos (keep toes on floor)
       float footTipLeftPos = _footTipLeft.position.y - _visualRoot.position.y;

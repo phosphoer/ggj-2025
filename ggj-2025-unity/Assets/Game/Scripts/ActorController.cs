@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ActorController : MonoBehaviour, ICharacterController
 {
+  public event System.Action Landed;
+
   public KinematicCharacterMotor Motor => _motor;
   public Vector3 LastAirVelocity { get; private set; }
 
@@ -217,6 +219,7 @@ public class ActorController : MonoBehaviour, ICharacterController
 
   protected void OnLanded()
   {
+    Landed?.Invoke();
   }
 
   protected void OnLeaveStableGround()

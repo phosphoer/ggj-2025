@@ -52,6 +52,8 @@ public class GameController : Singleton<GameController>
     GameController.Instance = this;
     _lavaController.gameObject.SetActive(false);
 
+    Application.targetFrameRate = 60;
+
     SetGameState(_initialGameState);
   }
 
@@ -86,18 +88,18 @@ public class GameController : Singleton<GameController>
   {
     switch (newState)
     {
-    case eGameState.Intro:
-      ShowUI<MainMenuUI>();
-      break;
-    case eGameState.MultiplayerGame:
-      SpawnLevel(_desiredPlayerCount);
-      break;
-    case eGameState.SingleplayerGame:
-      SpawnLevel(1);
-      break;
-    case eGameState.PostGame:
-      ShowUI<PostGameUI>();
-      break;
+      case eGameState.Intro:
+        ShowUI<MainMenuUI>();
+        break;
+      case eGameState.MultiplayerGame:
+        SpawnLevel(_desiredPlayerCount);
+        break;
+      case eGameState.SingleplayerGame:
+        SpawnLevel(1);
+        break;
+      case eGameState.PostGame:
+        ShowUI<PostGameUI>();
+        break;
     }
   }
 
@@ -105,18 +107,18 @@ public class GameController : Singleton<GameController>
   {
     switch (oldState)
     {
-    case eGameState.Intro:
-      HideUI<MainMenuUI>();
-      break;
-    case eGameState.MultiplayerGame:
-    case eGameState.SingleplayerGame:
-      _lavaController.StopRising();
-      _cameraController.StopRising();
-      break;
-    case eGameState.PostGame:
-      ClearLevel();
-      HideUI<PostGameUI>();
-      break;
+      case eGameState.Intro:
+        HideUI<MainMenuUI>();
+        break;
+      case eGameState.MultiplayerGame:
+      case eGameState.SingleplayerGame:
+        _lavaController.StopRising();
+        _cameraController.StopRising();
+        break;
+      case eGameState.PostGame:
+        ClearLevel();
+        HideUI<PostGameUI>();
+        break;
     }
   }
 
@@ -237,7 +239,6 @@ public class GameController : Singleton<GameController>
 
   private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
   {
-
   }
 
   private void OnPlayerTouchedLava(PlayerActorController playerController)
