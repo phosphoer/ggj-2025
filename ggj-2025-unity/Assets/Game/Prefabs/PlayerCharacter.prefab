@@ -879,6 +879,9 @@ MonoBehaviour:
   SfxSwallow: {fileID: 11400000, guid: 844ea68691c7f4f7da84d5d040c77489, type: 2}
   SfxInflate: {fileID: 11400000, guid: a58ab8ce331a84762b28b9bbdc0152a8, type: 2}
   SfxDeflate: {fileID: 11400000, guid: eb089e934edc44165a0f18ae3c99d33c, type: 2}
+  SfxBubbleInflate: {fileID: 11400000, guid: 7ddb9d284615a49b0bb391f0e012ec79, type: 2}
+  SfxBubbleDeflate: {fileID: 11400000, guid: 6cd66502c40b44791b0fc27a58d59ca9, type: 2}
+  SfxBubblePop: {fileID: 11400000, guid: d89460040efc6461d902a0991a5ee9e0, type: 2}
   SfxSlap: {fileID: 0}
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}

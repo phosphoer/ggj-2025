@@ -18,6 +18,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public SoundBank SfxSwallow;
   public SoundBank SfxInflate;
   public SoundBank SfxDeflate;
+  public SoundBank SfxBubbleInflate;
+  public SoundBank SfxBubbleDeflate;
   public SoundBank SfxBubblePop;
   public SoundBank SfxSlap;
 
@@ -171,7 +173,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _bubbleStoredMass = _bubbleGumMass;
         _didBubbleThisJump = true;
         _isInBubbleJump = true;
-        AudioManager.Instance.PlaySound(gameObject, SfxInflate);
+        AudioManager.Instance.PlaySound(gameObject, SfxBubbleInflate);
         SetGumMass(0);
       }
     }
@@ -180,7 +182,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     {
       SetGumMass(_bubbleStoredMass + _bubbleGumMass);
       _bubbleStoredMass = 0;
-      AudioManager.Instance.PlaySound(gameObject, SfxDeflate);
+      AudioManager.Instance.PlaySound(gameObject, SfxBubbleDeflate);
     }
 
     // Interaction
@@ -297,6 +299,12 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         if (_heldItem.Chew(0.1f))
         {
           AudioManager.Instance.PlaySound(gameObject, SfxSwallow);
+
+          if (_heldItem.GumMassValue > 0)
+            AudioManager.Instance.PlaySound(gameObject, SfxInflate);
+          else
+            AudioManager.Instance.PlaySound(gameObject, SfxDeflate);
+
           SetGumMass(_bubbleGumMass + _heldItem.GumMassValue);
           Destroy(_heldItem.gameObject);
         }
