@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531c42cf702a3644a9fb66e3c0219dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForwardSpeed: 1
+  ForwardSpeed: 0.25
   ToothDamage: 0.4
   ExplostionFX: {fileID: 1487442453552226532, guid: abd3b4b8b2c0e9049a992c7ece97c148, type: 3}
 --- !u!1 &6145385472399055241

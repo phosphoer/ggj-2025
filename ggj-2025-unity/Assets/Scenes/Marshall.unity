@@ -325,11 +325,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &663318717 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3123352222773840606, guid: b111093b8a9b5a648ae782f29c47053d, type: 3}
-  m_PrefabInstance: {fileID: 1975524151136537344}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &990669392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -894,7 +889,7 @@ PrefabInstance:
     - target: {fileID: 3713089188871120225, guid: c6be2629233d35c43b1240963fa6ca5e, type: 3}
       propertyPath: MeteorPrefab
       value: 
-      objectReference: {fileID: 663318717}
+      objectReference: {fileID: 3123352222773840606, guid: b111093b8a9b5a648ae782f29c47053d, type: 3}
     - target: {fileID: 3713089188871120225, guid: c6be2629233d35c43b1240963fa6ca5e, type: 3}
       propertyPath: StartEnabled
       value: 1
