@@ -62,6 +62,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private Material _gumMassMaterial;
   private Material _gumBubbleMaterial;
   private float _currentThrowT;
+  private float _stuckSqueezeScalar;
   private float _lastNonNegativeThrowT;
   private bool _isMidFlick;
   private RectTransform _throwUIRoot;
@@ -187,14 +188,23 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _playerAnimation.IsGrounded = _actor.Motor.GroundingStatus.IsStableOnGround;
 
     // Reset bubble jump once we hit ground
-    if (_actor.Motor.GroundingStatus.IsStableOnGround)
+    if (_actor.Motor.GroundingStatus.FoundAnyGround)
       _didBubbleThisJump = false;
 
     // Apply capsule size to actor based on current gum mass
-    float capsuleRadius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
+    float capsuleRadius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f * _stuckSqueezeScalar);
     float capsuleHeight = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
     float capsuleOffset = _actor.Motor.Capsule.height * 0.5f;
     _actor.Motor.SetCapsuleDimensions(capsuleRadius, capsuleHeight, capsuleOffset);
+
+    if (_actor.Motor.Velocity.magnitude < 0.1f && !_actor.IsGrounded)
+    {
+      _stuckSqueezeScalar = Mathf.Max(0, _stuckSqueezeScalar - dt * 0.25f);
+    }
+    else
+    {
+      _stuckSqueezeScalar = Mathfx.Damp(_stuckSqueezeScalar, 1, 0.5f, dt);
+    }
 
     // Apply bubble floating state
     if (_isInBubbleJump)
@@ -505,7 +515,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _launchVelocity = new Vector3(0, 0, LaunchPower);
     _hasStartedLaunch = true;
 
-    var emitter= Instantiate(_fxLaunchPrefab, transform.position, _fxSplashPrefab.transform.rotation);
+    var emitter = Instantiate(_fxLaunchPrefab, transform.position, _fxSplashPrefab.transform.rotation);
     emitter.transform.parent = this.transform;
   }
 
