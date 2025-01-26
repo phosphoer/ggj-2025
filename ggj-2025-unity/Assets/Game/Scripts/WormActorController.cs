@@ -27,6 +27,7 @@ public class WormActorController : MonoBehaviour
     transforming
   }
   eMovementState _movementMode = eMovementState.muckMovement;
+  public bool IsTransforming => _movementMode == eMovementState.transforming;
 
   private void Awake()
   {

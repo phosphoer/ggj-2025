@@ -300,12 +300,25 @@ public class GameController : Singleton<GameController>
     }
     else if (_currentGameState == eGameState.MultiplayerGame)
     {
-      if (_spawnedPlayers.Count == 0)
+      if (_spawnedPlayers.Count == 0 && !IsAnyWormTramsforming())
       {
         //WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
         OnLastPlayerKilled();
       }
     }
+  }
+
+  private bool IsAnyWormTramsforming()
+  {
+    foreach (var worm in _spawnedWorms)
+    {
+      if (worm.IsTransforming)
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
