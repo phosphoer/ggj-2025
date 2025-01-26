@@ -1,27 +1,34 @@
-using Rewired;
-using Rewired.Components;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
-using UnityEngine.UIElements;
+
+[System.Serializable]
+public struct PlayerColors
+{
+  public Color MouthColor;
+  public Color GumColor;
+}
 
 public class GameController : Singleton<GameController>
 {
-  [SerializeField] private LevelGenerator _levelManager;
   public LevelGenerator LevelManager => _levelManager;
+  public LavaController LavaController => _lavaController;
 
   public SoundBank MusicTitle;
   public SoundBank MusicGame;
   public SoundBank MusicEnd;
 
+  [SerializeField] private float _matchStartHeight = 5;
+  [SerializeField] private LevelGenerator _levelManager;
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
   [SerializeField] private WormActorController _wormPrefab;
-
   [SerializeField] private LavaController _lavaController;
-  public LavaController LavaController => _lavaController;
+  [SerializeField] private PlayerColors[] _playerColors = null;
+
+  [SerializeField] private AnimationCurve _riseRateCurve = default;
 
   public int WinningPlayerID { get; set; } = -1;
+  public float WinningPlayerCountdownTimer { get; set; } = 0;
 
   private bool _isMatchStarted;
   private bool _isSpawningAllowed;
@@ -78,7 +85,28 @@ public class GameController : Singleton<GameController>
       _lavaController.RiseRate = Mathf.Max(_lavaController.RiseRate - 0.1f, 0.0f);
       _cameraController.RiseRate = Mathf.Max(_cameraController.RiseRate - 0.1f, 0.0f);
     }
+
+    if (Input.GetKeyDown(KeyCode.P))
+    {
+      TriggerPostGame();
+    }
 #endif
+
+    // Update rise rate difficulty
+    float riseRate = _riseRateCurve.Evaluate(_cameraController.MountPoint.position.y);
+    _lavaController.RiseRate = riseRate;
+    _cameraController.RiseRate = riseRate;
+
+    for (int i = 0; i < _spawnedPlayers.Count; ++i)
+    {
+      if (!_isMatchStarted)
+      {
+        if (_spawnedPlayers[i].transform.position.y > 5)
+        {
+          StartMatch();
+        }
+      }
+    }
 
     // Iterate over existing rewired players and spawn their character if they press a button
     if (_isSpawningAllowed && !MenuFocus.AnyFocusTaken)
@@ -232,6 +260,7 @@ public class GameController : Singleton<GameController>
     var playerGO = Instantiate(_playerPrefab.gameObject, position, rotation);
     var playerController = playerGO.GetComponent<PlayerActorController>();
     playerController.SetPlayerIndex(playerIndex);
+    playerController.SetColors(_playerColors[playerIndex].MouthColor, _playerColors[playerIndex].GumColor);
 
     playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
     playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;
@@ -329,15 +358,16 @@ public class GameController : Singleton<GameController>
     return false;
   }
 
+  private void StartMatch()
+  {
+    _isMatchStarted = true;
+    _isSpawningAllowed = false;
+    _lavaController.StartRising();
+    _cameraController.StartRising();
+  }
+
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
   {
-    if (newSectionIndex >= 1)
-    {
-      _isMatchStarted = true;
-      _isSpawningAllowed = false;
-      _lavaController.StartRising();
-      _cameraController.StartRising();
-    }
   }
 
   private void TriggerPostGame()
@@ -354,5 +384,11 @@ public class GameController : Singleton<GameController>
     _cameraController.Reset();
     _levelManager.DestroyLevel(false);
     MainCamera.Instance.CameraStack.PopController(_cameraController);
+  }
+
+  private void OnDrawGizmos()
+  {
+    Gizmos.color = Color.white;
+    Gizmos.DrawLine(new Vector3(-100, _matchStartHeight, 0), new Vector3(100, _matchStartHeight, 0));
   }
 }

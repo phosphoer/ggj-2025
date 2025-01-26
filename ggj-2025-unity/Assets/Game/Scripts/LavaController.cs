@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class LavaController : MonoBehaviour
 {
-  [SerializeField]
-  private float _riseRate = 0.01f;
-  public float RiseRate { 
+  [SerializeField] private float _riseRate = 0.01f;
+
+  public float RiseRate
+  {
     get { return _riseRate; }
     set { _riseRate = value; }
   }
@@ -18,11 +19,12 @@ public class LavaController : MonoBehaviour
     Idle,
     Rising
   }
+
   private LavaState _lavaState = LavaState.Idle;
 
   public void Awake()
   {
-    _initialPosition= gameObject.transform.position;
+    _initialPosition = gameObject.transform.position;
   }
 
   public void StartRising()
@@ -62,7 +64,7 @@ public class LavaController : MonoBehaviour
   {
     if (GameController.Instance != null)
     {
-      var playerListCopy= GameController.Instance.SpawnedPlayers.ToArray();
+      var playerListCopy = GameController.Instance.SpawnedPlayers.ToArray();
 
       foreach (PlayerActorController playerController in playerListCopy)
       {

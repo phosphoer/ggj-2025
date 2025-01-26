@@ -11,6 +11,11 @@ public class WormActorController : MonoBehaviour
   public float Drag = 1.0f;
   public float TransformationTime = 1.5f;
 
+  [SerializeField] private ParticleSystem _fxSmokeBurstPrefab = null;
+  [SerializeField] private ParticleSystem _fxMuckSprayPrefab = null;
+
+  private ParticleSystem _fxMuckSprayRuntime = null;
+
   public event System.Action<WormActorController, PlayerActorController> OnWormTouchedPlayer;
   public event System.Action<WormActorController> OnWormTransformComplete;
 
@@ -33,6 +38,18 @@ public class WormActorController : MonoBehaviour
   {
     _headCollider= gameObject.GetComponent<SphereCollider>();
     SetPlayerIndex(0);
+
+    var muckSprayGO= Instantiate(_fxMuckSprayPrefab, transform.position, _fxMuckSprayPrefab.transform.rotation);
+    _fxMuckSprayRuntime= muckSprayGO.GetComponent<ParticleSystem>();
+    _fxMuckSprayRuntime.Stop();
+  }
+
+  private void OnDestroy()
+  {
+    if (_fxMuckSprayRuntime != null)
+    {
+      Destroy(_fxMuckSprayRuntime);
+    }
   }
 
   private int _playerIndex = -1;
@@ -88,12 +105,25 @@ public class WormActorController : MonoBehaviour
     ClompToSides();
   }
 
+  private void SetMovementState(eMovementState newMovementState)
+  {
+    if (_movementMode != newMovementState)
+    {
+      if (_movementMode == eMovementState.muckMovement)
+      {
+        _fxMuckSprayRuntime.Stop();
+      }
+
+      _movementMode = newMovementState;
+    }
+  }
+
   private void Jump(Vector3 jumpDirection)
   {
     var safeJumpDirection= Mathfx.Approx(jumpDirection, Vector3.zero, 0.01f) ? Vector3.up : Vector3.Normalize(jumpDirection);
     _velocity = safeJumpDirection * JumpSpeed;
 
-    _movementMode = eMovementState.airborne;
+    SetMovementState(eMovementState.airborne);
   }
 
   private void UpdateMuckMovement(float dt)
@@ -106,6 +136,16 @@ public class WormActorController : MonoBehaviour
 
     // Face toward your velocity
     UpdateFacing(dt);
+
+    bool bIsMoving= Mathfx.Approx(_velocity, Vector3.zero, 0.01f);
+    if (bIsMoving && !_fxMuckSprayRuntime.IsAlive())
+    {
+      _fxMuckSprayRuntime.Play();
+    }
+    else if (!bIsMoving && _fxMuckSprayRuntime.IsAlive())
+    {
+      _fxMuckSprayRuntime.Stop();
+    }
   }
 
   private void ApplyVelocityToPosition(float dt)
@@ -139,14 +179,16 @@ public class WormActorController : MonoBehaviour
     float groundedY = GetMuckPlaneY();
     if (wormPosition.y <= groundedY && isFalling)
     {
-      _movementMode = eMovementState.muckMovement;
+      SetMovementState(eMovementState.muckMovement);
     }
   }
 
   public void StartPlayerTransformation()
   {
+    Instantiate(_fxSmokeBurstPrefab, transform.position, _fxSmokeBurstPrefab.transform.rotation);
+
     _transformationTimer = TransformationTime;
-    _movementMode= eMovementState.transforming;
+    SetMovementState(eMovementState.transforming);
   }
 
   private void UpdateTransforming(float dt)
@@ -157,7 +199,7 @@ public class WormActorController : MonoBehaviour
     if (_transformationTimer <= 0)
     {
       OnWormTransformComplete?.Invoke(this);
-      _movementMode = eMovementState.airborne;
+      SetMovementState(eMovementState.airborne);
     }
   }
 

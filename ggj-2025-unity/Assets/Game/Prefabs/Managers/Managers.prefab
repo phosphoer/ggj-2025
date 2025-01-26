@@ -164,14 +164,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047a2d793d793374f9fb8c955b8f3579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelManager: {fileID: 9052310861224840221}
   MusicTitle: {fileID: 11400000, guid: 4350d60e8df5b4d9d8822f93e976b9c5, type: 2}
   MusicGame: {fileID: 11400000, guid: d1bf87199fad14ced96528aa595e7314, type: 2}
   MusicEnd: {fileID: 11400000, guid: 7a82b345350684c70a069d833d724c38, type: 2}
+  _matchStartHeight: 5
+  _levelManager: {fileID: 9052310861224840221}
   _cameraController: {fileID: 7567264333900629455}
   _playerPrefab: {fileID: 3137277098965579114, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
   _wormPrefab: {fileID: 3286775476846638099, guid: f69ebabb27540bf4fabc4c95c89f6c1d, type: 3}
   _lavaController: {fileID: 8493794703140864182}
+  _playerColors:
+  - MouthColor: {r: 1, g: 0.42745098, b: 0.7372549, a: 1}
+    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
+  - MouthColor: {r: 0.08235294, g: 0.49803922, b: 1, a: 1}
+    GumColor: {r: 0.57254905, g: 0.84313726, b: 1, a: 1}
+  - MouthColor: {r: 1, g: 0.20392157, b: 0, a: 1}
+    GumColor: {r: 1, g: 0.5882353, b: 0.57254905, a: 1}
+  - MouthColor: {r: 1, g: 0.76862746, b: 0.011764706, a: 1}
+    GumColor: {r: 1, g: 0.88235295, b: 0.57254905, a: 1}
+  _riseRateCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.25
+      inSlope: 0.00014291231
+      outSlope: 0.00014291231
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.14538255
+    - serializedVersion: 3
+      time: 49.955097
+      value: 0.5230576
+      inSlope: 0.0002791034
+      outSlope: 0.0002791034
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13323532
+    - serializedVersion: 3
+      time: 197.59338
+      value: 1.2383672
+      inSlope: -0.029223092
+      outSlope: -0.029223092
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1248606
+    - serializedVersion: 3
+      time: 297.3659
+      value: 5
+      inSlope: 0.0021090158
+      outSlope: 0.0021090158
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14675172
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _initialGameState: 3
 --- !u!114 &7567264333900629455
 MonoBehaviour:
