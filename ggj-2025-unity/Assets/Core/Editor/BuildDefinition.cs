@@ -7,7 +7,6 @@
 #if UNITY_EDITOR
 
 using UnityEditor;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEditor.Build.Reporting;
 using System.Collections.Generic;
@@ -19,7 +18,6 @@ public class BuildDefinition : ScriptableObject
   public string ProductNameOverride;
   public string CompanyNameOverride;
   public BuildTarget BuildTarget;
-  public NamedBuildTarget NamedBuildTarget;
   public BuildTargetGroup BuildTargetGroup;
   public string[] Defines;
   public SceneField[] Scenes;
@@ -59,7 +57,7 @@ public class BuildDefinition : ScriptableObject
     }
 
     string defineList = string.Join(";", Defines);
-    PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget, defineList);
+    PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, defineList);
 
     // Set basic options
     BuildPlayerOptions buildOptions = new BuildPlayerOptions();
