@@ -427,6 +427,7 @@ public class GameController : Singleton<GameController>
     _lavaController.gameObject.SetActive(false);
     _cameraController.Reset();
     _levelManager.DestroyLevel(false);
+    _isInCountdown = false;
     MainCamera.Instance.CameraStack.PopController(_cameraController);
   }
 

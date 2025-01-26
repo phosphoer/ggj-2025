@@ -907,6 +907,7 @@ MonoBehaviour:
   BubbleFloatPower: 0.35
   ThrowStrength: 15
   AttackCooldown: 0.25
+  SlapDamage: 0
   LaunchPower: 10
   LaunchSpinRate: 90
   SfxFootstep: {fileID: 11400000, guid: d6fd6441d745d4ba6979912cd834b526, type: 2}

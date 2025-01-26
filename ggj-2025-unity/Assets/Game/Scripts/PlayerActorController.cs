@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerActorController : MonoBehaviour, ISlappable
 {
@@ -15,7 +13,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
   public float AttackCooldown = 0.25f;
-  private float SlapDamage = 0.1f;
+  public float SlapDamage = 0.0f;
   public float LaunchPower = 10;
   public float LaunchSpinRate = 90;
 

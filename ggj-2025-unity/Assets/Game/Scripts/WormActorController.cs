@@ -7,7 +7,7 @@ public class WormActorController : MonoBehaviour
   public float MuckMovementSpeed = 5.0f;
   public float AirMovementSpeed = 5.0f;
   public float JumpSpeed = 5.0f;
-  public float GravityScalar = 5.0f; 
+  public float GravityScalar = 5.0f;
   public float Drag = 1.0f;
   public float TransformationTime = 1.5f;
 
@@ -22,8 +22,8 @@ public class WormActorController : MonoBehaviour
   private Rewired.Player _playerInput;
   private SphereCollider _headCollider;
   private Vector3 _moveAxis = Vector3.zero;
-  private Vector3 _velocity= Vector3.zero;
-  private float _transformationTimer= 0;
+  private Vector3 _velocity = Vector3.zero;
+  private float _transformationTimer = 0;
 
   public enum eMovementState
   {
@@ -31,16 +31,17 @@ public class WormActorController : MonoBehaviour
     airborne,
     transforming
   }
+
   eMovementState _movementMode = eMovementState.muckMovement;
   public bool IsTransforming => _movementMode == eMovementState.transforming;
 
   private void Awake()
   {
-    _headCollider= gameObject.GetComponent<SphereCollider>();
+    _headCollider = gameObject.GetComponent<SphereCollider>();
     SetPlayerIndex(0);
 
-    var muckSprayGO= Instantiate(_fxMuckSprayPrefab, transform.position, _fxMuckSprayPrefab.transform.rotation);
-    _fxMuckSprayRuntime= muckSprayGO.GetComponent<ParticleSystem>();
+    var muckSprayGO = Instantiate(_fxMuckSprayPrefab, transform.position, _fxMuckSprayPrefab.transform.rotation);
+    _fxMuckSprayRuntime = muckSprayGO.GetComponent<ParticleSystem>();
     _fxMuckSprayRuntime.Stop();
   }
 
@@ -85,17 +86,17 @@ public class WormActorController : MonoBehaviour
     }
 
     // Update the velocity and position based on movement mode
-    switch(_movementMode)
+    switch (_movementMode)
     {
-    case eMovementState.muckMovement:
-      UpdateMuckMovement(dt);
-      break;
-    case eMovementState.airborne:
-      UpdateJumpMovement(dt);
-      break;
-    case eMovementState.transforming:
-      UpdateTransforming(dt);
-      break;
+      case eMovementState.muckMovement:
+        UpdateMuckMovement(dt);
+        break;
+      case eMovementState.airborne:
+        UpdateJumpMovement(dt);
+        break;
+      case eMovementState.transforming:
+        UpdateTransforming(dt);
+        break;
     }
 
     // Keep the worm at or above the muck
@@ -120,7 +121,7 @@ public class WormActorController : MonoBehaviour
 
   private void Jump(Vector3 jumpDirection)
   {
-    var safeJumpDirection= Mathfx.Approx(jumpDirection, Vector3.zero, 0.01f) ? Vector3.up : Vector3.Normalize(jumpDirection);
+    var safeJumpDirection = Mathfx.Approx(jumpDirection, Vector3.zero, 0.01f) ? Vector3.up : Vector3.Normalize(jumpDirection);
     _velocity = safeJumpDirection * JumpSpeed;
 
     SetMovementState(eMovementState.airborne);
@@ -129,7 +130,7 @@ public class WormActorController : MonoBehaviour
   private void UpdateMuckMovement(float dt)
   {
     // Update the movement velocity
-    _velocity= _moveAxis * MuckMovementSpeed;
+    _velocity = _moveAxis * MuckMovementSpeed;
 
     // Update the worm position
     ApplyVelocityToPosition(dt);
@@ -137,7 +138,7 @@ public class WormActorController : MonoBehaviour
     // Face toward your velocity
     UpdateFacing(dt);
 
-    bool bIsMoving= Mathfx.Approx(_velocity, Vector3.zero, 0.01f);
+    bool bIsMoving = Mathfx.Approx(_velocity, Vector3.zero, 0.01f);
     if (bIsMoving && !_fxMuckSprayRuntime.IsAlive())
     {
       _fxMuckSprayRuntime.Play();
@@ -158,8 +159,8 @@ public class WormActorController : MonoBehaviour
   private void UpdateJumpMovement(float dt)
   {
     // Update the movement velocity
-    _velocity += _moveAxis*AirMovementSpeed*dt;
-    
+    _velocity += _moveAxis * AirMovementSpeed * dt;
+
     // Apply gravity
     _velocity += Physics.gravity * (dt * GravityScalar);
     _velocity *= 1f / (1f + Drag * dt);
@@ -193,8 +194,8 @@ public class WormActorController : MonoBehaviour
 
   private void UpdateTransforming(float dt)
   {
-    _velocity= Vector3.zero;
-    _transformationTimer-= dt;
+    _velocity = Vector3.zero;
+    _transformationTimer -= dt;
 
     if (_transformationTimer <= 0)
     {
@@ -208,15 +209,15 @@ public class WormActorController : MonoBehaviour
     if (_headCollider == null)
       return;
 
-    var players= GameController.Instance.SpawnedPlayers;
+    var players = GameController.Instance.SpawnedPlayers;
 
     foreach (var player in players)
     {
-      float distanceToPlayer= Vector3.Distance(player.transform.position, _headCollider.transform.position);
+      float distanceToPlayer = Vector3.Distance(player.transform.position, _headCollider.transform.position);
 
       if (distanceToPlayer < _headCollider.radius)
       {
-        OnWormTouchedPlayer(this, player); 
+        OnWormTouchedPlayer(this, player);
         break;
       }
     }
@@ -227,9 +228,9 @@ public class WormActorController : MonoBehaviour
     // Make the worm face their movement direction
     var currentRotation = gameObject.transform.rotation;
     var currentFacing = currentRotation * Vector3.forward;
-    var targetFacing= Mathfx.Approx(_velocity, Vector3.zero, 0.01f) ? currentFacing : Vector3.Normalize(_velocity);
-    var targetRotation= Quaternion.LookRotation(targetFacing);
-    var blendedRotation= Mathfx.Damp(currentRotation, targetRotation, 0.25f, dt * 5);
+    var targetFacing = Mathfx.Approx(_velocity, Vector3.zero, 0.01f) ? currentFacing : Vector3.Normalize(_velocity);
+    var targetRotation = Quaternion.LookRotation(targetFacing);
+    var blendedRotation = Mathfx.Damp(currentRotation, targetRotation, 0.25f, dt * 5);
 
     gameObject.transform.rotation = blendedRotation;
   }
@@ -246,7 +247,7 @@ public class WormActorController : MonoBehaviour
 
   private void SetWormPosition(Vector3 newPosition)
   {
-    gameObject.transform.position= newPosition;
+    gameObject.transform.position = newPosition;
   }
 
   private void ClampYPositionAboveMuck()
@@ -254,6 +255,7 @@ public class WormActorController : MonoBehaviour
     var clampedPosition = GetWormPosition();
 
     clampedPosition.y = Mathf.Max(clampedPosition.y, GetMuckPlaneY());
+    clampedPosition.z = 0;
     gameObject.transform.position = clampedPosition;
   }
 
