@@ -7,6 +7,10 @@ public class Item : MonoBehaviour
   public float GumMassValue = 0.25f;
   public Rigidbody Rigidbody => _rb;
 
+  public SoundBank SfxPickup;
+  public SoundBank SfxImpact;
+  public SoundBank SfxChew;
+
   [SerializeField] private Rigidbody _rb = null;
   [SerializeField] private InteractableObject _interactable = null;
 
@@ -18,6 +22,8 @@ public class Item : MonoBehaviour
 
   public void Pickup()
   {
+    AudioManager.Instance.PlaySound(gameObject, SfxPickup);
+
     _rb.isKinematic = true;
     _interactable.enabled = false;
 
@@ -44,6 +50,8 @@ public class Item : MonoBehaviour
 
   public bool Chew(float amount)
   {
+    AudioManager.Instance.PlaySound(gameObject, SfxChew);
+
     _chewedAmount = Mathf.Clamp01(_chewedAmount + amount);
     transform.localScale = Vector3.one.WithY(1 - _chewedAmount);
     return _chewedAmount >= 1;
@@ -55,6 +63,7 @@ public class Item : MonoBehaviour
     {
       _didSplat = true;
       DespawnManager.Instance.AddObject(gameObject, 0, 0.25f);
+      AudioManager.Instance.PlaySound(gameObject, SfxImpact);
     }
   }
 

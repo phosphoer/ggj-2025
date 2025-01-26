@@ -33,8 +33,8 @@ Shader "Custom/CellShaded"
       fixed4 color : COLOR;
       float2 uv : TEXCOORD0;
       SHADOW_COORDS(1)
-      fixed3 worldNormal : TEXCOORD2;
-      fixed3 worldPos : TEXCOORD3;
+      float3 worldNormal : TEXCOORD2;
+      float3 worldPos : TEXCOORD3;
       UNITY_FOG_COORDS(4)
     };
 

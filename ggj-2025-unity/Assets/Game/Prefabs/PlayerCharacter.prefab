@@ -386,7 +386,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1820576052487823867}
-  m_Mesh: {fileID: -6874719079047457207, guid: 458a984743c164b40a7745ef2fefa492, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8179002726482333694
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -410,7 +410,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 531b8b4fe3e6e49a6b0653d9b25ac8ab, type: 2}
+  - {fileID: 2100000, guid: 0303b3eb388ed4db28c5b5373ef107be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -592,7 +592,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2429816457678245138}
-  m_Mesh: {fileID: -6874719079047457207, guid: 458a984743c164b40a7745ef2fefa492, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &7297285539917827887
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -709,7 +709,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3279844432112985475}
-  m_Mesh: {fileID: -6874719079047457207, guid: 458a984743c164b40a7745ef2fefa492, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3704288168088200969
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -873,6 +873,16 @@ MonoBehaviour:
   BubbleShrinkSpeed: 0.2
   BubbleFloatPower: 0.35
   ThrowStrength: 15
+  SfxFootstep: {fileID: 11400000, guid: d6fd6441d745d4ba6979912cd834b526, type: 2}
+  SfxJump: {fileID: 11400000, guid: 63fd509e24c1c484cae5245cbd0dd20b, type: 2}
+  SfxLand: {fileID: 11400000, guid: 7d1b7f8f9158641d686d611935ffefa0, type: 2}
+  SfxSwallow: {fileID: 11400000, guid: 844ea68691c7f4f7da84d5d040c77489, type: 2}
+  SfxInflate: {fileID: 11400000, guid: a58ab8ce331a84762b28b9bbdc0152a8, type: 2}
+  SfxDeflate: {fileID: 11400000, guid: eb089e934edc44165a0f18ae3c99d33c, type: 2}
+  SfxBubbleInflate: {fileID: 11400000, guid: 7ddb9d284615a49b0bb391f0e012ec79, type: 2}
+  SfxBubbleDeflate: {fileID: 11400000, guid: 6cd66502c40b44791b0fc27a58d59ca9, type: 2}
+  SfxBubblePop: {fileID: 11400000, guid: d89460040efc6461d902a0991a5ee9e0, type: 2}
+  SfxSlap: {fileID: 0}
   _actor: {fileID: 8824695059088403173}
   _playerAnimation: {fileID: 5571818849142797486}
   _interaction: {fileID: 833507523520657284}
@@ -930,7 +940,7 @@ MonoBehaviour:
   KeyRotateSpeed: 90
   FootStepAngle: 60
   FootStepSpeed: 10
-  HeadBobScale: 0.2
+  HeadBobScale: 0.3
   BodyBobScale: 0.1
   SlapAnimDuration: 0.1
   SlapAnimScale: 0.3
@@ -1432,7 +1442,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7890309374379902422}
-  m_Mesh: {fileID: -6874719079047457207, guid: 458a984743c164b40a7745ef2fefa492, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &9090579678482485265
 MeshRenderer:
   m_ObjectHideFlags: 0

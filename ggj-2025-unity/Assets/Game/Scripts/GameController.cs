@@ -9,7 +9,11 @@ public class GameController : Singleton<GameController>
 
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
+  [SerializeField] private WormActorController _wormPrefab;
+
   [SerializeField] private LavaController _lavaController;
+  public LavaController LavaController => _lavaController;
+  
   [SerializeField] private int _desiredPlayerCount = 1;
 
   public int WinningPlayerID { get; set; } = -1;
@@ -18,6 +22,8 @@ public class GameController : Singleton<GameController>
   private bool _isSpawningAllowed;
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
   public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
+  private List<WormActorController> _spawnedWorms = new List<WormActorController>();
+  public List<WormActorController> SpawnedWorms => _spawnedWorms;
 
   public enum eGameState
   {
@@ -48,6 +54,8 @@ public class GameController : Singleton<GameController>
   {
     GameController.Instance = this;
     _lavaController.gameObject.SetActive(false);
+
+    Application.targetFrameRate = 60;
 
     SetGameState(_initialGameState);
   }
@@ -176,6 +184,16 @@ public class GameController : Singleton<GameController>
     _spawnedPlayers.Clear();
   }
 
+  void DespawnWorms()
+  {
+    foreach (WormActorController worm in _spawnedWorms)
+    {
+      Destroy(worm.gameObject);
+    }
+
+    _spawnedWorms.Clear();
+  }
+
   void SpawnPlayer(int playerIndex)
   {
     if (_playerPrefab != null)
@@ -188,18 +206,52 @@ public class GameController : Singleton<GameController>
         var playerController = playerGO.GetComponent<PlayerActorController>();
         playerController.SetPlayerIndex(playerIndex);
 
-        playerController.OnPlayerKilled += OnPlayerKilled;
-        playerController.OnPlayerSectionChanged += OnPlayerSectionChanged;
+        playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
+        playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;
         _spawnedPlayers.Add(playerController);
       }
     }
   }
 
-  private void OnPlayerKilled(PlayerActorController playerController)
+  void DespawnPlayer(PlayerActorController playerController)
   {
-    playerController.OnPlayerKilled -= OnPlayerKilled;
-    playerController.OnPlayerSectionChanged -= OnPlayerSectionChanged;
+    playerController.OnPlayerTouchedLava -= this.OnPlayerTouchedLava;
+    playerController.OnPlayerSectionChanged -= this.OnPlayerSectionChanged;
     _spawnedPlayers.Remove(playerController);
+  }
+
+  void SpawnWorm(int playerIndex, Vector3 position, Quaternion rotation)
+  {
+    if (_wormPrefab != null)
+    {
+      var initialPosition = new Vector3(position.x, _lavaController.LavaYPosition, position.z);
+      var wormGO = Instantiate(_wormPrefab.gameObject, initialPosition, rotation);
+      var wormController = wormGO.GetComponent<WormActorController>();
+      wormController.SetPlayerIndex(playerIndex);
+
+      wormController.OnWormTouchedPlayer += OnWormTouchedPlayer;
+      _spawnedWorms.Add(wormController);
+    }
+  }
+
+  void DespawnWorm(WormActorController wormController)
+  {
+    wormController.OnWormTouchedPlayer -= OnWormTouchedPlayer;
+    _spawnedWorms.Remove(wormController);
+  }
+
+  private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
+  {
+  }
+
+  private void OnPlayerTouchedLava(PlayerActorController playerController)
+  {
+    int playerIndex = playerController.PlayerIndex;
+    Vector3 playerPosition = playerController.transform.position;
+    Quaternion playerRotation = playerController.transform.rotation;
+
+    DespawnPlayer(playerController);
+    SpawnWorm(playerIndex, playerPosition, playerRotation);
 
     if (_currentGameState == eGameState.SingleplayerGame)
     {
@@ -207,9 +259,9 @@ public class GameController : Singleton<GameController>
     }
     else if (_currentGameState == eGameState.MultiplayerGame)
     {
-      if (_spawnedPlayers.Count == 1)
+      if (_spawnedPlayers.Count == 0)
       {
-        WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
+        //WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
         OnLastPlayerKilled();
       }
     }
@@ -234,6 +286,7 @@ public class GameController : Singleton<GameController>
   void ClearLevel()
   {
     DespawnPlayers();
+    DespawnWorms();
     _lavaController.Reset();
     _lavaController.gameObject.SetActive(false);
     _cameraController.Reset();

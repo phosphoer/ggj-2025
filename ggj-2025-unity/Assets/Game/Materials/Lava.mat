@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Lava
-  m_Shader: {fileID: 4800000, guid: 577c516efef52cd4b9fcdb264998fb33, type: 3}
+  m_Shader: {fileID: 4800000, guid: dd65d0c6ae2c437bb07ecb36ae3dd3cc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,9 +22,26 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _LightRamp:
+        m_Texture: {fileID: 2800000, guid: 81264d8db118c4721b500e41df363857, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _FresnelOpacity: 1
+    - _FresnelPower: 4.38
+    - _Glow: 0
+    - _MainTexAlpha: 0
+    - _NoiseFrequency: 20
+    - _NoiseScale: 0.75
+    - _NoiseSpeed: 0.1
+    m_Colors:
+    - _Color: {r: 0.122641504, g: 0.056114275, b: 0.10680168, a: 1}
+    - _FresnelColor: {r: 0.9254902, g: 0.36078432, b: 0.38928956, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
