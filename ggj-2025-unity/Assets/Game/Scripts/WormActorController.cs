@@ -5,6 +5,7 @@ public class WormActorController : MonoBehaviour
   public Rewired.Player PlayerInput => _playerInput;
 
   public float MuckMovementSpeed = 5.0f;
+  public float AirMovementSpeed = 5.0f;
   public float JumpSpeed = 5.0f;
   public float GravityScalar = 5.0f; 
   public float Drag = 1.0f;
@@ -47,11 +48,11 @@ public class WormActorController : MonoBehaviour
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
     Vector2 inputJumpAxis = new Vector2(
-      _playerInput.GetAxis(RewiredConsts.Action.ThrowHorizontal),
+      -_playerInput.GetAxis(RewiredConsts.Action.ThrowHorizontal),
       _playerInput.GetAxis(RewiredConsts.Action.ThrowVertical));
 
     // Update the move axis
-    _moveAxis = Vector2.right * inputMoveAxis;
+    _moveAxis = Vector2.left * inputMoveAxis;
 
     if (inputJumpButton && _movementMode == eMovementState.muckMovement)
     {
@@ -73,13 +74,15 @@ public class WormActorController : MonoBehaviour
     ClampYPositionAboveMuck();
 
     // Teleporting
-    CheckSideTeleport();
+    ClompToSides();
   }
 
   private void Jump(Vector3 jumpDirection)
   {
+    var safeJumpDirection= Mathfx.Approx(jumpDirection, Vector3.zero, 0.01f) ? Vector3.up : Vector3.Normalize(jumpDirection);
+    _velocity = safeJumpDirection * JumpSpeed;
+
     _movementMode = eMovementState.airborne;
-    _velocity = jumpDirection * JumpSpeed;
   }
 
   private void UpdateMuckMovement(float dt)
@@ -103,10 +106,17 @@ public class WormActorController : MonoBehaviour
 
   private void UpdateJumpMovement(float dt)
   {
+    // Update the movement velocity
+    _velocity += _moveAxis*AirMovementSpeed*dt;
+    
+    // Apply gravity
     _velocity += Physics.gravity * (dt * GravityScalar);
     _velocity *= 1f / (1f + Drag * dt);
 
     ApplyVelocityToPosition(dt);
+
+    // Face toward your velocity
+    UpdateFacing(dt);
 
     bool isFalling = _velocity.y < 0;
     Vector3 wormPosition = GetWormPosition();
@@ -152,7 +162,7 @@ public class WormActorController : MonoBehaviour
     gameObject.transform.position = clampedPosition;
   }
 
-  private void CheckSideTeleport()
+  private void ClompToSides()
   {
     if (GameController.Instance != null)
     {
@@ -166,21 +176,21 @@ public class WormActorController : MonoBehaviour
       var sectionHalfWidth = section.SectionWidth / 2.0f;
       var sectionLeft = sectionXPos - sectionHalfWidth;
       var sectionRight = sectionXPos + sectionHalfWidth;
-      bool wantsTeleport = false;
+      bool wantsClamp = false;
 
       var newPlayerXPos = playerXPos;
       if (playerXPos < sectionLeft)
       {
-        newPlayerXPos = sectionRight - 0.1f;
-        wantsTeleport = true;
+        newPlayerXPos = sectionLeft;
+        wantsClamp = true;
       }
       else if (playerXPos > sectionRight)
       {
-        newPlayerXPos = sectionLeft + 0.1f;
-        wantsTeleport = true;
+        newPlayerXPos = sectionRight;
+        wantsClamp = true;
       }
 
-      if (wantsTeleport)
+      if (wantsClamp)
       {
         SetWormPosition(new Vector3(newPlayerXPos, playerYPos, playerZPos));
       }
