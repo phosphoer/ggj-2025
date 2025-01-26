@@ -85,7 +85,7 @@ public class GameController : Singleton<GameController>
 
     if (Input.GetKeyDown(KeyCode.P))
     {
-        TriggerPostGame();
+      TriggerPostGame();
     }
 #endif
 
@@ -241,6 +241,7 @@ public class GameController : Singleton<GameController>
     var playerGO = Instantiate(_playerPrefab.gameObject, position, rotation);
     var playerController = playerGO.GetComponent<PlayerActorController>();
     playerController.SetPlayerIndex(playerIndex);
+    playerController.SetColors(_playerColors[playerIndex].MouthColor, _playerColors[playerIndex].GumColor);
 
     playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
     playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;

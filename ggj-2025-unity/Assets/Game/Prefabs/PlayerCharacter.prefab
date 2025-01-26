@@ -616,7 +616,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 531b8b4fe3e6e49a6b0653d9b25ac8ab, type: 2}
+  - {fileID: 2100000, guid: 0303b3eb388ed4db28c5b5373ef107be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -898,6 +898,15 @@ MonoBehaviour:
     m_Bits: 65
   _throwUIPrefab: {fileID: 7875016763089322057, guid: ff13ca27cf63f4441affe70bc50c0662, type: 3}
   _fxSplashPrefab: {fileID: 15562417937997071, guid: be36949ded4124998b6760f3bffe999e, type: 3}
+  _mouthGumRenderers:
+  - {fileID: 5580493877364411395}
+  - {fileID: 5634242868758657125}
+  _gumMassRenderers:
+  - {fileID: 3704288168088200969}
+  _gumBubbleRenderers:
+  - {fileID: 9090579678482485265}
+  - {fileID: 7297285539917827887}
+  - {fileID: 8179002726482333694}
 --- !u!114 &8824695059088403173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1472,7 +1481,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 531b8b4fe3e6e49a6b0653d9b25ac8ab, type: 2}
+  - {fileID: 2100000, guid: 0303b3eb388ed4db28c5b5373ef107be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
