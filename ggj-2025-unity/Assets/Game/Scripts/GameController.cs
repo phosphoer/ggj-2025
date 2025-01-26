@@ -6,6 +6,7 @@ public struct PlayerColors
 {
   public Color MouthColor;
   public Color GumColor;
+  public string ColorName;
 }
 
 public class GameController : Singleton<GameController>
@@ -49,6 +50,19 @@ public class GameController : Singleton<GameController>
   public eGameState GameState => _currentGameState;
 
   [SerializeField] private eGameState _initialGameState = eGameState.Game;
+
+  public string GetPlayerColorName(int playerID)
+  {
+    foreach (var player in _spawnedPlayers)
+    {
+      if (player.PlayerIndex == playerID)
+      {
+        return player.PlayerColorName;
+      }
+    }
+
+    return "";
+  }
 
   public bool IsPlayerJoined(int playerId)
   {
@@ -260,7 +274,7 @@ public class GameController : Singleton<GameController>
     var playerGO = Instantiate(_playerPrefab.gameObject, position, rotation);
     var playerController = playerGO.GetComponent<PlayerActorController>();
     playerController.SetPlayerIndex(playerIndex);
-    playerController.SetColors(_playerColors[playerIndex].MouthColor, _playerColors[playerIndex].GumColor);
+    playerController.SetColors(_playerColors[playerIndex].ColorName, _playerColors[playerIndex].MouthColor, _playerColors[playerIndex].GumColor);
 
     playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
     playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;

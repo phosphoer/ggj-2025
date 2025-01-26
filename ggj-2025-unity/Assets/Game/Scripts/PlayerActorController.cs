@@ -70,9 +70,12 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private bool _hasStartedLaunch = false;
   private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
+  private string _playerColorName = "";
+  public string PlayerColorName => _playerColorName;
 
-  public void SetColors(Color mouthGumColor, Color gumColor)
+  public void SetColors(string colorName, Color mouthGumColor, Color gumColor)
   {
+    _playerColorName = colorName;
     _mouthGumMaterial.color = mouthGumColor;
     _gumMassMaterial.color = gumColor;
     _gumBubbleMaterial.color = gumColor;
