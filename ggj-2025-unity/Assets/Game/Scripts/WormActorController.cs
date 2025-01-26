@@ -9,22 +9,28 @@ public class WormActorController : MonoBehaviour
   public float JumpSpeed = 5.0f;
   public float GravityScalar = 5.0f; 
   public float Drag = 1.0f;
+  public float TransformationTime = 1.5f;
 
   public event System.Action<WormActorController, PlayerActorController> OnWormTouchedPlayer;
+  public event System.Action<WormActorController> OnWormTransformComplete;
 
   private Rewired.Player _playerInput;
+  private SphereCollider _headCollider;
   private Vector3 _moveAxis = Vector3.zero;
   private Vector3 _velocity= Vector3.zero;
+  private float _transformationTimer= 0;
 
   public enum eMovementState
   {
     muckMovement,
-    airborne
+    airborne,
+    transforming
   }
   eMovementState _movementMode = eMovementState.muckMovement;
 
   private void Awake()
   {
+    _headCollider= gameObject.GetComponent<SphereCollider>();
     SetPlayerIndex(0);
   }
 
@@ -54,6 +60,7 @@ public class WormActorController : MonoBehaviour
     // Update the move axis
     _moveAxis = Vector2.left * inputMoveAxis;
 
+    // Handle jump button input 
     if (inputJumpButton && _movementMode == eMovementState.muckMovement)
     {
       Jump(new Vector3(inputJumpAxis.x, inputJumpAxis.y, 0.0f));
@@ -67,6 +74,9 @@ public class WormActorController : MonoBehaviour
       break;
     case eMovementState.airborne:
       UpdateJumpMovement(dt);
+      break;
+    case eMovementState.transforming:
+      UpdateTransforming(dt);
       break;
     }
 
@@ -113,17 +123,59 @@ public class WormActorController : MonoBehaviour
     _velocity += Physics.gravity * (dt * GravityScalar);
     _velocity *= 1f / (1f + Drag * dt);
 
+    // Update position based on velocity
     ApplyVelocityToPosition(dt);
 
     // Face toward your velocity
     UpdateFacing(dt);
 
+    // See if we have touched another player
+    CheckForPlayerOverlap();
+
+    // See if we have landed
     bool isFalling = _velocity.y < 0;
     Vector3 wormPosition = GetWormPosition();
     float groundedY = GetMuckPlaneY();
     if (wormPosition.y <= groundedY && isFalling)
     {
       _movementMode = eMovementState.muckMovement;
+    }
+  }
+
+  public void StartPlayerTransformation()
+  {
+    _transformationTimer = TransformationTime;
+    _movementMode= eMovementState.transforming;
+  }
+
+  private void UpdateTransforming(float dt)
+  {
+    _velocity= Vector3.zero;
+    _transformationTimer-= dt;
+
+    if (_transformationTimer <= 0)
+    {
+      OnWormTransformComplete?.Invoke(this);
+      _movementMode = eMovementState.airborne;
+    }
+  }
+
+  public void CheckForPlayerOverlap()
+  {
+    if (_headCollider == null)
+      return;
+
+    var players= GameController.Instance.SpawnedPlayers;
+
+    foreach (var player in players)
+    {
+      float distanceToPlayer= Vector3.Distance(player.transform.position, _headCollider.transform.position);
+
+      if (distanceToPlayer < _headCollider.radius)
+      {
+        OnWormTouchedPlayer(this, player); 
+        break;
+      }
     }
   }
 

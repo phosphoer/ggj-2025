@@ -1,6 +1,9 @@
 using Rewired;
+using Rewired.Components;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.UIElements;
 
 public class GameController : Singleton<GameController>
 {
@@ -84,7 +87,7 @@ public class GameController : Singleton<GameController>
         Rewired.Player player = Rewired.ReInput.players.GetPlayer(i);
         if (!IsPlayerJoined(i) && player.GetAnyButtonDown())
         {
-          SpawnPlayer(player.id);
+          SpawnPlayerAtSpawnPoint(player.id);
         }
       }
     }
@@ -208,7 +211,7 @@ public class GameController : Singleton<GameController>
     _spawnedWorms.Clear();
   }
 
-  void SpawnPlayer(int playerIndex)
+  void SpawnPlayerAtSpawnPoint(int playerIndex)
   {
     if (_playerPrefab != null)
     {
@@ -216,15 +219,20 @@ public class GameController : Singleton<GameController>
 
       if (spawnTransform != null)
       {
-        var playerGO = Instantiate(_playerPrefab.gameObject, spawnTransform.position, spawnTransform.rotation);
-        var playerController = playerGO.GetComponent<PlayerActorController>();
-        playerController.SetPlayerIndex(playerIndex);
-
-        playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
-        playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;
-        _spawnedPlayers.Add(playerController);
+        SpawnPlayerAtLocation(playerIndex, spawnTransform.position, spawnTransform.rotation);
       }
     }
+  }
+
+  void SpawnPlayerAtLocation(int playerIndex, Vector3 position, Quaternion rotation)
+  {
+    var playerGO = Instantiate(_playerPrefab.gameObject, position, rotation);
+    var playerController = playerGO.GetComponent<PlayerActorController>();
+    playerController.SetPlayerIndex(playerIndex);
+
+    playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
+    playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;
+    _spawnedPlayers.Add(playerController);
   }
 
   void DespawnPlayer(PlayerActorController playerController)
@@ -244,6 +252,7 @@ public class GameController : Singleton<GameController>
       wormController.SetPlayerIndex(playerIndex);
 
       wormController.OnWormTouchedPlayer += OnWormTouchedPlayer;
+      wormController.OnWormTransformComplete += OnWormTransformComplete;
       _spawnedWorms.Add(wormController);
     }
   }
@@ -256,6 +265,24 @@ public class GameController : Singleton<GameController>
 
   private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
   {
+    // Launch the player off into the background
+    player.ReceiveLaunch();
+
+    // Start transforming the worm back into a player
+    worm.StartPlayerTransformation();
+  }
+
+  private void OnWormTransformComplete(WormActorController wormController)
+  {
+    int playerIndex = wormController.PlayerIndex;
+    Vector3 playerPosition = wormController.transform.position;
+    Quaternion playerRotation = wormController.transform.rotation;
+
+    // Despawn the worm
+    DespawnWorm(wormController);
+
+    // Spawn the player back at the location
+    SpawnPlayerAtLocation(playerIndex, playerPosition, playerRotation);
   }
 
   private void OnPlayerTouchedLava(PlayerActorController playerController)
