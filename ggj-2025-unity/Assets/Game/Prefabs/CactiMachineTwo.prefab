@@ -278,7 +278,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: cactus 5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6486612616766280767, guid: 0d5c89a8275e14f4fb25a111df05bead, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
