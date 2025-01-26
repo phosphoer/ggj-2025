@@ -176,12 +176,16 @@ MonoBehaviour:
   _playerColors:
   - MouthColor: {r: 1, g: 0.42745098, b: 0.7372549, a: 1}
     GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
+    ColorName: Pink
   - MouthColor: {r: 0.08235294, g: 0.49803922, b: 1, a: 1}
     GumColor: {r: 0.57254905, g: 0.84313726, b: 1, a: 1}
+    ColorName: Blue
   - MouthColor: {r: 1, g: 0.20392157, b: 0, a: 1}
     GumColor: {r: 1, g: 0.5882353, b: 0.57254905, a: 1}
+    ColorName: Orange
   - MouthColor: {r: 1, g: 0.76862746, b: 0.011764706, a: 1}
     GumColor: {r: 1, g: 0.88235295, b: 0.57254905, a: 1}
+    ColorName: Yellow
   _riseRateCurve:
     serializedVersion: 2
     m_Curve:

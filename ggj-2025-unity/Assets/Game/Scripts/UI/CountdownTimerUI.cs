@@ -26,8 +26,9 @@ public class CountdownTimerUI : UIPageBase
   {
     int intTime = (int)GameController.Instance.WinningPlayerCountdownTimer;
     int playerIndex = GameController.Instance.WinningPlayerID;
+    string colorName = GameController.Instance.GetPlayerColorName(playerIndex);
 
-    TitleLabel.text = string.Format("Player {0} victory in", playerIndex + 1);
+    TitleLabel.text = string.Format("{0} Player victory in", colorName);
     CountdownLabel.text = string.Format("{0}", intTime);
   }
 }

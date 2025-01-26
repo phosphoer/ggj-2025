@@ -60,7 +60,8 @@ public class PostGameUI : UIPageBase
 
     if (playerIndex >= 0)
     {
-      WinLabel.text = string.Format("Player {0} was the last player standing!", playerIndex+1);
+      string colorName = GameController.Instance.GetPlayerColorName(playerIndex);
+      WinLabel.text = string.Format("{0} Player Wins!",colorName);
     }
     else
     {
