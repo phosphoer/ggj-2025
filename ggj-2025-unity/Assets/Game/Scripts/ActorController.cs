@@ -192,6 +192,9 @@ public class ActorController : MonoBehaviour, ICharacterController
 
   public bool IsColliderValidForCollisions(Collider coll)
   {
+    if (coll.GetComponent<PassthroughPlatform>())
+      return _motor.Velocity.y <= 0;
+
     return true;
   }
 

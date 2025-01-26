@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerActorController : MonoBehaviour, ISlappable
 {
@@ -7,11 +8,14 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   public Rewired.Player PlayerInput => _playerInput;
   public int PlayerIndex => _playerIndex;
+  public CapsuleCollider PlayerCapsule => _actor.Motor.Capsule;
 
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
   public float AttackCooldown = 0.25f;
+  public float LaunchPower = 10;
+  public float LaunchSpinRate= 90;
 
   public SoundBank SfxFootstep;
   public SoundBank SfxJump;
@@ -52,6 +56,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private RectTransform _throwUIRoot;
   private ThrowUI _throwUI;
   private Collider[] _slapColliders = new Collider[4];
+  private bool _hasStartedLaunch = false;
+  private Vector3 _launchVelocity= Vector3.zero;
   private int _playerIndex = -1;
 
   public void SetGumMass(float gumAmount)
@@ -115,6 +121,13 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       return;
 
     float dt = Time.deltaTime;
+
+    // If the player got launched 
+    if (_hasStartedLaunch)
+    {
+      ApplyLaunchMovement(dt);
+      return;
+    }
 
     _attackCooldownTimer -= dt;
 
@@ -439,6 +452,38 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         slappable.ReceiveSlap(transform.position);
       }
     }
+  }
+
+  public void ReceiveLaunch()
+  {
+    if (_hasStartedLaunch)
+      return;
+
+    DisableMovement();
+
+    _launchVelocity= new Vector3(0, 0, LaunchPower);
+    _hasStartedLaunch= true;
+  }
+
+  private void ApplyLaunchMovement(float dt)
+  {
+    // Apply gravity
+    _launchVelocity += Physics.gravity * (dt * _actor.GravityScalar);
+    _launchVelocity *= 1f / (1f + _actor.Drag * dt);
+
+    // Spin the character as they are launched
+    Quaternion deltaRotation = Quaternion.Euler(0f, 0f, LaunchSpinRate * dt);
+    transform.rotation *= deltaRotation;
+
+    // Upate the position
+    var newPosition = transform.position + _launchVelocity * dt;
+    transform.position= newPosition;
+  }
+
+  public void DisableMovement()
+  {
+    _actor.Motor.enabled = false;
+    _actor.enabled = false;
   }
 
   void ISlappable.ReceiveSlap(Vector3 fromPos)

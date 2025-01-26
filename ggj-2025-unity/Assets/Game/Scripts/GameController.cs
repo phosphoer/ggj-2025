@@ -1,11 +1,18 @@
 using Rewired;
+using Rewired.Components;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.UIElements;
 
 public class GameController : Singleton<GameController>
 {
   [SerializeField] private LevelGenerator _levelManager;
   public LevelGenerator LevelManager => _levelManager;
+
+  public SoundBank MusicTitle;
+  public SoundBank MusicGame;
+  public SoundBank MusicEnd;
 
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
@@ -13,8 +20,6 @@ public class GameController : Singleton<GameController>
 
   [SerializeField] private LavaController _lavaController;
   public LavaController LavaController => _lavaController;
-  
-  [SerializeField] private int _desiredPlayerCount = 1;
 
   public int WinningPlayerID { get; set; } = -1;
 
@@ -29,15 +34,14 @@ public class GameController : Singleton<GameController>
   {
     None,
     Intro,
-    SingleplayerGame,
-    MultiplayerGame,
+    Game,
     PostGame
   }
 
   private eGameState _currentGameState = eGameState.None;
   public eGameState GameState => _currentGameState;
 
-  [SerializeField] private eGameState _initialGameState = eGameState.MultiplayerGame;
+  [SerializeField] private eGameState _initialGameState = eGameState.Game;
 
   public bool IsPlayerJoined(int playerId)
   {
@@ -62,11 +66,11 @@ public class GameController : Singleton<GameController>
 
   private void Update()
   {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     if (Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.Equals))
     {
-      _lavaController.RiseRate= _lavaController.RiseRate + 0.1f;
-      _cameraController.RiseRate= _cameraController.RiseRate + 0.1f;
+      _lavaController.RiseRate = _lavaController.RiseRate + 0.1f;
+      _cameraController.RiseRate = _cameraController.RiseRate + 0.1f;
     }
 
     if (Input.GetKeyDown(KeyCode.Minus))
@@ -74,7 +78,7 @@ public class GameController : Singleton<GameController>
       _lavaController.RiseRate = Mathf.Max(_lavaController.RiseRate - 0.1f, 0.0f);
       _cameraController.RiseRate = Mathf.Max(_cameraController.RiseRate - 0.1f, 0.0f);
     }
-    #endif
+#endif
 
     // Iterate over existing rewired players and spawn their character if they press a button
     if (_isSpawningAllowed && !MenuFocus.AnyFocusTaken)
@@ -84,7 +88,7 @@ public class GameController : Singleton<GameController>
         Rewired.Player player = Rewired.ReInput.players.GetPlayer(i);
         if (!IsPlayerJoined(i) && player.GetAnyButtonDown())
         {
-          SpawnPlayer(player.id);
+          SpawnPlayerAtSpawnPoint(player.id);
         }
       }
     }
@@ -107,15 +111,15 @@ public class GameController : Singleton<GameController>
     {
       case eGameState.Intro:
         ShowUI<MainMenuUI>();
+        AudioManager.Instance.PlaySound(MusicTitle);
         break;
-      case eGameState.MultiplayerGame:
-        SpawnLevel(_desiredPlayerCount);
-        break;
-      case eGameState.SingleplayerGame:
-        SpawnLevel(1);
+      case eGameState.Game:
+        SpawnLevel();
+        AudioManager.Instance.PlaySound(MusicGame);
         break;
       case eGameState.PostGame:
         ShowUI<PostGameUI>();
+        AudioManager.Instance.PlaySound(MusicEnd);
         break;
     }
   }
@@ -126,15 +130,17 @@ public class GameController : Singleton<GameController>
     {
       case eGameState.Intro:
         HideUI<MainMenuUI>();
+        AudioManager.Instance.StopSound(MusicTitle);
         break;
-      case eGameState.MultiplayerGame:
-      case eGameState.SingleplayerGame:
+      case eGameState.Game:
         _lavaController.StopRising();
         _cameraController.StopRising();
+        AudioManager.Instance.StopSound(MusicGame);
         break;
       case eGameState.PostGame:
         ClearLevel();
         HideUI<PostGameUI>();
+        AudioManager.Instance.StopSound(MusicEnd);
         break;
     }
   }
@@ -170,7 +176,7 @@ public class GameController : Singleton<GameController>
     }
   }
 
-  void SpawnLevel(int playerCount)
+  void SpawnLevel()
   {
     _isMatchStarted = false;
     _isSpawningAllowed = true;
@@ -208,7 +214,7 @@ public class GameController : Singleton<GameController>
     _spawnedWorms.Clear();
   }
 
-  void SpawnPlayer(int playerIndex)
+  void SpawnPlayerAtSpawnPoint(int playerIndex)
   {
     if (_playerPrefab != null)
     {
@@ -216,15 +222,20 @@ public class GameController : Singleton<GameController>
 
       if (spawnTransform != null)
       {
-        var playerGO = Instantiate(_playerPrefab.gameObject, spawnTransform.position, spawnTransform.rotation);
-        var playerController = playerGO.GetComponent<PlayerActorController>();
-        playerController.SetPlayerIndex(playerIndex);
-
-        playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
-        playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;
-        _spawnedPlayers.Add(playerController);
+        SpawnPlayerAtLocation(playerIndex, spawnTransform.position, spawnTransform.rotation);
       }
     }
+  }
+
+  void SpawnPlayerAtLocation(int playerIndex, Vector3 position, Quaternion rotation)
+  {
+    var playerGO = Instantiate(_playerPrefab.gameObject, position, rotation);
+    var playerController = playerGO.GetComponent<PlayerActorController>();
+    playerController.SetPlayerIndex(playerIndex);
+
+    playerController.OnPlayerTouchedLava += this.OnPlayerTouchedLava;
+    playerController.OnPlayerSectionChanged += this.OnPlayerSectionChanged;
+    _spawnedPlayers.Add(playerController);
   }
 
   void DespawnPlayer(PlayerActorController playerController)
@@ -244,6 +255,7 @@ public class GameController : Singleton<GameController>
       wormController.SetPlayerIndex(playerIndex);
 
       wormController.OnWormTouchedPlayer += OnWormTouchedPlayer;
+      wormController.OnWormTransformComplete += OnWormTransformComplete;
       _spawnedWorms.Add(wormController);
     }
   }
@@ -256,6 +268,24 @@ public class GameController : Singleton<GameController>
 
   private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
   {
+    // Launch the player off into the background
+    player.ReceiveLaunch();
+
+    // Start transforming the worm back into a player
+    worm.StartPlayerTransformation();
+  }
+
+  private void OnWormTransformComplete(WormActorController wormController)
+  {
+    int playerIndex = wormController.PlayerIndex;
+    Vector3 playerPosition = wormController.transform.position;
+    Quaternion playerRotation = wormController.transform.rotation;
+
+    // Despawn the worm
+    DespawnWorm(wormController);
+
+    // Spawn the player back at the location
+    SpawnPlayerAtLocation(playerIndex, playerPosition, playerRotation);
   }
 
   private void OnPlayerTouchedLava(PlayerActorController playerController)
@@ -267,11 +297,7 @@ public class GameController : Singleton<GameController>
     DespawnPlayer(playerController);
     SpawnWorm(playerIndex, playerPosition, playerRotation);
 
-    if (_currentGameState == eGameState.SingleplayerGame)
-    {
-      OnLastPlayerKilled();
-    }
-    else if (_currentGameState == eGameState.MultiplayerGame)
+    if (_currentGameState == eGameState.Game)
     {
       if (_spawnedPlayers.Count == 0)
       {
