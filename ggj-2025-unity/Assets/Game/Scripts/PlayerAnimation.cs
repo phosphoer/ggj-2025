@@ -91,8 +91,8 @@ public class PlayerAnimation : MonoBehaviour
 
   public void ReceiveSlap(Vector3 fromPos)
   {
-    Vector3 wobbleAxis = Vector3.Cross(Vector3.up, (transform.position - fromPos).normalized);
-    _wobble.StartWobble(wobbleAxis, SlapWobbleScale);
+    // Vector3 wobbleAxis = Vector3.Cross(Vector3.up, (transform.position - fromPos).normalized);
+    // _wobble.StartWobble(wobbleAxis, SlapWobbleScale);
   }
 
   public void Jump()
