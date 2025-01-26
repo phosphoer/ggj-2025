@@ -173,14 +173,14 @@ MonoBehaviour:
   _wormPrefab: {fileID: 3286775476846638099, guid: f69ebabb27540bf4fabc4c95c89f6c1d, type: 3}
   _lavaController: {fileID: 8493794703140864182}
   _playerColors:
-  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
+  - MouthColor: {r: 1, g: 0.42745098, b: 0.7372549, a: 1}
     GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
-  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
-    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
-  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
-    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
-  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
-    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
+  - MouthColor: {r: 0.08235294, g: 0.49803922, b: 1, a: 1}
+    GumColor: {r: 0.57254905, g: 0.84313726, b: 1, a: 1}
+  - MouthColor: {r: 1, g: 0.20392157, b: 0, a: 1}
+    GumColor: {r: 1, g: 0.5882353, b: 0.57254905, a: 1}
+  - MouthColor: {r: 1, g: 0.76862746, b: 0.011764706, a: 1}
+    GumColor: {r: 1, g: 0.88235295, b: 0.57254905, a: 1}
   _initialGameState: 3
 --- !u!114 &7567264333900629455
 MonoBehaviour:
