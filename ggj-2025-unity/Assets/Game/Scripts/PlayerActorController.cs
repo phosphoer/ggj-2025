@@ -11,6 +11,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
+  public float AttackCooldown = 0.25f;
 
   public SoundBank SfxFootstep;
   public SoundBank SfxJump;
@@ -36,6 +37,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private Item _heldItem;
   private float _bubbleGumMass;
   private float _bubbleStoredMass;
+  private float _attackCooldownTimer;
   private int _levelSectionIndex = 0;
   private bool _didBubbleThisJump;
   private bool _isThrowing;
@@ -112,6 +114,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       return;
 
     float dt = Time.deltaTime;
+
+    _attackCooldownTimer -= dt;
 
     // Gather input state
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
@@ -194,7 +198,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       {
         _interaction.TriggerInteract();
       }
-      else
+      else if (_attackCooldownTimer <= 0)
       {
         Slap();
       }
@@ -416,6 +420,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   private void Slap()
   {
+    _attackCooldownTimer = AttackCooldown;
     _playerAnimation.Slap();
 
     if (SfxSlap)
