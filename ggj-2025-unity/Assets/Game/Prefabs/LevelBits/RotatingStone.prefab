@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7285672528390459941}
   - component: {fileID: 4774547721319774114}
+  - component: {fileID: 7962316912700863430}
+  - component: {fileID: 6107840759375046534}
   m_Layer: 0
   m_Name: RotatingStone
   m_TagString: Untagged
@@ -55,6 +57,44 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.9096227
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7962316912700863430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7590268738152846085}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1395413934, guid: 09c9b883b79ef864a99683bb36c5776d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 1
+  _slowRotationSpeed: 5
+  _fastRotationSpeed: 20
+  _rotateAroundAxis: 2
+  _relativeTo: 1
+  _reverse: 0
+--- !u!114 &6107840759375046534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7590268738152846085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15568a07cb6dbb645b9403a5c5883cc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseTranslatePoints: 0
+  pointA: {fileID: 0}
+  pointB: {fileID: 0}
+  speed: 2
+  RotateAxis: {x: 0, y: 0, z: 1}
+  Space: 1
+  RotateSpeed: 5
+  Mover: {fileID: 0}
 --- !u!1001 &6657175013298609336
 PrefabInstance:
   m_ObjectHideFlags: 0

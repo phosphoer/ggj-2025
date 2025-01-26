@@ -613,34 +613,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7590268738152846085, guid: ed2db944dcb821d4ba3563da04427182, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5151401702691430808}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed2db944dcb821d4ba3563da04427182, type: 3}
---- !u!1 &4635519814784713051 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7590268738152846085, guid: ed2db944dcb821d4ba3563da04427182, type: 3}
-  m_PrefabInstance: {fileID: 2955101902051562078}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5151401702691430808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4635519814784713051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1395413934, guid: 09c9b883b79ef864a99683bb36c5776d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 1
-  _slowRotationSpeed: 5
-  _fastRotationSpeed: 20
-  _rotateAroundAxis: 2
-  _relativeTo: 1
-  _reverse: 0
 --- !u!4 &5483494379439276155 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7285672528390459941, guid: ed2db944dcb821d4ba3563da04427182, type: 3}
