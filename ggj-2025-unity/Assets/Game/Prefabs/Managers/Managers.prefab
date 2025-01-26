@@ -164,14 +164,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047a2d793d793374f9fb8c955b8f3579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelManager: {fileID: 9052310861224840221}
   MusicTitle: {fileID: 11400000, guid: 4350d60e8df5b4d9d8822f93e976b9c5, type: 2}
   MusicGame: {fileID: 11400000, guid: d1bf87199fad14ced96528aa595e7314, type: 2}
   MusicEnd: {fileID: 11400000, guid: 7a82b345350684c70a069d833d724c38, type: 2}
+  _levelManager: {fileID: 9052310861224840221}
   _cameraController: {fileID: 7567264333900629455}
   _playerPrefab: {fileID: 3137277098965579114, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
   _wormPrefab: {fileID: 3286775476846638099, guid: f69ebabb27540bf4fabc4c95c89f6c1d, type: 3}
   _lavaController: {fileID: 8493794703140864182}
+  _playerColors:
+  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
+    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
+  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
+    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
+  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
+    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
+  - MouthColor: {r: 0.9607843, g: 0.30588236, b: 0.49803922, a: 1}
+    GumColor: {r: 0.972549, g: 0.61960787, b: 1, a: 1}
   _initialGameState: 3
 --- !u!114 &7567264333900629455
 MonoBehaviour:

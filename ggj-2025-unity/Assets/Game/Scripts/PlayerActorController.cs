@@ -68,11 +68,11 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
 
-  public void SetColors(Color mouthGumColor, Color gumMassColor, Color gumBubbleColor)
+  public void SetColors(Color mouthGumColor, Color gumColor)
   {
     _mouthGumMaterial.color = mouthGumColor;
-    _gumMassMaterial.color = gumMassColor;
-    _gumBubbleMaterial.color = gumBubbleColor;
+    _gumMassMaterial.color = gumColor;
+    _gumBubbleMaterial.color = gumColor;
   }
 
   public void SetGumMass(float gumAmount)
