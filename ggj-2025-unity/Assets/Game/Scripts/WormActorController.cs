@@ -41,19 +41,21 @@ public class WormActorController : MonoBehaviour
 
     // Apply movement state to actor
     _actor.MoveAxis = Vector2.right * inputMoveAxis;
-    //_wormAnimation.MoveAnimSpeed = Mathfx.Damp(_wormAnimation.MoveAnimSpeed, Mathf.Abs(inputMoveAxis), 0.25f, dt * 5);
 
-    // Apply capsule size to actor based on current gum mass
-    //float capsuleRadius = Mathf.Max(0.6f, _bubbleGumMass * 0.5f);
-    //float capsuleHeight = Mathf.Max(1.3f, _bubbleGumMass + 0.3f);
-    //float capsuleOffset = _actor.Motor.Capsule.height * 0.5f;
-    //_actor.Motor.SetCapsuleDimensions(capsuleRadius, capsuleHeight, capsuleOffset);
-
-    // Make the worm
+    // Make the worm face their movement direction
     var currentRotation= _actor.Motor.Transform.rotation;
     var moveDirection= Mathf.Abs(inputMoveAxis) > 0.01f ? Vector3.Normalize(_actor.MoveAxis) : Vector3.forward;
     var targetRotation= Quaternion.LookRotation(moveDirection);
-    _actor.Motor.RotateCharacter(Mathfx.Damp(currentRotation, targetRotation, 0.25f, dt * 3));
+    _actor.Motor.RotateCharacter(Mathfx.Damp(currentRotation, targetRotation, 0.25f, dt * 5));
+
+    // Keep the character clamped above the lava plane
+    var lavaYPosition = GameController.Instance.LavaController.LavaYPosition;
+    var clampedPosition= _actor.Motor.Transform.position;
+    clampedPosition.y= Mathf.Max(clampedPosition.y, lavaYPosition);
+    _actor.Motor.SetPosition(clampedPosition);
+
+    // Worm always is ungrounded
+    _actor.Motor.ForceUnground();
 
     // Teleporting
     CheckSideTeleport();
