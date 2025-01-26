@@ -16,6 +16,7 @@ public class PlayerAnimation : MonoBehaviour
   public float BodyBobScale = 0.2f;
   public float SlapAnimDuration = 0.2f;
   public float SlapAnimScale = 0.2f;
+  public float SlapWobbleScale = 100;
 
   [SerializeField] private Transform _visualRoot = null;
   [SerializeField] private Transform _headRoot = null;
@@ -30,6 +31,7 @@ public class PlayerAnimation : MonoBehaviour
   [SerializeField] private Transform _mouthItemRoot = null;
   [SerializeField] private Transform _gumMassRoot = null;
   [SerializeField] private Transform _gumBubbleRoot = null;
+  [SerializeField] private WobbleAnimation _wobble = null;
   [SerializeField] private AnimationCurve _slapAnimCurve = null;
   [SerializeField] private ParticleSystem _fxBubblePop = null;
 
@@ -85,6 +87,12 @@ public class PlayerAnimation : MonoBehaviour
   {
     _isSlapping = true;
     _slapTimer = 0;
+  }
+
+  public void ReceiveSlap(Vector3 fromPos)
+  {
+    Vector3 wobbleAxis = Vector3.Cross(Vector3.up, (transform.position - fromPos).normalized);
+    _wobble.StartWobble(wobbleAxis, SlapWobbleScale);
   }
 
   public void Jump()

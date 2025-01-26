@@ -17,7 +17,7 @@ public class GumballMachine : MonoBehaviour, ISlappable
 
   private int _remainingGumballs;
 
-  void ISlappable.ReceiveSlap(Vector3 fromPos)
+  void ISlappable.ReceiveSlap(Vector3 fromPos, float damage)
   {
     Vector3 wobbleAxis = Vector3.Cross(Vector3.up, (transform.position - fromPos).normalized);
     _wobble.StartWobble(wobbleAxis, SlapWobbleScale);
