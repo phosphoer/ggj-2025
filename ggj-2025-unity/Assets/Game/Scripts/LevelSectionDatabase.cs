@@ -10,4 +10,8 @@ public class LevelSectionDatabase : ScriptableObject
 	[SerializeField]
 	private LevelSection[] _levelSections = null;
 	public LevelSection[] LevelSections => _levelSections;
+
+  [SerializeField]
+  private LevelSection _endLevelSection = null;
+  public LevelSection EndLevelSection => _endLevelSection;
 }
