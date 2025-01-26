@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Item : MonoBehaviour
 {
   public float GumMassValue = 0.25f;
+  public float GumDamage = 0.1f;
   public Rigidbody Rigidbody => _rb;
 
   public SoundBank SfxPickup;
@@ -97,7 +98,7 @@ public class Item : MonoBehaviour
       ISlappable slappable = collision.gameObject.GetComponent<ISlappable>();
       if (slappable != null)
       {
-        slappable.ReceiveSlap(transform.position);
+        slappable.ReceiveSlap(transform.position, GumDamage);
       }
     }
   }

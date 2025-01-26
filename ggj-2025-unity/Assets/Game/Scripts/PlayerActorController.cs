@@ -15,6 +15,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
   public float AttackCooldown = 0.25f;
+  private float SlapDamage = 0.1f;
   public float LaunchPower = 10;
   public float LaunchSpinRate = 90;
 
@@ -488,7 +489,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       ISlappable slappable = c.GetComponentInParent<ISlappable>();
       if (slappable != null && slappable != this)
       {
-        slappable.ReceiveSlap(transform.position);
+        slappable.ReceiveSlap(transform.position, SlapDamage);
       }
     }
   }
@@ -525,7 +526,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _actor.enabled = false;
   }
 
-  void ISlappable.ReceiveSlap(Vector3 fromPos)
+  void ISlappable.ReceiveSlap(Vector3 fromPos, float damage)
   {
     if (_heldItem)
     {
@@ -535,10 +536,11 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     AudioManager.Instance.PlaySound(gameObject, SfxReceiveSlap);
 
     PopBubble();
+    _playerAnimation.ReceiveSlap(fromPos);
 
     if (_bubbleGumMass > 0)
     {
-      SetGumMass(_bubbleGumMass - 0.1f);
+      SetGumMass(_bubbleGumMass - damage);
     }
   }
 

@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface ISlappable
 {
-  void ReceiveSlap(Vector3 fromPos);
+  void ReceiveSlap(Vector3 fromPos, float damage);
 }
