@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ffa137409bf3e429dc0edd88772282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeteorPrefab: {fileID: 0}
+  MeteorPrefab: {fileID: 3123352222773840606, guid: b111093b8a9b5a648ae782f29c47053d, type: 3}
   SpawnDistance: 9
   TimerMax: 2
   TimerMin: 0.5
