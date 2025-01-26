@@ -78,6 +78,11 @@ public class GameController : Singleton<GameController>
       _lavaController.RiseRate = Mathf.Max(_lavaController.RiseRate - 0.1f, 0.0f);
       _cameraController.RiseRate = Mathf.Max(_cameraController.RiseRate - 0.1f, 0.0f);
     }
+
+    if (Input.GetKeyDown(KeyCode.P))
+    {
+        TriggerPostGame();
+    }
 #endif
 
     // Iterate over existing rewired players and spawn their character if they press a button
