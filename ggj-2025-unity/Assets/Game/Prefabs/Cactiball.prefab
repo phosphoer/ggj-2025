@@ -63,6 +63,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GumMassValue: -0.4
+  SfxPickup: {fileID: 11400000, guid: a7baf7cf41c29453393cc985f31fcd43, type: 2}
+  SfxImpact: {fileID: 11400000, guid: b4c72d8fe1788437bacfc16b3340ec39, type: 2}
+  SfxChew: {fileID: 11400000, guid: 4b9e8bab6c5fe4cfc8a62f448bdd235a, type: 2}
   _rb: {fileID: 78908441243542705}
   _interactable: {fileID: 8970600465562481787}
 --- !u!54 &78908441243542705
@@ -147,6 +150,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
       propertyPath: m_Name
       value: CactusRound1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 00a03709d264ef0489eb6b4e8c475a7f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

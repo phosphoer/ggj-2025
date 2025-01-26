@@ -137,6 +137,10 @@ MonoBehaviour:
   SlapWobbleScale: 300
   GumballPrefabs:
   - {fileID: 6079765574516831324, guid: 022b68aa4706f4e57bf6156b2f057daa, type: 3}
+  - {fileID: 6079765574516831324, guid: f27d221ac187ef84ea718fa2509f69ba, type: 3}
+  - {fileID: 6079765574516831324, guid: 004a24ebf0ef654478e4a5015931bd48, type: 3}
+  - {fileID: 6079765574516831324, guid: 5513a71ee92d55a41991801435c54d25, type: 3}
+  - {fileID: 6079765574516831324, guid: 68bcb998716bf4f4e80262e78bfa9d14, type: 3}
   SpawnCountRange:
     MinValue: 1
     MaxValue: 1
@@ -145,6 +149,8 @@ MonoBehaviour:
     MaxValue: 2
   GumballSpawnRadius: 0.5
   GumballTotalCount: 10
+  SfxDispense: {fileID: 11400000, guid: b4a95ca8d12ae4555b42b990e138a668, type: 2}
+  SfxEmpty: {fileID: 11400000, guid: 5ade8993aeb70439db7a370b196a6e11, type: 2}
   _wobble: {fileID: 3708247841435559330}
   _spawnRoot: {fileID: 4528093041446861090}
 --- !u!114 &3708247841435559330
