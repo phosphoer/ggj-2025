@@ -17,6 +17,7 @@ public class GameController : Singleton<GameController>
   public SoundBank MusicTitle;
   public SoundBank MusicGame;
   public SoundBank MusicEnd;
+  public int WinCountDownTime = 10;
 
   [SerializeField] private float _matchStartHeight = 5;
   [SerializeField] private LevelGenerator _levelManager;
@@ -32,6 +33,7 @@ public class GameController : Singleton<GameController>
   public float WinningPlayerCountdownTimer { get; set; } = 0;
 
   private bool _isMatchStarted;
+  private bool _isInCountdown;
   private bool _isSpawningAllowed;
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
   public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
@@ -111,6 +113,17 @@ public class GameController : Singleton<GameController>
     _lavaController.RiseRate = riseRate;
     _cameraController.RiseRate = riseRate;
 
+    // Win count down
+    if (_isInCountdown)
+    {
+      WinningPlayerCountdownTimer -= Time.deltaTime;
+      if (WinningPlayerCountdownTimer <= 0)
+      {
+        _isInCountdown = false;
+        TriggerPostGame();
+      }
+    }
+
     for (int i = 0; i < _spawnedPlayers.Count; ++i)
     {
       if (!_isMatchStarted)
@@ -177,6 +190,7 @@ public class GameController : Singleton<GameController>
       case eGameState.Game:
         _lavaController.StopRising();
         _cameraController.StopRising();
+        HideUI<CountdownTimerUI>();
         AudioManager.Instance.StopSound(MusicGame);
         break;
       case eGameState.PostGame:
@@ -321,6 +335,11 @@ public class GameController : Singleton<GameController>
 
     // Start transforming the worm back into a player
     worm.StartPlayerTransformation();
+
+    if (_isInCountdown)
+    {
+      WinningPlayerCountdownTimer = 10;
+    }
   }
 
   private void OnWormTransformComplete(WormActorController wormController)
@@ -352,11 +371,22 @@ public class GameController : Singleton<GameController>
         if (_spawnedPlayers.Count > 0)
         {
           WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
+          TriggerCountDown();
         }
-
-        TriggerPostGame();
+        else
+        {
+          TriggerPostGame();
+        }
       }
     }
+  }
+
+  private void TriggerCountDown()
+  {
+    _isInCountdown = true;
+    WinningPlayerCountdownTimer = WinCountDownTime;
+
+    ShowUI<CountdownTimerUI>();
   }
 
   private bool IsAnyWormTramsforming()
