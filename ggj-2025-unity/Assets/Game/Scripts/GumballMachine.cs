@@ -9,6 +9,9 @@ public class GumballMachine : MonoBehaviour, ISlappable
   public float GumballSpawnRadius = 0.5f;
   public int GumballTotalCount = 10;
 
+  public SoundBank SfxDispense;
+  public SoundBank SfxEmpty;
+
   [SerializeField] private WobbleAnimation _wobble = null;
   [SerializeField] private Transform _spawnRoot = null;
 
@@ -33,6 +36,13 @@ public class GumballMachine : MonoBehaviour, ISlappable
       gumball.transform.position = _spawnRoot.position + spawnOffset;
       gumball.Rigidbody.AddForce(spawnOffset.normalized * SpawnForceRange.RandomValue, ForceMode.VelocityChange);
     }
+
+    if (spawnCount > 0)
+    {
+      AudioManager.Instance.PlaySound(gameObject, SfxDispense);
+    }
+    else if (SfxEmpty)
+      AudioManager.Instance.PlaySound(gameObject, SfxEmpty);
 
     _remainingGumballs -= spawnCount;
   }

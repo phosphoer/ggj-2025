@@ -149,6 +149,8 @@ MonoBehaviour:
     MaxValue: 2
   GumballSpawnRadius: 0.5
   GumballTotalCount: 10
+  SfxDispense: {fileID: 11400000, guid: b4a95ca8d12ae4555b42b990e138a668, type: 2}
+  SfxEmpty: {fileID: 11400000, guid: 5ade8993aeb70439db7a370b196a6e11, type: 2}
   _wobble: {fileID: 3708247841435559330}
   _spawnRoot: {fileID: 4528093041446861090}
 --- !u!114 &3708247841435559330

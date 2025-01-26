@@ -10,7 +10,10 @@ public class GameController : Singleton<GameController>
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
   [SerializeField] private WormActorController _wormPrefab;
+
   [SerializeField] private LavaController _lavaController;
+  public LavaController LavaController => _lavaController;
+  
   [SerializeField] private int _desiredPlayerCount = 1;
 
   public int WinningPlayerID { get; set; } = -1;
