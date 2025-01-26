@@ -62,6 +62,20 @@ public class GameController : Singleton<GameController>
 
   private void Update()
   {
+    #if UNITY_EDITOR
+    if (Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.Equals))
+    {
+      _lavaController.RiseRate= _lavaController.RiseRate + 0.1f;
+      _cameraController.RiseRate= _cameraController.RiseRate + 0.1f;
+    }
+
+    if (Input.GetKeyDown(KeyCode.Minus))
+    {
+      _lavaController.RiseRate = Mathf.Max(_lavaController.RiseRate - 0.1f, 0.0f);
+      _cameraController.RiseRate = Mathf.Max(_cameraController.RiseRate - 0.1f, 0.0f);
+    }
+    #endif
+
     // Iterate over existing rewired players and spawn their character if they press a button
     if (_isSpawningAllowed && !MenuFocus.AnyFocusTaken)
     {
