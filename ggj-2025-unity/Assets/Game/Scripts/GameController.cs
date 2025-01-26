@@ -243,6 +243,8 @@ public class GameController : Singleton<GameController>
     playerController.OnPlayerTouchedLava -= this.OnPlayerTouchedLava;
     playerController.OnPlayerSectionChanged -= this.OnPlayerSectionChanged;
     _spawnedPlayers.Remove(playerController);
+
+    Destroy(playerController.gameObject);
   }
 
   void SpawnWorm(int playerIndex, Vector3 position, Quaternion rotation)
@@ -263,7 +265,10 @@ public class GameController : Singleton<GameController>
   void DespawnWorm(WormActorController wormController)
   {
     wormController.OnWormTouchedPlayer -= OnWormTouchedPlayer;
+    wormController.OnWormTransformComplete -= OnWormTransformComplete;
     _spawnedWorms.Remove(wormController);
+
+    Destroy(wormController.gameObject);
   }
 
   private void OnWormTouchedPlayer(WormActorController worm, PlayerActorController player)
@@ -299,12 +304,29 @@ public class GameController : Singleton<GameController>
 
     if (_currentGameState == eGameState.Game)
     {
-      if (_spawnedPlayers.Count == 0)
+      if (_spawnedPlayers.Count <= 1 && !IsAnyWormTramsforming())
       {
-        //WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
-        OnLastPlayerKilled();
+        if (_spawnedPlayers.Count > 0)
+        {
+          WinningPlayerID = _spawnedPlayers[0].PlayerIndex;
+        }
+
+        TriggerPostGame();
       }
     }
+  }
+
+  private bool IsAnyWormTramsforming()
+  {
+    foreach (var worm in _spawnedWorms)
+    {
+      if (worm.IsTransforming)
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
@@ -318,7 +340,7 @@ public class GameController : Singleton<GameController>
     }
   }
 
-  private void OnLastPlayerKilled()
+  private void TriggerPostGame()
   {
     SetGameState(eGameState.PostGame);
   }

@@ -51,9 +51,16 @@ public class LevelGenerator : MonoBehaviour
     _unusedSpawnPoints = _levelSections[0].GatherAvailablePlayerSpawners();
 
     // Then spawn the rest of the sections
-    for (int levelIndex = 1; levelIndex < _numLevels; ++levelIndex)
+    for (int levelIndex = 1; levelIndex < _numLevels - 1; ++levelIndex)
     {
       _levelSections[levelIndex] = SpawnNextSection(_levelSectionDatabase.LevelSections, levelIndex);
+    }
+
+    if (_levelSectionDatabase.EndLevelSection != null)
+    {
+      int endLevelIndex = _numLevels - 1;
+
+      _levelSections[endLevelIndex] = SpawnNextSection(new LevelSection[] {_levelSectionDatabase.EndLevelSection }, endLevelIndex);
     }
   }
 

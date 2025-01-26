@@ -1017,6 +1017,7 @@ MonoBehaviour:
   JumpSpeed: 55
   GravityScalar: 5
   Drag: 1
+  TransformationTime: 1.5
 --- !u!135 &8014925201326964454
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1036,7 +1037,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.76
+  m_Radius: 1.25
   m_Center: {x: 0, y: 0.4, z: 0.3}
 --- !u!1 &5225410373419179795
 GameObject:
