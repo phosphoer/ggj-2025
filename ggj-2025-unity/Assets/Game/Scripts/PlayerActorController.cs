@@ -18,6 +18,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public SoundBank SfxSwallow;
   public SoundBank SfxInflate;
   public SoundBank SfxDeflate;
+  public SoundBank SfxBubblePop;
   public SoundBank SfxSlap;
 
   [SerializeField] private ActorController _actor = null;
@@ -61,7 +62,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     {
       _playerAnimation.PopBubble();
       _bubbleStoredMass = 0f;
-      AudioManager.Instance.PlaySound(gameObject, SfxDeflate);
+      AudioManager.Instance.PlaySound(gameObject, SfxBubblePop);
     }
   }
 
@@ -179,6 +180,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     {
       SetGumMass(_bubbleStoredMass + _bubbleGumMass);
       _bubbleStoredMass = 0;
+      AudioManager.Instance.PlaySound(gameObject, SfxDeflate);
     }
 
     // Interaction
