@@ -247,7 +247,7 @@ MonoBehaviour:
   _mountPoint: {fileID: 6100067436448535999}
   AxisSensitivty: 1
   MaxAngle: 5
-  HandheldScale: 1
+  HandheldScale: 0
   _riseRate: 0.25
 --- !u!1 &2054800164762514894
 GameObject:
