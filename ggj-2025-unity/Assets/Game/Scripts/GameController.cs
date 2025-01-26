@@ -1,25 +1,28 @@
-using Rewired;
-using Rewired.Components;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
-using UnityEngine.UIElements;
+
+[System.Serializable]
+public struct PlayerColors
+{
+  public Color MouthColor;
+  public Color GumColor;
+}
 
 public class GameController : Singleton<GameController>
 {
-  [SerializeField] private LevelGenerator _levelManager;
   public LevelGenerator LevelManager => _levelManager;
+  public LavaController LavaController => _lavaController;
 
   public SoundBank MusicTitle;
   public SoundBank MusicGame;
   public SoundBank MusicEnd;
 
+  [SerializeField] private LevelGenerator _levelManager;
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
   [SerializeField] private WormActorController _wormPrefab;
-
   [SerializeField] private LavaController _lavaController;
-  public LavaController LavaController => _lavaController;
+  [SerializeField] private PlayerColors[] _playerColors = null;
 
   public int WinningPlayerID { get; set; } = -1;
 

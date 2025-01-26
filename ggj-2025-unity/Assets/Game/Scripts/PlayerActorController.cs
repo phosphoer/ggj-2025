@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -38,6 +39,9 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
+  [SerializeField] private Renderer[] _mouthGumRenderers = null;
+  [SerializeField] private Renderer[] _gumMassRenderers = null;
+  [SerializeField] private Renderer[] _gumBubbleRenderers = null;
 
   private Rewired.Player _playerInput;
   private Item _heldItem;
@@ -51,6 +55,9 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private Vector3 _currentThrowAxis;
   private Vector3 _lastThrowAxis;
   private Vector3 _lastNonNegativeThrowAxis;
+  private Material _mouthGumMaterial;
+  private Material _gumMassMaterial;
+  private Material _gumBubbleMaterial;
   private float _currentThrowT;
   private float _lastNonNegativeThrowT;
   private bool _isMidFlick;
@@ -60,6 +67,13 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private bool _hasStartedLaunch = false;
   private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
+
+  public void SetColors(Color mouthGumColor, Color gumMassColor, Color gumBubbleColor)
+  {
+    _mouthGumMaterial.color = mouthGumColor;
+    _gumMassMaterial.color = gumMassColor;
+    _gumBubbleMaterial.color = gumBubbleColor;
+  }
 
   public void SetGumMass(float gumAmount)
   {
@@ -86,6 +100,26 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _playerAnimation.SetBubbleSize(0);
     _playerAnimation.Footstep += OnFootStep;
     _actor.Landed += OnLanded;
+
+    _mouthGumMaterial = _mouthGumRenderers[0].material;
+    _gumMassMaterial = _gumMassRenderers[0].material;
+    _gumBubbleMaterial = _gumBubbleRenderers[0].material;
+
+    foreach (var r in _mouthGumRenderers)
+      r.sharedMaterial = _mouthGumMaterial;
+
+    foreach (var r in _gumMassRenderers)
+      r.sharedMaterial = _gumMassMaterial;
+
+    foreach (var r in _gumBubbleRenderers)
+      r.sharedMaterial = _gumBubbleMaterial;
+  }
+
+  private void OnDestroy()
+  {
+    Destroy(_mouthGumMaterial);
+    Destroy(_gumMassMaterial);
+    Destroy(_gumBubbleMaterial);
   }
 
   public void SetPlayerIndex(int playerIndex)
