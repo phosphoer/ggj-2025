@@ -422,43 +422,34 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   {
     if (GameController.Instance != null)
     {
-      LevelSection[] sections = GameController.Instance.LevelManager.LevelSections;
+      Vector3 screenPos = MainCamera.Instance.Camera.WorldToScreenPoint(transform.position);
+      Vector3 normalizedPos = Mathfx.GetNormalizedScreenPos(screenPos);
+      Vector3 targetNormalizedPos = normalizedPos;
+      bool shouldTeleport = false;
 
-      if (_levelSectionIndex >= 0 && _levelSectionIndex < sections.Length)
+      if (normalizedPos.x > 1.1f)
       {
-        LevelSection section = sections[_levelSectionIndex];
-        var playerXPos = gameObject.transform.position.x;
-        var playerYPos = gameObject.transform.position.y;
-        var playerZPos = gameObject.transform.position.z;
-        var sectionXPos = section.SectionWorldCenter.x;
-        var sectionHalfWidth = section.SectionWidth / 2.0f;
-        var sectionLeft = sectionXPos - sectionHalfWidth;
-        var sectionRight = sectionXPos + sectionHalfWidth;
-        bool wantsTeleport = false;
+        targetNormalizedPos.x = -0.05f;
+        shouldTeleport = true;
+      }
+      else if (normalizedPos.x < -0.1f)
+      {
+        targetNormalizedPos.x = 1.05f;
+        shouldTeleport = true;
+      }
 
-        var newPlayerXPos = playerXPos;
-        if (playerXPos < sectionLeft)
-        {
-          newPlayerXPos = sectionRight - 0.1f;
-          wantsTeleport = true;
-        }
-        else if (playerXPos > sectionRight)
-        {
-          newPlayerXPos = sectionLeft + 0.1f;
-          wantsTeleport = true;
-        }
-
-        if (wantsTeleport)
-        {
-          Vector3 newLocation = new Vector3(newPlayerXPos, playerYPos, playerZPos);
-          TeleportPlayer(newLocation);
-        }
+      if (shouldTeleport)
+      {
+        Vector3 teleportScreenPos = Mathfx.GetScreenPosFromNormalized(targetNormalizedPos);
+        Vector3 teleportPos = MainCamera.Instance.Camera.ScreenToWorldPoint(teleportScreenPos);
+        TeleportPlayer(teleportPos.WithZ(transform.position.z));
       }
     }
   }
 
   private void TeleportPlayer(Vector3 NewLocation)
   {
+    Debug.Log("Teleport");
     _actor.Motor.SetPosition(NewLocation);
   }
 

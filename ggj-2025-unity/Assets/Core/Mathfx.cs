@@ -291,6 +291,13 @@ public static class Mathfx
     return screenPos;
   }
 
+  public static Vector3 GetScreenPosFromNormalized(Vector3 normalizedPos)
+  {
+    normalizedPos.x *= Screen.width;
+    normalizedPos.y *= Screen.height;
+    return normalizedPos;
+  }
+
   public static Vector3 ViewportToCanvasPosition(RectTransform canvas, Vector3 viewportPos)
   {
     viewportPos.x *= canvas.rect.size.x;
