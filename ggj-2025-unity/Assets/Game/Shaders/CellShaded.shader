@@ -12,6 +12,7 @@ Shader "Custom/CellShaded"
     _FresnelColor ("Fresnel Color", Color) = (1,1,1,1)
     _FresnelPower ("Fresnel Power", float) = 1
     _FresnelOpacity ("Fresnel Opacity", float) = 0
+    _FresnelBlend ("Fresnel Blend", float) = 0
   }
   SubShader
   {
@@ -46,6 +47,7 @@ Shader "Custom/CellShaded"
     float4 _FresnelColor;
     float _FresnelPower;
     float _FresnelOpacity;
+    float _FresnelBlend;
 
     v2f vert(appdata v)
     {
@@ -79,7 +81,10 @@ Shader "Custom/CellShaded"
       float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);
       float viewDot = dot(viewDir, normalize(i.worldNormal));
       float fresnel = saturate(pow(1 - abs(viewDot), _FresnelPower));
-      diffuse.rgb += _FresnelColor * fresnel * _FresnelOpacity;
+
+      float3 fresnelAdditive = diffuse.rgb + _FresnelColor * fresnel * _FresnelOpacity;
+      float3 fresnelMult = lerp(diffuse.rgb, _FresnelColor, _FresnelOpacity * fresnel);
+      diffuse.rgb = lerp(fresnelAdditive, fresnelMult, _FresnelBlend);
 
       diffuse *= CalculateLighting(normalize(i.worldNormal), lightAtten, SHADOW_ATTENUATION(i)).rgb;
       diffuse.rgb += diffuse.rgb * _Glow;
