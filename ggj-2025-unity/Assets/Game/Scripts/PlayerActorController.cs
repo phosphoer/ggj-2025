@@ -15,6 +15,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
   public float AttackCooldown = 0.25f;
+  private float SlapDamage = 0.1f;
   public float LaunchPower = 10;
   public float LaunchSpinRate = 90;
 
@@ -39,6 +40,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
+  [SerializeField] private GameObject _fxLaunchPrefab = null;
+  [SerializeField] private ParticleSystem _fxChew = null;
   [SerializeField] private Renderer[] _mouthGumRenderers = null;
   [SerializeField] private Renderer[] _gumMassRenderers = null;
   [SerializeField] private Renderer[] _gumBubbleRenderers = null;
@@ -132,9 +135,6 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   {
     // Tell the game manager that the player was killed
     OnPlayerTouchedLava?.Invoke(this);
-
-    //TODO: Play death FX
-    //TODO: Play death audio
 
     Instantiate(_fxSplashPrefab, transform.position, _fxSplashPrefab.transform.rotation);
 
@@ -352,6 +352,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       // Try to chew a held item
       if (_heldItem)
       {
+        _fxChew.Play();
         _playerAnimation.Chew();
         if (_heldItem.Chew(0.1f))
         {
@@ -486,7 +487,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       ISlappable slappable = c.GetComponentInParent<ISlappable>();
       if (slappable != null && slappable != this)
       {
-        slappable.ReceiveSlap(transform.position);
+        slappable.ReceiveSlap(transform.position, SlapDamage);
       }
     }
   }
@@ -500,6 +501,9 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     _launchVelocity = new Vector3(0, 0, LaunchPower);
     _hasStartedLaunch = true;
+
+    var emitter= Instantiate(_fxLaunchPrefab, transform.position, _fxSplashPrefab.transform.rotation);
+    emitter.transform.parent = this.transform;
   }
 
   private void ApplyLaunchMovement(float dt)
@@ -523,7 +527,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _actor.enabled = false;
   }
 
-  void ISlappable.ReceiveSlap(Vector3 fromPos)
+  void ISlappable.ReceiveSlap(Vector3 fromPos, float damage)
   {
     if (_heldItem)
     {
@@ -533,10 +537,11 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     AudioManager.Instance.PlaySound(gameObject, SfxReceiveSlap);
 
     PopBubble();
+    _playerAnimation.ReceiveSlap(fromPos);
 
     if (_bubbleGumMass > 0)
     {
-      SetGumMass(_bubbleGumMass - 0.1f);
+      SetGumMass(_bubbleGumMass - damage);
     }
   }
 
