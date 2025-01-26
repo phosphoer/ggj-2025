@@ -84,6 +84,9 @@ Material:
     - _MainTexAlpha: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NoiseFrequency: 2
+    - _NoiseScale: 0.05
+    - _NoiseSpeed: 0.2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0

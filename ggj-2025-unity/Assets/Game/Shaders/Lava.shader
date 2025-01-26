@@ -38,9 +38,10 @@ Shader "Custom/Lava"
       fixed4 color : COLOR;
       float2 uv : TEXCOORD0;
       SHADOW_COORDS(1)
-      fixed3 worldNormal : TEXCOORD2;
-      fixed3 worldPos : TEXCOORD3;
+      float3 worldNormal : TEXCOORD2;
+      float3 worldPos : TEXCOORD3;
       UNITY_FOG_COORDS(4)
+      float3 heights : TEXCOORD5;
     };
 
     sampler2D _MainTex;
@@ -78,6 +79,7 @@ Shader "Custom/Lava"
       o.uv = TRANSFORM_TEX(v.uv, _MainTex);
       o.worldNormal = mul(unity_ObjectToWorld, fixed4(v.normal.xyz, 0));
       o.color = v.color;
+      o.heights = float3(v0.y, v1.y, v2.y);
 
       TRANSFER_SHADOW(o)
       UNITY_TRANSFER_FOG(o, o.pos);
@@ -98,10 +100,19 @@ Shader "Custom/Lava"
         lightAtten = tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).r * shadow;
       #endif
 
+
+      float height = i.heights.x;
+      float height1 = i.heights.y;
+      float height2 = i.heights.z;
+
+      float3 tangent = float3(2, height1 - height, 0);
+      float3 bitangent = float3(0, height2 - height, 2);
+      float3 worldNormal = normalize(cross(bitangent, tangent));
+
       // float3 ddxPos = ddx(i.worldPos);
       // float3 ddyPos = ddy(i.worldPos) * _ProjectionParams.x;
       // float3 worldNormal = normalize(cross(ddxPos, ddyPos));
-      float3 worldNormal = i.worldNormal;
+      // float3 worldNormal = i.worldNormal;
 
       float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);
       float viewDot = dot(viewDir, normalize(worldNormal));

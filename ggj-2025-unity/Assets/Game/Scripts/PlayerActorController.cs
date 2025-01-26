@@ -26,6 +26,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private int _levelSectionIndex = 0;
   private bool _didBubbleThisJump;
   private bool _isThrowing;
+  private bool _isInBubbleJump;
   private Vector3 _currentThrowAxis;
   private Vector3 _lastThrowAxis;
   private Vector3 _lastNonNegativeThrowAxis;
@@ -91,6 +92,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     // Gather input state
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
+    bool inputJumpButtonReleased = _playerInput.GetButtonUp(RewiredConsts.Action.Jump);
     bool inputInteractButton = _playerInput.GetButtonDown(RewiredConsts.Action.Interact);
     bool inputChewButton = _playerInput.GetButtonDown(RewiredConsts.Action.Chew);
     Vector2 inputThrowAxis = new Vector2(
@@ -113,12 +115,13 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _actor.Motor.SetCapsuleDimensions(capsuleRadius, capsuleHeight, capsuleOffset);
 
     // Apply bubble floating state
-    if (_bubbleStoredMass > 0)
+    if (_isInBubbleJump)
     {
       // Animate bubble size
       float bubbleShrinkAmount = Mathf.Min(dt * BubbleShrinkSpeed, _bubbleStoredMass);
       _bubbleStoredMass -= bubbleShrinkAmount;
       _playerAnimation.SetBubbleSize(_bubbleStoredMass);
+      _isInBubbleJump &= _bubbleStoredMass > 0;
 
       // Apply floating state to actor
       _actor.AntiGravityScalar = _actor.GravityScalar + _bubbleStoredMass * BubbleFloatPower;
@@ -141,12 +144,19 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _actor.Jump();
         _playerAnimation.Jump();
       }
-      else if (_bubbleStoredMass == 0 && !_didBubbleThisJump)
+      else if (_bubbleStoredMass == 0 && !_didBubbleThisJump && !_isInBubbleJump)
       {
         _bubbleStoredMass = _bubbleGumMass;
         _didBubbleThisJump = true;
+        _isInBubbleJump = true;
         SetGumMass(0);
       }
+    }
+
+    if (inputJumpButtonReleased && _isInBubbleJump)
+    {
+      SetGumMass(_bubbleStoredMass + _bubbleGumMass);
+      _bubbleStoredMass = 0;
     }
 
     // Interaction
