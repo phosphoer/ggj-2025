@@ -24,6 +24,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public SoundBank SfxBubblePop;
   public SoundBank SfxSlap;
   public SoundBank SfxReceiveSlap;
+  public SoundBank SfxThrow;
 
   [SerializeField] private ActorController _actor = null;
   [SerializeField] private PlayerAnimation _playerAnimation = null;
@@ -415,6 +416,8 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       _playerAnimation.DropItem();
       _heldItem.Throw(throwVec);
       _heldItem = null;
+
+      AudioManager.Instance.PlaySound(gameObject, SfxThrow);
     }
   }
 
