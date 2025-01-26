@@ -6,10 +6,19 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public event System.Action<int, int> OnPlayerSectionChanged;
 
   public Rewired.Player PlayerInput => _playerInput;
+  public int PlayerIndex => _playerIndex;
 
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
   public float ThrowStrength = 15;
+
+  public SoundBank SfxFootstep;
+  public SoundBank SfxJump;
+  public SoundBank SfxLand;
+  public SoundBank SfxSwallow;
+  public SoundBank SfxInflate;
+  public SoundBank SfxDeflate;
+  public SoundBank SfxSlap;
 
   [SerializeField] private ActorController _actor = null;
   [SerializeField] private PlayerAnimation _playerAnimation = null;
@@ -36,6 +45,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private RectTransform _throwUIRoot;
   private ThrowUI _throwUI;
   private Collider[] _slapColliders = new Collider[4];
+  private int _playerIndex = -1;
 
   public void SetGumMass(float gumAmount)
   {
@@ -44,15 +54,25 @@ public class PlayerActorController : MonoBehaviour, ISlappable
     _playerAnimation.SetGumMass(gumAmount);
   }
 
+  public void PopBubble()
+  {
+    // Pop bubble
+    if (_bubbleStoredMass > 0)
+    {
+      _playerAnimation.PopBubble();
+      _bubbleStoredMass = 0f;
+      AudioManager.Instance.PlaySound(gameObject, SfxDeflate);
+    }
+  }
+
   private void Awake()
   {
     SetPlayerIndex(0);
     SetGumMass(0);
     _playerAnimation.SetBubbleSize(0);
+    _playerAnimation.Footstep += OnFootStep;
+    _actor.Landed += OnLanded;
   }
-
-  private int _playerIndex = -1;
-  public int PlayerIndex => _playerIndex;
 
   public void SetPlayerIndex(int playerIndex)
   {
@@ -143,12 +163,14 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       {
         _actor.Jump();
         _playerAnimation.Jump();
+        AudioManager.Instance.PlaySound(gameObject, SfxJump);
       }
-      else if (_bubbleStoredMass == 0 && !_didBubbleThisJump && !_isInBubbleJump)
+      else if (_bubbleGumMass > 0 && !_didBubbleThisJump && !_isInBubbleJump)
       {
         _bubbleStoredMass = _bubbleGumMass;
         _didBubbleThisJump = true;
         _isInBubbleJump = true;
+        AudioManager.Instance.PlaySound(gameObject, SfxInflate);
         SetGumMass(0);
       }
     }
@@ -272,6 +294,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _playerAnimation.Chew();
         if (_heldItem.Chew(0.1f))
         {
+          AudioManager.Instance.PlaySound(gameObject, SfxSwallow);
           SetGumMass(_bubbleGumMass + _heldItem.GumMassValue);
           Destroy(_heldItem.gameObject);
         }
@@ -377,6 +400,9 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   {
     _playerAnimation.Slap();
 
+    if (SfxSlap)
+      AudioManager.Instance.PlaySound(gameObject, SfxSlap);
+
     int overlapCount = Physics.OverlapSphereNonAlloc(_slapAnchor.position, _slapRadius, _slapColliders, _slapMask);
     for (int i = 0; i < overlapCount; ++i)
     {
@@ -391,23 +417,27 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   void ISlappable.ReceiveSlap(Vector3 fromPos)
   {
-    // Drop any held item
     if (_heldItem)
     {
       DropItem();
     }
 
-    // Pop bubble
-    if (_bubbleStoredMass > 0)
-    {
-      _playerAnimation.PopBubble();
-      _bubbleStoredMass = 0.01f;
-    }
+    PopBubble();
 
     if (_bubbleGumMass > 0)
     {
       SetGumMass(_bubbleGumMass - 0.1f);
     }
+  }
+
+  private void OnFootStep()
+  {
+    AudioManager.Instance.PlaySound(gameObject, SfxFootstep);
+  }
+
+  private void OnLanded()
+  {
+    AudioManager.Instance.PlaySound(gameObject, SfxLand);
   }
 
   private void OnInteracted(InteractableObject interactable)
