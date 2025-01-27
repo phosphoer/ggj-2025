@@ -420,30 +420,27 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
   private void CheckSideTeleport()
   {
-    if (GameController.Instance != null)
+    Vector3 screenPos = MainCamera.Instance.Camera.WorldToScreenPoint(transform.position);
+    Vector3 normalizedPos = Mathfx.GetNormalizedScreenPos(screenPos);
+    Vector3 targetNormalizedPos = normalizedPos;
+    bool shouldTeleport = false;
+
+    if (normalizedPos.x > 1.1f)
     {
-      Vector3 screenPos = MainCamera.Instance.Camera.WorldToScreenPoint(transform.position);
-      Vector3 normalizedPos = Mathfx.GetNormalizedScreenPos(screenPos);
-      Vector3 targetNormalizedPos = normalizedPos;
-      bool shouldTeleport = false;
+      targetNormalizedPos.x = -0.05f;
+      shouldTeleport = true;
+    }
+    else if (normalizedPos.x < -0.1f)
+    {
+      targetNormalizedPos.x = 1.05f;
+      shouldTeleport = true;
+    }
 
-      if (normalizedPos.x > 1.1f)
-      {
-        targetNormalizedPos.x = -0.05f;
-        shouldTeleport = true;
-      }
-      else if (normalizedPos.x < -0.1f)
-      {
-        targetNormalizedPos.x = 1.05f;
-        shouldTeleport = true;
-      }
-
-      if (shouldTeleport)
-      {
-        Vector3 teleportScreenPos = Mathfx.GetScreenPosFromNormalized(targetNormalizedPos);
-        Vector3 teleportPos = MainCamera.Instance.Camera.ScreenToWorldPoint(teleportScreenPos);
-        TeleportPlayer(teleportPos.WithZ(transform.position.z));
-      }
+    if (shouldTeleport)
+    {
+      Vector3 teleportScreenPos = Mathfx.GetScreenPosFromNormalized(targetNormalizedPos);
+      Vector3 teleportPos = MainCamera.Instance.Camera.ScreenToWorldPoint(teleportScreenPos);
+      TeleportPlayer(teleportPos.WithZ(transform.position.z));
     }
   }
 

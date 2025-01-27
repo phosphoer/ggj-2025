@@ -119,7 +119,7 @@ Shader "Custom/Lava"
 
       UNITY_APPLY_FOG(i.fogCoord, diffuse);
 
-      return fixed4(diffuse, 1);
+      return fixed4(diffuse, _Color.a);
     }
     ENDCG
 
@@ -127,10 +127,11 @@ Shader "Custom/Lava"
     {
       Tags
       {
-        "RenderType"="Opaque" "LightMode" = "ForwardBase"
+        "RenderType"="Transparent" "LightMode" = "ForwardBase"
       }
 
       ZWrite On
+      Blend SrcAlpha OneMinusSrcAlpha
 
       CGPROGRAM
       #pragma vertex vert

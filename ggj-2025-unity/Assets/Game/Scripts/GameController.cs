@@ -106,6 +106,11 @@ public class GameController : Singleton<GameController>
     {
       TriggerPostGame();
     }
+
+    if (Input.GetKeyDown(KeyCode.L))
+    {
+      StartMatch();
+    }
 #endif
 
     // Update rise rate difficulty
