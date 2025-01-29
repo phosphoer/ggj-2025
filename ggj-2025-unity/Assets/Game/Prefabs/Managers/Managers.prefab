@@ -168,7 +168,9 @@ MonoBehaviour:
   MusicGame: {fileID: 11400000, guid: d1bf87199fad14ced96528aa595e7314, type: 2}
   MusicEnd: {fileID: 11400000, guid: 7a82b345350684c70a069d833d724c38, type: 2}
   WinCountDownTime: 10
-  _matchStartHeight: 5
+  StartMatchHeight: 5
+  SPTopSpeedupThreshold: 0.4
+  _initialGameState: 3
   _levelManager: {fileID: 9052310861224840221}
   _cameraController: {fileID: 7567264333900629455}
   _playerPrefab: {fileID: 3137277098965579114, guid: 9a438c85a8c944c4894d35a552f2b43f, type: 3}
@@ -229,7 +231,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _initialGameState: 3
 --- !u!114 &7567264333900629455
 MonoBehaviour:
   m_ObjectHideFlags: 0

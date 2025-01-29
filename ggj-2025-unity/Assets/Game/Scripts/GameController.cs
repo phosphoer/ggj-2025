@@ -11,34 +11,40 @@ public struct PlayerColors
 
 public class GameController : Singleton<GameController>
 {
+  public event System.Action MatchStarted;
+
+  public eGameState GameState => _currentGameState;
   public LevelGenerator LevelManager => _levelManager;
   public LavaController LavaController => _lavaController;
+  public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
+  public List<WormActorController> SpawnedWorms => _spawnedWorms;
+
+  public int WinningPlayerID { get; set; } = -1;
+  public float WinningPlayerCountdownTimer { get; set; } = 0;
 
   public SoundBank MusicTitle;
   public SoundBank MusicGame;
   public SoundBank MusicEnd;
   public int WinCountDownTime = 10;
+  public float StartMatchHeight = 5;
+  public float SPTopSpeedupThreshold = 0.25f;
 
-  [SerializeField] private float _matchStartHeight = 5;
+  [SerializeField] private eGameState _initialGameState = eGameState.Game;
   [SerializeField] private LevelGenerator _levelManager;
   [SerializeField] private LevelCameraController _cameraController;
   [SerializeField] private PlayerActorController _playerPrefab;
   [SerializeField] private WormActorController _wormPrefab;
   [SerializeField] private LavaController _lavaController;
   [SerializeField] private PlayerColors[] _playerColors = null;
-
   [SerializeField] private AnimationCurve _riseRateCurve = default;
-
-  public int WinningPlayerID { get; set; } = -1;
-  public float WinningPlayerCountdownTimer { get; set; } = 0;
 
   private bool _isMatchStarted;
   private bool _isInCountdown;
   private bool _isSpawningAllowed;
+  private float _extraRiseRate;
   private List<PlayerActorController> _spawnedPlayers = new List<PlayerActorController>();
-  public List<PlayerActorController> SpawnedPlayers => _spawnedPlayers;
   private List<WormActorController> _spawnedWorms = new List<WormActorController>();
-  public List<WormActorController> SpawnedWorms => _spawnedWorms;
+  private eGameState _currentGameState = eGameState.None;
 
   public enum eGameState
   {
@@ -47,11 +53,6 @@ public class GameController : Singleton<GameController>
     Game,
     PostGame
   }
-
-  private eGameState _currentGameState = eGameState.None;
-  public eGameState GameState => _currentGameState;
-
-  [SerializeField] private eGameState _initialGameState = eGameState.Game;
 
   public string GetPlayerColorName(int playerID)
   {
@@ -77,9 +78,13 @@ public class GameController : Singleton<GameController>
     return false;
   }
 
-  void Start()
+  private void Awake()
   {
-    GameController.Instance = this;
+    Instance = this;
+  }
+
+  private void Start()
+  {
     _lavaController.gameObject.SetActive(false);
 
     Application.targetFrameRate = 60;
@@ -113,10 +118,28 @@ public class GameController : Singleton<GameController>
     }
 #endif
 
+    bool isAddingExtraRiseRate = false;
+    if (SpawnedPlayers.Count == 1)
+    {
+      var spawnedPlayer = SpawnedPlayers[0];
+      Camera mainCamera = MainCamera.Instance.Camera;
+      Vector3 topScreenPos = mainCamera.ViewportToScreenPoint(new Vector3(0.5f, 1f - SPTopSpeedupThreshold, 0));
+      Vector3 cameraTopPos = mainCamera.ScreenToWorldPoint(topScreenPos.WithZ(mainCamera.transform.position.z));
+      Debug.DrawRay(cameraTopPos, Vector3.right * 10);
+      if (spawnedPlayer.transform.position.y > cameraTopPos.y - SPTopSpeedupThreshold)
+      {
+        _extraRiseRate += Time.deltaTime * 0.1f;
+        isAddingExtraRiseRate = true;
+      }
+    }
+
+    if (!isAddingExtraRiseRate)
+      _extraRiseRate = Mathfx.Damp(_extraRiseRate, 0, 0.25f, Time.deltaTime);
+
     // Update rise rate difficulty
     float riseRate = _riseRateCurve.Evaluate(_cameraController.MountPoint.position.y);
-    _lavaController.RiseRate = riseRate;
-    _cameraController.RiseRate = riseRate;
+    _lavaController.RiseRate = riseRate + _extraRiseRate;
+    _cameraController.RiseRate = riseRate + _extraRiseRate;
 
     // Win count down
     if (_isInCountdown)
@@ -133,7 +156,7 @@ public class GameController : Singleton<GameController>
     {
       if (!_isMatchStarted)
       {
-        if (_spawnedPlayers[i].transform.position.y > 5)
+        if (_spawnedPlayers[i].transform.position.y > StartMatchHeight)
         {
           StartMatch();
         }
@@ -416,6 +439,7 @@ public class GameController : Singleton<GameController>
     _isSpawningAllowed = false;
     _lavaController.StartRising();
     _cameraController.StartRising();
+    MatchStarted?.Invoke();
   }
 
   private void OnPlayerSectionChanged(int newSectionIndex, int oldSectionIndex)
@@ -442,6 +466,6 @@ public class GameController : Singleton<GameController>
   private void OnDrawGizmos()
   {
     Gizmos.color = Color.white;
-    Gizmos.DrawLine(new Vector3(-100, _matchStartHeight, 0), new Vector3(100, _matchStartHeight, 0));
+    Gizmos.DrawLine(new Vector3(-100, StartMatchHeight, 0), new Vector3(100, StartMatchHeight, 0));
   }
 }
