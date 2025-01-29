@@ -25,7 +25,8 @@ public class BannerController : MonoBehaviour
 
   private void OnDestroy()
   {
-    GameController.Instance.MatchStarted -= OnMatchStarted;
+    if (GameController.Instance)
+      GameController.Instance.MatchStarted -= OnMatchStarted;
   }
 
   private void OnMatchStarted()
