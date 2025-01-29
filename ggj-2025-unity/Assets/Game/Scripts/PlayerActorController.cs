@@ -132,6 +132,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   {
     _playerIndex = playerIndex;
     _playerInput = Rewired.ReInput.players.GetPlayer(playerIndex);
+    _interaction.RewiredPlayer = _playerInput;
   }
 
   public void Kill()

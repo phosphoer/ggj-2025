@@ -22,12 +22,13 @@ public class InteractableObject : MonoBehaviour
     Interacted?.Invoke(interactionController);
   }
 
-  public void ShowPrompt()
+  public void ShowPrompt(Rewired.Player forPlayer)
   {
     HidePrompt();
     _promptUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up);
     InteractPromptUI uiPrompt = Instantiate(_promptUIPrefab, _promptUIRoot);
     uiPrompt.PromptText = _interactPromptText;
+    uiPrompt.GlyphHint.playerId = forPlayer.id;
   }
 
   public void HidePrompt()

@@ -1231,11 +1231,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 585e1f62fe0ea45748c0d59cf92c1949, type: 2}
     - target: {fileID: 6865325346232226295, guid: db379696d8d6f420a981dbc7511dcc6d, type: 3}
       propertyPath: m_text
-      value: Eat to Grow
+      value: Chew to Grow
       objectReference: {fileID: 0}
     - target: {fileID: 6865325346232226295, guid: db379696d8d6f420a981dbc7511dcc6d, type: 3}
       propertyPath: m_fontSize
-      value: 42.5
+      value: 36.3
       objectReference: {fileID: 0}
     - target: {fileID: 7371596407744773305, guid: db379696d8d6f420a981dbc7511dcc6d, type: 3}
       propertyPath: m_LocalPosition.x

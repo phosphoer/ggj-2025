@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3469120990561595821}
   - component: {fileID: 3427377759508959536}
+  - component: {fileID: -5669489377827109493}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -861,3 +862,18 @@ MonoBehaviour:
     controllerMapLayoutManagerSetIdCounter: 0
     controllerMapEnablerSetIdCounter: 0
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7, type: 2}
+--- !u!114 &-5669489377827109493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5114282373522388796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c2c3042f98981439ed20fd65097629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefetch: 0
+  _glyphSetCollections:
+  - {fileID: 11400000, guid: 9489dc740d1e9c340b1acc6947c899c6, type: 2}

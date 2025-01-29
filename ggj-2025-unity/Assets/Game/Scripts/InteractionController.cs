@@ -3,8 +3,10 @@ using UnityEngine;
 public class InteractionController : MonoBehaviour
 {
   public event System.Action<InteractableObject> Interacted;
+  public Rewired.Player RewiredPlayer { get; set; }
 
   public InteractableObject CurrentInteractable => _currentInteractable;
+
 
   private int _updateIndex;
   private InteractableObject _currentInteractable;
@@ -54,7 +56,7 @@ public class InteractionController : MonoBehaviour
         // Register new interactable
         if (_currentInteractable != null)
         {
-          _currentInteractable.ShowPrompt();
+          _currentInteractable.ShowPrompt(RewiredPlayer);
         }
       }
 
