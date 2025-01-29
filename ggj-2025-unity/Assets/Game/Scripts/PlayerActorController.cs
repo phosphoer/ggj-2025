@@ -9,6 +9,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   public int PlayerIndex => _playerIndex;
   public float GumMassTotal => _bubbleGumMass + _bubbleStoredMass;
   public CapsuleCollider PlayerCapsule => _actor.Motor.Capsule;
+  public string PlayerColorName => _playerColorName;
 
   public float BubbleShrinkSpeed = 0.25f;
   public float BubbleFloatPower = 0.25f;
@@ -38,6 +39,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private float _slapRadius = 0.5f;
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
+  [SerializeField] private ChewUI _chewUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
   [SerializeField] private GameObject _fxLaunchPrefab = null;
   [SerializeField] private ParticleSystem _fxChew = null;
@@ -65,13 +67,15 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private float _lastNonNegativeThrowT;
   private bool _isMidFlick;
   private RectTransform _throwUIRoot;
+  private RectTransform _chewUIRoot;
   private ThrowUI _throwUI;
+  private ChewUI _chewUI;
   private Collider[] _slapColliders = new Collider[4];
   private bool _hasStartedLaunch = false;
+  private bool _didChewTutorial;
   private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
   private string _playerColorName = "";
-  public string PlayerColorName => _playerColorName;
 
   public void SetColors(string colorName, Color mouthGumColor, Color gumColor)
   {
@@ -365,11 +369,23 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       // Try to chew a held item
       if (_heldItem)
       {
+        if (_chewUI)
+        {
+          _chewUI.SetChewedState();
+        }
+
         _fxChew.Play();
         _playerAnimation.Chew();
         if (_heldItem.Chew(0.1f))
         {
           AudioManager.Instance.PlaySound(gameObject, SfxSwallow);
+
+          if (_chewUIRoot)
+          {
+            WorldUIManager.Instance.HideItem(_chewUIRoot);
+            _chewUIRoot = null;
+            _didChewTutorial = true;
+          }
 
           if (_heldItem.GumMassValue > 0)
             AudioManager.Instance.PlaySound(gameObject, SfxInflate);
@@ -565,6 +581,13 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       _playerAnimation.HoldItem(item);
       item.Pickup();
       _heldItem = item;
+
+      if (_heldItem.GumMassValue > 0 && !_didChewTutorial)
+      {
+        _chewUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 2f);
+        _chewUI = Instantiate(_chewUIPrefab, _chewUIRoot);
+        _chewUI.SetPlayerInput(_playerInput);
+      }
     }
   }
 }

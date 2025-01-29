@@ -931,6 +931,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   _throwUIPrefab: {fileID: 7875016763089322057, guid: ff13ca27cf63f4441affe70bc50c0662, type: 3}
+  _chewUIPrefab: {fileID: 3182976641104972155, guid: 6a87ddc0242604769b30d3d27c5a9539, type: 3}
   _fxSplashPrefab: {fileID: 15562417937997071, guid: be36949ded4124998b6760f3bffe999e, type: 3}
   _fxLaunchPrefab: {fileID: 6435564246925293549, guid: 0b44e2abbf602e941ad34f994a3e04fa, type: 3}
   _fxChew: {fileID: 6055735738216181450}
