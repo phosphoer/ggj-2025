@@ -39,6 +39,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private float _slapRadius = 0.5f;
   [SerializeField] private LayerMask _slapMask = default;
   [SerializeField] private ThrowUI _throwUIPrefab = null;
+  [SerializeField] private ThrowTutorialUI _throwTutorialUIPrefab = null;
   [SerializeField] private ChewUI _chewUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
   [SerializeField] private GameObject _fxLaunchPrefab = null;
@@ -67,12 +68,15 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private float _lastNonNegativeThrowT;
   private bool _isMidFlick;
   private RectTransform _throwUIRoot;
+  private RectTransform _throwTutorialUIRoot;
   private RectTransform _chewUIRoot;
   private ThrowUI _throwUI;
+  private ThrowTutorialUI _throwTutorialUI;
   private ChewUI _chewUI;
   private Collider[] _slapColliders = new Collider[4];
   private bool _hasStartedLaunch = false;
   private bool _didChewTutorial;
+  private bool _didThrowTutorial;
   private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
   private string _playerColorName = "";
@@ -287,6 +291,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
             _isThrowing = true;
             _throwUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 0.5f);
             _throwUI = Instantiate(_throwUIPrefab, _throwUIRoot);
+            _throwUI.SetTutorialEnabled(false);
           }
 
           Vector3 playerScreenPos = Mathfx.GetNormalizedScreenPos(MainCamera.Instance.Camera.WorldToScreenPoint(transform.position));
@@ -304,6 +309,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
             ThrowItem(MainCamera.Instance.transform.rotation * _currentThrowAxis.normalized * _currentThrowT * -ThrowStrength);
             _currentThrowAxis = Vector3.zero;
             _currentThrowT = 0;
+            _throwUIRoot = null;
           }
         }
       }
@@ -318,6 +324,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
             _isThrowing = true;
             _throwUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 0.5f);
             _throwUI = Instantiate(_throwUIPrefab, _throwUIRoot);
+            _throwUI.SetTutorialEnabled(false);
           }
 
           _currentThrowAxis = inputThrowAxis;
@@ -346,6 +353,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
               }
 
               WorldUIManager.Instance.HideItem(_throwUIRoot);
+              _throwUIRoot = null;
               _isThrowing = false;
               _isMidFlick = false;
               _lastNonNegativeThrowAxis = Vector3.zero;
@@ -361,6 +369,18 @@ public class PlayerActorController : MonoBehaviour, ISlappable
           }
         }
       }
+    }
+
+    if (_isThrowing && _heldItem.GumMassValue < 0 && !_didThrowTutorial && !_throwUI.IsTutorialEnabled)
+    {
+      _throwUI.SetTutorialEnabled(true);
+      _throwUI.SetPlayerInput(_playerInput);
+    }
+
+    if (_isThrowing && _throwTutorialUIRoot)
+    {
+      WorldUIManager.Instance.HideItem(_throwTutorialUIRoot);
+      _throwTutorialUIRoot = null;
     }
 
     // Chewing
@@ -484,6 +504,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       _playerAnimation.DropItem();
       _heldItem.Throw(throwVec);
       _heldItem = null;
+      _didThrowTutorial = true;
 
       AudioManager.Instance.PlaySound(gameObject, SfxThrow);
     }
@@ -587,6 +608,12 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _chewUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 2f);
         _chewUI = Instantiate(_chewUIPrefab, _chewUIRoot);
         _chewUI.SetPlayerInput(_playerInput);
+      }
+      else if (_heldItem.GumMassValue < 0 && !_didThrowTutorial)
+      {
+        _throwTutorialUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 2f);
+        _throwTutorialUI = Instantiate(_throwTutorialUIPrefab, _throwTutorialUIRoot);
+        _throwTutorialUI.SetPlayerInput(_playerInput);
       }
     }
   }
