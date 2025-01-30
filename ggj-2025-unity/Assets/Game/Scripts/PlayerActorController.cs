@@ -41,6 +41,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   [SerializeField] private ThrowUI _throwUIPrefab = null;
   [SerializeField] private ThrowTutorialUI _throwTutorialUIPrefab = null;
   [SerializeField] private ChewUI _chewUIPrefab = null;
+  [SerializeField] private JumpTutorialUI _jumpTutorialUIPrefab = null;
   [SerializeField] private ParticleSystem _fxSplashPrefab = null;
   [SerializeField] private GameObject _fxLaunchPrefab = null;
   [SerializeField] private ParticleSystem _fxChew = null;
@@ -66,17 +67,21 @@ public class PlayerActorController : MonoBehaviour, ISlappable
   private float _currentThrowT;
   private float _stuckSqueezeScalar;
   private float _lastNonNegativeThrowT;
+  private float _jumpFloatTimer;
   private bool _isMidFlick;
   private RectTransform _throwUIRoot;
   private RectTransform _throwTutorialUIRoot;
   private RectTransform _chewUIRoot;
+  private RectTransform _jumpTutorialUIRoot;
   private ThrowUI _throwUI;
   private ThrowTutorialUI _throwTutorialUI;
   private ChewUI _chewUI;
+  private JumpTutorialUI _jumpTutorialUI;
   private Collider[] _slapColliders = new Collider[4];
   private bool _hasStartedLaunch = false;
   private bool _didChewTutorial;
   private bool _didThrowTutorial;
+  private bool _didJumpTutorial;
   private Vector3 _launchVelocity = Vector3.zero;
   private int _playerIndex = -1;
   private string _playerColorName = "";
@@ -180,6 +185,9 @@ public class PlayerActorController : MonoBehaviour, ISlappable
 
     _attackCooldownTimer -= dt;
 
+    if (_isInBubbleJump)
+      _jumpFloatTimer += dt;
+
     // Gather input state
     float inputMoveAxis = _playerInput.GetAxis(RewiredConsts.Action.MoveAxis);
     bool inputJumpButton = _playerInput.GetButtonDown(RewiredConsts.Action.Jump);
@@ -223,6 +231,15 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       _playerAnimation.SetBubbleSize(_bubbleStoredMass);
       _isInBubbleJump &= _bubbleStoredMass > 0;
 
+      if (!_isInBubbleJump)
+      {
+        if (_jumpTutorialUIRoot)
+        {
+          WorldUIManager.Instance.HideItem(_jumpTutorialUIRoot);
+          _jumpTutorialUIRoot = null;
+        }
+      }
+
       // Apply floating state to actor
       _actor.AntiGravityScalar = _actor.GravityScalar + _bubbleStoredMass * BubbleFloatPower;
       _actor.Motor.ForceUnground();
@@ -250,6 +267,7 @@ public class PlayerActorController : MonoBehaviour, ISlappable
         _bubbleStoredMass = _bubbleGumMass;
         _didBubbleThisJump = true;
         _isInBubbleJump = true;
+        _jumpFloatTimer = 0;
         DropItem();
         AudioManager.Instance.PlaySound(gameObject, SfxBubbleInflate);
         SetGumMass(0);
@@ -261,6 +279,11 @@ public class PlayerActorController : MonoBehaviour, ISlappable
       SetGumMass(_bubbleStoredMass + _bubbleGumMass);
       _bubbleStoredMass = 0;
       AudioManager.Instance.PlaySound(gameObject, SfxBubbleDeflate);
+
+      if (_jumpFloatTimer > 1)
+      {
+        _didJumpTutorial = true;
+      }
     }
 
     // Interaction
@@ -411,6 +434,13 @@ public class PlayerActorController : MonoBehaviour, ISlappable
             AudioManager.Instance.PlaySound(gameObject, SfxInflate);
           else
             AudioManager.Instance.PlaySound(gameObject, SfxDeflate);
+
+          if (_heldItem.GumMassValue > 0 && !_didJumpTutorial && !_jumpTutorialUIRoot)
+          {
+            _jumpTutorialUIRoot = WorldUIManager.Instance.ShowItem(transform, Vector3.up * 2);
+            _jumpTutorialUI = Instantiate(_jumpTutorialUIPrefab, _jumpTutorialUIRoot);
+            _jumpTutorialUI.SetPlayerInput(_playerInput);
+          }
 
           SetGumMass(_bubbleGumMass + _heldItem.GumMassValue);
           Destroy(_heldItem.gameObject);

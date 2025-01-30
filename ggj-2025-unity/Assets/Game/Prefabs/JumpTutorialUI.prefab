@@ -184,7 +184,7 @@ MonoBehaviour:
   _group1: {fileID: 3271409573664351901}
   _group2: {fileID: 0}
   _playerId: 0
-  _actionName: Chew
+  _actionName: Jump
 --- !u!114 &4695592381891626126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chew
+  m_text: Hold Jump in air to float
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -399,7 +399,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 13.2
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -548,7 +548,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6153450835165619969}
-  - component: {fileID: 3182976641104972155}
+  - component: {fileID: 7630368515839791344}
   - component: {fileID: 3788244155553176438}
   m_Layer: 5
   m_Name: JumpTutorialUI
@@ -580,7 +580,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3182976641104972155
+--- !u!114 &7630368515839791344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -589,13 +589,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8426122433551229191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029c49ec3aaa4eeb87c36e4223bc4731, type: 3}
+  m_Script: {fileID: 11500000, guid: 4965139eb34743d0bbbeb8b84e247985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _glyphHint: {fileID: 9200289663634854392}
-  _chewText: {fileID: 7459715442800941914}
-  _chewStartString: Chew
-  _chewMoreString: Chew More!
+  _throwGlyph: {fileID: 9200289663634854392}
 --- !u!114 &3788244155553176438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -611,8 +608,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 25
     m_Right: 10
-    m_Top: 0
-    m_Bottom: 0
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 5
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
